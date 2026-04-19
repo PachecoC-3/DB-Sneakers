@@ -809,7 +809,7 @@ function fetchShopifyProducts(){
   if(!shopifyClient) return;
   document.getElementById('productGrid').innerHTML = '<div class="no-res">Loading drops from Shopify...</div>';
   
-  shopifyClient.product.fetchQuery({first: 20}).then((products) => {
+  shopifyClient.product.fetchQuery({first: 250}).then((products) => {
     lastFetchedProducts = products;
     mapAndRenderProducts(products, true);
   }).catch((err) => {
@@ -910,9 +910,7 @@ function mapAndRenderProducts(products, isFirstBatch) {
   const lmc = document.getElementById('loadMoreContainer');
   if(lmc) lmc.remove();
   
-  if (products.length === 20) {
-    document.getElementById('productGrid').insertAdjacentHTML('afterend', '<div id="loadMoreContainer" style="text-align:center; padding: 30px; grid-column: 1/-1;"><button id="loadMoreBtn" class="h-cta" onclick="loadMoreProducts()">LOAD MORE HEAT</button></div>');
-  }
+  // Pagination bypassed as we fetch up to 250 products at once.
 }
 
 function handleShopPay(){
