@@ -25,7 +25,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,5,5,.92);b
 .cart-b{padding:10px 20px;background:var(--pr);color:var(--bg);font-family:'Archivo Black',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;border:none;cursor:pointer;text-transform:uppercase;transition:all .3s;display:flex;align-items:center;gap:8px}
 .cart-b:hover{background:var(--ac);color:var(--text)}.cart-n{background:var(--ac);color:var(--bg);width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px}
 .mob-menu{display:none;background:none;border:none;font-size:24px;color:var(--text);cursor:pointer}
-
+.s-suggest{position:absolute;top:100%;left:0;right:0;background:var(--panel);border:1px solid var(--border);border-top:none;z-index:200;display:none;max-height:300px;overflow-y:auto;box-shadow:0 8px 16px rgba(0,0,0,0.5)}
+.s-suggest.show{display:block}
+.s-item{padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:10px;transition:background 0.2s}
+.s-item:hover{background:rgba(255,255,255,0.1)}
+.s-item img{width:30px;height:30px;object-fit:cover;border-radius:4px}
+.s-item-info{display:flex;flex-direction:column}
+.s-item-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s-item-price{font-size:11px;color:var(--ac)}
 .h-tag{font-family:'Archivo Black',sans-serif;font-size:13px;letter-spacing:6px;text-transform:uppercase;color:var(--pr)}
 .h-title{font-family:'Archivo Black',sans-serif;font-weight:700;text-transform:uppercase}.h-sub{font-size:16px;color:var(--muted);letter-spacing:1px}
 
@@ -373,7 +380,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 <a onclick="showPage('home')">Shop</a><a onclick="showPage('about')">About</a><a onclick="showPage('contact')">Contact</a><a onclick="showTrackPage()">Track</a>
 </div>
 <div class="nav-right">
-<div class="s-wrap"><span class="s-icon">🔍</span><input class="search-box" placeholder="Search..." oninput="handleSearch(this.value)"></div>
+<div class="s-wrap"><span class="s-icon">🔍</span><input id="searchInput" class="search-box" placeholder="Search..." oninput="handleSearch(this.value)" onkeydown="handleSearchKey(event)"><div id="searchSuggest" class="s-suggest"></div></div>
 <button class="cart-b" onclick="toggleCart()">Cart <span class="cart-n" id="cartCount">0</span></button>
 <button class="mob-menu" onclick="document.querySelector('.nav-center').style.display=document.querySelector('.nav-center').style.display==='flex'?'none':'flex'">☰</button>
 </div>
@@ -810,8 +817,36 @@ function fetchShopifyProducts(){
   document.getElementById('productGrid').innerHTML = '<div class="no-res">Loading drops from Shopify...</div>';
   
   shopifyClient.product.fetchQuery({first: 250}).then((products) => {
-    lastFetchedProducts = products;
-    mapAndRenderProducts(products, true);
+    // Fetch exact inventory counts manually since the JS SDK strips them by default
+    const query = `{ products(first: 250) { edges { node { id variants(first: 1) { edges { node { quantityAvailable } } } } } } }`;
+    fetch('https://db-sneakers-hype-hub.myshopify.com/api/2024-01/graphql.json', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': '0906a0e54db9ccce653c2a568a2fc54b'
+      },
+      body: JSON.stringify({query: query})
+    })
+    .then(res => res.json())
+    .then(data => {
+      const invMap = {};
+      if(data.data && data.data.products) {
+        data.data.products.edges.forEach(edge => {
+          const v = edge.node.variants.edges[0];
+          invMap[edge.node.id] = v && v.node.quantityAvailable != null ? v.node.quantityAvailable : -1;
+        });
+      }
+      products.forEach(p => {
+        if(invMap[p.id] !== undefined) p.variants[0].quantityAvailable = invMap[p.id];
+      });
+      lastFetchedProducts = products;
+      mapAndRenderProducts(products, true);
+    })
+    .catch(err => {
+      console.error('Inventory fetch failed, falling back:', err);
+      lastFetchedProducts = products;
+      mapAndRenderProducts(products, true);
+    });
   }).catch((err) => {
     console.error(err);
     document.getElementById('productGrid').innerHTML = '<div class="no-res" style="color:#FF1493;font-family:\'Archivo Black\',sans-serif;font-size:18px;">CONNECTION LOST. CHECK YOUR DIAL-UP!<br><button class="h-cta" style="margin-top:20px" onclick="fetchShopifyProducts()">RETRY CONNECTION</button></div>';
@@ -930,8 +965,50 @@ function handleSearch(v){
   searchTimeout=setTimeout(()=>{
     searchQuery=v;
     renderProducts();
+    updateSuggestions(v);
   },200);
 }
+
+function updateSuggestions(v) {
+  const sg = document.getElementById('searchSuggest');
+  if(!v.trim()) { sg.classList.remove('show'); return; }
+  let items = getFiltered().slice(0, 5); // top 5 suggestions
+  if(!items.length) {
+    sg.innerHTML = '<div style="padding:10px 14px;font-size:12px;color:var(--muted)">No matches found</div>';
+  } else {
+    sg.innerHTML = items.map(p => `
+      <div class="s-item" onclick="openProduct('${p.id}'); document.getElementById('searchSuggest').classList.remove('show'); document.getElementById('searchInput').value=''; searchQuery=''; renderProducts();">
+        <img src="${p.img}" alt="">
+        <div class="s-item-info">
+          <span class="s-item-name">${p.name}</span>
+          <span class="s-item-price">$${p.price.toFixed(2)}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+  sg.classList.add('show');
+}
+
+function handleSearchKey(e) {
+  if(e.key === 'Enter') {
+    e.preventDefault();
+    document.getElementById('searchSuggest').classList.remove('show');
+    let items = getFiltered();
+    if(items.length > 0) {
+      openProduct(items[0].id);
+      document.getElementById('searchInput').value = '';
+      searchQuery = '';
+      renderProducts();
+    }
+  }
+}
+
+document.addEventListener('click', (e) => {
+  if(!e.target.closest('.s-wrap')) {
+    const sg = document.getElementById('searchSuggest');
+    if(sg) sg.classList.remove('show');
+  }
+});
 
 </script><script></script><script>
 
