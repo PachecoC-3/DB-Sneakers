@@ -116,20 +116,14 @@ nav{border-bottom:3px solid var(--ac)}
 .marq{background:var(--pr);padding:12px 0;overflow:hidden;border-top:3px solid var(--ac);border-bottom:3px solid var(--ac)}
 .marq-in{display:flex;animation:mscroll 14s linear infinite;white-space:nowrap}
 .marq-in span{font-family:'Bungee',cursive;font-size:15px;color:#111;padding:0 36px}
-/* Mixed bento: every 5th item is double width */
-.product-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;background:#0a0a16;background-image:radial-gradient(ellipse at 8% 22%,rgba(255,20,147,.3) 0%,transparent 45%),radial-gradient(ellipse at 90% 10%,rgba(0,191,255,.25) 0%,transparent 40%),radial-gradient(ellipse at 42% 82%,rgba(148,0,211,.28) 0%,transparent 42%),radial-gradient(ellipse at 74% 52%,rgba(255,215,0,.2) 0%,transparent 35%),radial-gradient(circle at 18% 62%,rgba(0,255,127,.18) 0%,transparent 28%);position:relative;z-index:5;padding:10px}
+/* Desktop: 4 items per row */
+.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:#0a0a16;background-image:radial-gradient(ellipse at 8% 22%,rgba(255,20,147,.3) 0%,transparent 45%),radial-gradient(ellipse at 90% 10%,rgba(0,191,255,.25) 0%,transparent 40%),radial-gradient(ellipse at 42% 82%,rgba(148,0,211,.28) 0%,transparent 42%),radial-gradient(ellipse at 74% 52%,rgba(255,215,0,.2) 0%,transparent 35%),radial-gradient(circle at 18% 62%,rgba(0,255,127,.18) 0%,transparent 28%);position:relative;z-index:5;padding:10px}
 .product-grid::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 42px),repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 22px);pointer-events:none;z-index:0}
-.product-grid::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 42px),repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 22px);pointer-events:none;z-index:0}
-.pc:nth-child(6n+1){grid-column:span 3}
-.pc:nth-child(6n+2),.pc:nth-child(6n+3){grid-column:span 3}
-.pc:nth-child(6n+4){grid-column:span 2}
-.pc:nth-child(6n+5){grid-column:span 2}
-.pc:nth-child(6n+6){grid-column:span 2}
 .pc{border:2px solid #111;transition:all .3s ease;position:relative;z-index:2}
 .pc:hover{border-color:#fff;box-shadow:8px 8px 0 var(--pr);transform:translate(-4px,-4px)}
 .pc-badge{font-family:'Bungee',cursive;background:#FF1493}
 .pc-add{border:2px solid #fff;box-shadow:3px 3px 0 var(--ac)}.pc-add:hover{box-shadow:1px 1px 0 var(--ac);transform:translate(2px,2px)}
-@media(max-width:768px){.product-grid{grid-template-columns:repeat(2,1fr)!important}.pc:nth-child(6n+1),.pc:nth-child(6n+2),.pc:nth-child(6n+3),.pc:nth-child(6n+4),.pc:nth-child(6n+5),.pc:nth-child(6n+6){grid-column:span 1!important}.v-marquee{display:none!important}}
+@media(max-width:768px){.product-grid{grid-template-columns:repeat(2,1fr)!important}.v-marquee{display:none!important}}
 @media(max-width:480px){.product-grid{grid-template-columns:1fr!important}}
 
 
@@ -393,7 +387,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 <h1 class="h-title fh"><span class="o">THROWBACK</span><br><span class="f">KICKS & CAPS</span></h1>
 <p class="h-sub" style="color:var(--muted);max-width:480px">Old school flavors. New school drip.</p>
 <button class="h-cta" onclick="document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'})">Shop Now</button>
-<div class="hero-stickers"><div class="stk" style="transform:rotate(-4deg)">Free Ship!</div><div class="stk" style="transform:rotate(2deg)">100% Real</div><div class="stk" style="transform:rotate(-1deg)">Hype AF</div></div></section>
+</section>
 <div class="marq"><div class="marq-in"><span>★ NEW DROPS ★</span><span>FREE SHIPPING $75+</span><span>★ HYPE HUB ★</span><span>KICKS & CAPS</span><span>★ NEW DROPS ★</span><span>FREE SHIPPING $75+</span><span>★ HYPE HUB ★</span><span>KICKS & CAPS</span></div></div>
 <section class="shop" id="shop-sec"><div class="shop-head"><h2 class="shop-title fh ani">All Products</h2><div class="shop-ctrl"><button class="fb active" data-filter onclick="filterProducts('all',this)">All</button><button class="fb" data-filter onclick="filterProducts('shoes',this)">Sneakers</button><button class="fb" data-filter onclick="filterProducts('hats',this)">Hats</button><select class="sort-sel" onchange="sortProducts(this.value)"><option value="">Sort By</option><option value="price-asc">Price ↑</option><option value="price-desc">Price ↓</option><option value="rating">Top Rated</option></select></div></div>
 <div class="memphis">
