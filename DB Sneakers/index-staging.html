@@ -228,7 +228,6 @@ nav{border-bottom:3px solid var(--ac)}
 .hero-graf-logo{width:min(400px,80vw);margin-bottom:20px;filter:drop-shadow(4px 4px 0 rgba(0,0,0,.6));animation:grafFloat 3s ease-in-out infinite alternate}
 @keyframes grafFloat{0%{transform:rotate(-2deg) scale(1)}100%{transform:rotate(1.5deg) scale(1.03)}}
 .hero{position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background-image:url('assets/img/brand_logo.png');background-size:600px auto;background-position:center;background-repeat:no-repeat;opacity:0.06;pointer-events:none;z-index:0;mix-blend-mode:screen}
 .hero::after{content:'';position:absolute;inset:0;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='6' fill='%23FF1493'/%3E%3Crect x='55' y='10' width='12' height='12' fill='%2300BFFF' transform='rotate(45 61 16)'/%3E%3Cpolygon points='40,55 45,65 35,65' fill='%23FFD700'/%3E%3C/svg%3E");pointer-events:none;z-index:0}
 .hero>*{position:relative;z-index:1}
 .shop{position:relative;overflow:visible}
@@ -384,7 +383,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 <div id="page-home">
 
 <section class="hero"><div class="hero-sticker">Est. 2024 ★ Hype Hub</div>
-<h1 class="h-title fh"><span class="o">THROWBACK</span><br><span class="f">KICKS & CAPS</span></h1>
+<img src="assets/img/brand_logo.png" alt="DB Sneakers Graffiti Logo" class="hero-graf-logo">
 <p class="h-sub" style="color:var(--muted);max-width:480px">Old school flavors. New school drip.</p>
 <button class="h-cta" onclick="document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'})">Shop Now</button>
 </section>
