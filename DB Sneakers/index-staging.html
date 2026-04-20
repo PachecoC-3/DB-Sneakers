@@ -417,7 +417,15 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 
 
 <div id="page-contact" class="page-sec"><div class="pg-wrap"><div class="pg-hero"><h1>Contact Us</h1><p>Have a question? We'd love to hear from you.</p></div>
-<div class="ct-grid ani"><div><h3>Send a Message</h3><div class="fg"><label>Name</label><input type="text" placeholder="Your name"></div><div class="fg"><label>Email</label><input type="email" placeholder="your@email.com"></div><div class="fg"><label>Message</label><textarea rows="5" placeholder="Tell us..."></textarea></div><button class="ct-sub" onclick="alert('Sent!')">Send</button></div>
+<div class="ct-grid ani"><div><h3>Send a Message</h3>
+<form id="contactForm" name="contact" method="POST" data-netlify="true" onsubmit="submitContact(event)">
+  <input type="hidden" name="form-name" value="contact">
+  <div class="fg"><label>Name</label><input type="text" name="name" required placeholder="Your name"></div>
+  <div class="fg"><label>Email</label><input type="email" name="email" required placeholder="your@email.com"></div>
+  <div class="fg"><label>Message</label><textarea rows="5" name="message" required placeholder="Tell us..."></textarea></div>
+  <button type="submit" class="ct-sub">Send</button>
+</form>
+</div>
 <div><h3>Get in Touch</h3><div class="ct-item"><strong>Name</strong><p>Daniel Bazaldua</p></div><div class="ct-item"><strong>Email</strong><p><a href="mailto:DBsneakersinc@yahoo.com">DBsneakersinc@yahoo.com</a></p></div><div class="ct-item"><strong>Phone</strong><p>972-841-9694</p></div><div class="ct-item"><strong>Hours</strong><p>TBD</p></div></div></div>
 <button class="back-b" onclick="showPage('home')">← Back to Shop</button></div></div>
 
@@ -1193,6 +1201,20 @@ function updateCart(){
   updateInstallment();
 }
 function toggleCart(){document.getElementById('cartOverlay').classList.toggle('open');document.getElementById('cartDrawer').classList.toggle('open');}
+
+function submitContact(e) {
+  e.preventDefault();
+  const form = document.getElementById("contactForm");
+  const formData = new FormData(form);
+  fetch("/", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams(formData).toString()
+  }).then(() => {
+    alert("Message Sent Successfully! We will be in touch soon.");
+    form.reset();
+  }).catch((error) => alert("Failed to send message: " + error));
+}
 
 function showPage(page){
   window.scrollTo(0,0);
