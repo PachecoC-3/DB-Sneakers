@@ -426,6 +426,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
   <div class="m-shape" style="bottom:10%;right:5%;font-size:40px;color:var(--ac)">★</div>
 </div>
 <div class="product-grid" id="productGrid"></div>
+<div id="paginationContainer"></div>
 </section>
 
 </div>
@@ -1089,13 +1090,14 @@ function renderProducts(){
     ${addBtnHtml}</div></div></div>`;
   }).join('');
 
+  const pg = document.getElementById('paginationContainer');
   if(totalPages > 1) {
-    g.innerHTML += `<div class="pagination" style="grid-column: 1 / -1; display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 40px; padding-bottom: 20px;">
+    pg.innerHTML = `<div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 40px; padding-bottom: 20px;">
       <button onclick="changePage(-1)" ${currentPage === 1 ? 'disabled style="opacity:0.5"' : ''} style="padding:10px 20px; background:var(--card-bg); border:1px solid var(--border); color:var(--text); cursor:pointer; font-family:'Archivo Black',sans-serif; text-transform:uppercase">&larr; Prev</button>
       <span style="font-size:14px; font-weight:700">Page ${currentPage} of ${totalPages}</span>
       <button onclick="changePage(1)" ${currentPage === totalPages ? 'disabled style="opacity:0.5"' : ''} style="padding:10px 20px; background:var(--card-bg); border:1px solid var(--border); color:var(--text); cursor:pointer; font-family:'Archivo Black',sans-serif; text-transform:uppercase">Next &rarr;</button>
     </div>`;
-  }
+  } else { pg.innerHTML = ''; }
 }
 
 function changePage(delta) {
