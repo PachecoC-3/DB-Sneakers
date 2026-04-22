@@ -805,9 +805,9 @@ function loadShopifySDK(cb){
 }
 
 function initShopifyClient(){
-  // Live Shopify Storefront credentials (db-sneakers-hype-hub dev store)
-  var domain='db-sneakers-hype-hub.myshopify.com';
-  var token='0906a0e54db9ccce653c2a568a2fc54b';
+  // Live Shopify Storefront credentials (db-sneakers-hype-hub-llc production store)
+  var domain='db-sneakers-hype-hub-llc.myshopify.com';
+  var token='33f66e06740a2a5c1fdfe9fecf9b6a58';
   
   if(domain.indexOf('YOUR_SHOPIFY')>=0){
     console.warn('Shopify credentials not set. Rendering empty product list.');
@@ -826,11 +826,11 @@ function fetchShopifyProducts(){
   shopifyClient.product.fetchQuery({first: 250}).then((products) => {
     // Fetch exact inventory counts manually since the JS SDK strips them by default
     const query = `{ products(first: 250) { edges { node { id variants(first: 1) { edges { node { quantityAvailable } } } } } } }`;
-    fetch('https://db-sneakers-hype-hub.myshopify.com/api/2024-01/graphql.json', {
+    fetch('https://db-sneakers-hype-hub-llc.myshopify.com/api/2024-01/graphql.json', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': '0906a0e54db9ccce653c2a568a2fc54b'
+        'X-Shopify-Storefront-Access-Token': '33f66e06740a2a5c1fdfe9fecf9b6a58'
       },
       body: JSON.stringify({query: query})
     })
