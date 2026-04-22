@@ -316,7 +316,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
   .modal-inf{padding:20px 16px}
   .modal-nm{font-size:22px}
   .modal-pr{font-size:22px}
-  .modal-x{font-size:32px;top:10px;right:12px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);border-radius:50%;color:#fff}
+  .modal-x{font-size:32px;top:20px;right:16px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);border-radius:50%;color:#fff;z-index:100}
   .modal-thumbs img{width:50px;height:50px}
 
   .cart-d{width:100%;right:-100%}
@@ -971,6 +971,7 @@ function handleSearch(v){
   clearTimeout(searchTimeout);
   searchTimeout=setTimeout(()=>{
     searchQuery=v;
+    currentPage=1;
     renderProducts();
     updateSuggestions(v);
   },200);
@@ -1020,7 +1021,8 @@ document.addEventListener('click', (e) => {
 </script><script></script><script>
 
 let allProducts=[];
-
+let currentPage=1;
+const itemsPerPage=25;
 let currentFilter='all',searchQuery='',cart=[],currentProduct=null,currentSort='';
 
 function getFiltered(){
@@ -1039,8 +1041,13 @@ function getFiltered(){
 function stars(r){let s='';for(let i=1;i<=5;i++)s+=i<=Math.floor(r)?'★':'☆';return s;}
 
 function renderProducts(){
-  const g=document.getElementById('productGrid'),items=getFiltered();
-  if(!items.length){g.innerHTML='<div class="no-res">No products found.</div>';return;}
+  const g=document.getElementById('productGrid'),allItems=getFiltered();
+  if(!allItems.length){g.innerHTML='<div class="no-res">No products found.</div>';return;}
+  
+  const totalPages = Math.ceil(allItems.length / itemsPerPage);
+  const startIdx = (currentPage - 1) * itemsPerPage;
+  const items = allItems.slice(startIdx, startIdx + itemsPerPage);
+
   g.innerHTML=items.map((p,i)=>{
     const rv = getAvgRating(p.id);
     const ratingHtml = rv.count > 0 ? `<div class="pc-rating">${stars(rv.avg)} <span class="rc">(${rv.count})</span></div>` : `<div class="pc-rating" style="font-size:11px;color:var(--muted)">No reviews yet</div>`;
@@ -1054,10 +1061,24 @@ function renderProducts(){
     <div class="pc-bot"><div><span class="pc-price">$${p.price.toFixed(2)}</span>${p.oldPrice?`<span class="pc-old">$${p.oldPrice.toFixed(2)}</span>`:''}</div>
     <button class="pc-add" onclick="event.stopPropagation();addToCart('${p.id}')">Add</button></div></div></div>`;
   }).join('');
+
+  if(totalPages > 1) {
+    g.innerHTML += `<div class="pagination" style="grid-column: 1 / -1; display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 40px; padding-bottom: 20px;">
+      <button onclick="changePage(-1)" ${currentPage === 1 ? 'disabled style="opacity:0.5"' : ''} style="padding:10px 20px; background:var(--card-bg); border:1px solid var(--border); color:var(--text); cursor:pointer; font-family:'Archivo Black',sans-serif; text-transform:uppercase">&larr; Prev</button>
+      <span style="font-size:14px; font-weight:700">Page ${currentPage} of ${totalPages}</span>
+      <button onclick="changePage(1)" ${currentPage === totalPages ? 'disabled style="opacity:0.5"' : ''} style="padding:10px 20px; background:var(--card-bg); border:1px solid var(--border); color:var(--text); cursor:pointer; font-family:'Archivo Black',sans-serif; text-transform:uppercase">Next &rarr;</button>
+    </div>`;
+  }
 }
 
-function filterProducts(cat,el){window.scrollTo(0,0);currentFilter=cat;document.querySelectorAll('[data-filter]').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');renderProducts();}
-function sortProducts(v){currentSort=v;renderProducts();}
+function changePage(delta) {
+  currentPage += delta;
+  renderProducts();
+  document.getElementById('shop-sec').scrollIntoView({behavior: 'smooth'});
+}
+
+function filterProducts(cat,el){window.scrollTo(0,0);currentFilter=cat;currentPage=1;document.querySelectorAll('[data-filter]').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');renderProducts();}
+function sortProducts(v){currentSort=v;currentPage=1;renderProducts();}
 
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
