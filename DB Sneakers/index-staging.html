@@ -118,7 +118,7 @@ nav{border-bottom:3px solid var(--ac)}
 .marq-in{display:flex;animation:mscroll 14s linear infinite;white-space:nowrap}
 .marq-in span{font-family:'Bungee',cursive;font-size:15px;color:#111;padding:0 36px}
 /* Desktop: 4 items per row */
-.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:#0a0a16;background-image:radial-gradient(ellipse at 8% 22%,rgba(255,20,147,.3) 0%,transparent 45%),radial-gradient(ellipse at 90% 10%,rgba(0,191,255,.25) 0%,transparent 40%),radial-gradient(ellipse at 42% 82%,rgba(148,0,211,.28) 0%,transparent 42%),radial-gradient(ellipse at 74% 52%,rgba(255,215,0,.2) 0%,transparent 35%),radial-gradient(circle at 18% 62%,rgba(0,255,127,.18) 0%,transparent 28%);position:relative;z-index:5;padding:10px}
+.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;background:var(--ac);position:relative;z-index:5}
 .product-grid::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 42px),repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 22px);pointer-events:none;z-index:0}
 .pc{border:2px solid #111;transition:all .3s ease;position:relative;z-index:2}
 .pc:hover{border-color:#fff;box-shadow:8px 8px 0 var(--pr);transform:translate(-4px,-4px)}
