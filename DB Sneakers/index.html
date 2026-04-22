@@ -116,15 +116,20 @@ nav{border-bottom:3px solid var(--ac)}
 .marq{background:var(--pr);padding:12px 0;overflow:hidden;border-top:3px solid var(--ac);border-bottom:3px solid var(--ac)}
 .marq-in{display:flex;animation:mscroll 14s linear infinite;white-space:nowrap}
 .marq-in span{font-family:'Bungee',cursive;font-size:15px;color:#111;padding:0 36px}
-/* Desktop: 4 items per row */
-.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:#0a0a16;background-image:radial-gradient(ellipse at 8% 22%,rgba(255,20,147,.3) 0%,transparent 45%),radial-gradient(ellipse at 90% 10%,rgba(0,191,255,.25) 0%,transparent 40%),radial-gradient(ellipse at 42% 82%,rgba(148,0,211,.28) 0%,transparent 42%),radial-gradient(ellipse at 74% 52%,rgba(255,215,0,.2) 0%,transparent 35%),radial-gradient(circle at 18% 62%,rgba(0,255,127,.18) 0%,transparent 28%);position:relative;z-index:5;padding:10px}
+/* Bento grid: 6 cols, alternating row sizes with yellow */
+.product-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;background:var(--ac);position:relative;z-index:5}
+.pc:nth-child(6n+1){grid-column:span 3}
+.pc:nth-child(6n+2),.pc:nth-child(6n+3){grid-column:span 3}
+.pc:nth-child(6n+4){grid-column:span 2}
+.pc:nth-child(6n+5){grid-column:span 2}
+.pc:nth-child(6n+6){grid-column:span 2}
 .product-grid::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 42px),repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 22px);pointer-events:none;z-index:0}
 .pc{border:2px solid #111;transition:all .3s ease;position:relative;z-index:2}
 .pc:hover{border-color:#fff;box-shadow:8px 8px 0 var(--pr);transform:translate(-4px,-4px)}
 .pc-badge{font-family:'Bungee',cursive;background:#FF1493}
 .pc-add{border:2px solid #fff;box-shadow:3px 3px 0 var(--ac)}.pc-add:hover{box-shadow:1px 1px 0 var(--ac);transform:translate(2px,2px)}
-@media(max-width:768px){.product-grid{grid-template-columns:repeat(2,1fr)!important}.v-marquee{display:none!important}}
-@media(max-width:480px){.product-grid{grid-template-columns:repeat(2,1fr)!important}}
+@media(max-width:768px){.product-grid{grid-template-columns:repeat(2,1fr)!important}.pc:nth-child(n){grid-column:span 1!important}.v-marquee{display:none!important}}
+@media(max-width:480px){.product-grid{grid-template-columns:repeat(2,1fr)!important}.pc:nth-child(n){grid-column:span 1!important}}
 
 
 .checkout-page{display:none;min-height:100vh;padding:100px 20px 60px}
@@ -406,6 +411,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
   <div class="m-shape" style="bottom:10%;right:5%;font-size:40px;color:var(--ac)">★</div>
 </div>
 <div class="product-grid" id="productGrid"></div>
+<div id="paginationContainer"></div>
 </section>
 
 </div>
@@ -1069,13 +1075,14 @@ function renderProducts(){
     ${addBtnHtml}</div></div></div>`;
   }).join('');
 
+  const pg = document.getElementById('paginationContainer');
   if(totalPages > 1) {
-    g.innerHTML += `<div class="pagination" style="grid-column: 1 / -1; display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 40px; padding-bottom: 20px;">
+    pg.innerHTML = `<div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 40px; padding-bottom: 20px;">
       <button onclick="changePage(-1)" ${currentPage === 1 ? 'disabled style="opacity:0.5"' : ''} style="padding:10px 20px; background:var(--card-bg); border:1px solid var(--border); color:var(--text); cursor:pointer; font-family:'Archivo Black',sans-serif; text-transform:uppercase">&larr; Prev</button>
       <span style="font-size:14px; font-weight:700">Page ${currentPage} of ${totalPages}</span>
       <button onclick="changePage(1)" ${currentPage === totalPages ? 'disabled style="opacity:0.5"' : ''} style="padding:10px 20px; background:var(--card-bg); border:1px solid var(--border); color:var(--text); cursor:pointer; font-family:'Archivo Black',sans-serif; text-transform:uppercase">Next &rarr;</button>
     </div>`;
-  }
+  } else { pg.innerHTML = ''; }
 }
 
 function changePage(delta) {
