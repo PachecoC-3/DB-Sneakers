@@ -279,18 +279,15 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 .policy-list{padding-left:20px;margin:8px 0}
 .policy-list li{font-size:14px;color:var(--muted);line-height:2;padding-left:4px}
 
-/* ===== HERO NEON TRACE SILHOUETTES ===== */
+/* ===== HERO NEON SILHOUETTES ===== */
 .hero{position:relative;overflow:hidden}
-.hero-trace{position:absolute;top:50%;transform:translateY(-55%);width:180px;height:160px;pointer-events:none}
-.hero-trace-left{left:6%}
-.hero-trace-right{right:6%}
-.hero-trace svg{width:100%;height:100%;overflow:visible}
-.trace-path{fill:none;stroke:var(--pr);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:0}
-.trace-path.tracing{opacity:1;filter:drop-shadow(0 0 3px var(--pr))}
-.trace-path.glowing{opacity:1;stroke-width:2.5;filter:drop-shadow(0 0 6px var(--pr)) drop-shadow(0 0 14px var(--pr)) drop-shadow(0 0 28px rgba(0,191,255,.4))}
-.trace-path.fading{opacity:0;transition:opacity 0.8s ease-out}
-.trace-dot{r:4;fill:#fff;opacity:0;filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 12px var(--pr)) drop-shadow(0 0 20px var(--pr))}
-.trace-dot.active{opacity:1}
+.hero-sil{position:absolute;top:50%;transform:translateY(-55%);width:220px;height:200px;pointer-events:none;display:flex;align-items:center;justify-content:center}
+.hero-sil-left{left:4%}
+.hero-sil-right{right:4%}
+.hero-sil svg{width:100%;height:100%;overflow:visible;opacity:0;transition:opacity 1s ease}
+.hero-sil svg.active{opacity:1}
+.hero-sil svg path,.hero-sil svg circle,.hero-sil svg polygon,.hero-sil svg rect{fill:none;stroke:var(--pr);stroke-width:0.6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 4px var(--pr)) drop-shadow(0 0 10px rgba(0,191,255,.5))}
+.hero-sil svg.glowing path,.hero-sil svg.glowing circle,.hero-sil svg.glowing polygon,.hero-sil svg.glowing rect{stroke-width:0.8;filter:drop-shadow(0 0 6px var(--pr)) drop-shadow(0 0 14px var(--pr)) drop-shadow(0 0 28px rgba(0,191,255,.4))}
 
 /* ===== RESPONSIVE: Tablet (768px and below) ===== */
 @media(max-width:768px){
@@ -308,7 +305,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
   .h-title{font-size:clamp(28px,7vw,52px)}
   .h-sub{font-size:13px}
   .hero-stickers{display:none}
-  .hero-trace{display:none}
+  .hero-sil{display:none}
 
   .shop{padding:30px 16px}
   .shop-head{flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:24px}
@@ -406,8 +403,8 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 <div id="page-home">
 
 <section class="hero"><div class="hero-sticker">Est. 2024 ★ Hype Hub</div>
-<div class="hero-trace hero-trace-left"><svg id="traceSvgLeft" viewBox="0 0 200 150"><path id="tracePathLeft" class="trace-path" d=""/><circle id="traceDotLeft" class="trace-dot" cx="0" cy="0"/></svg></div>
-<div class="hero-trace hero-trace-right"><svg id="traceSvgRight" viewBox="0 0 200 130"><path id="tracePathRight" class="trace-path" d=""/><circle id="traceDotRight" class="trace-dot" cx="0" cy="0"/></svg></div>
+<div class="hero-sil hero-sil-left" id="silLeft"></div>
+<div class="hero-sil hero-sil-right" id="silRight"></div>
 <img src="assets/img/brand_logo.png" alt="DB Sneakers Graffiti Logo" class="hero-graf-logo anim-bass">
 <p class="h-sub" style="color:var(--muted);max-width:480px">Old school flavors. New school drip.</p>
 <button class="h-cta" onclick="document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'})">Shop Now</button>
@@ -1329,94 +1326,64 @@ function initApp(){
     });
   }
 }
-window.addEventListener('DOMContentLoaded',initApp);
-
-// ===== NEON TRACE SILHOUETTE ANIMATION =====
-const sneakerPaths = [
-  // High-top sneaker (Jordan-style) - detailed with tongue, laces, sole tread
-  "M 30,120 L 30,100 L 28,85 L 30,70 C 32,58 40,48 52,42 L 62,38 L 68,35 L 72,32 C 76,30 82,28 88,28 L 95,28 L 100,30 L 104,34 L 108,40 L 106,44 L 102,42 L 98,44 L 102,46 L 108,48 L 115,46 L 122,42 L 130,40 L 140,39 L 150,40 L 158,44 L 164,50 L 168,58 L 170,66 L 170,74 L 168,80 L 164,86 L 158,90 L 150,94 L 142,96 L 134,98 L 126,100 L 118,100 L 110,100 L 100,102 L 88,104 L 78,106 L 68,108 L 56,110 L 44,112 L 36,114 L 30,120 M 30,120 L 170,120 M 32,114 L 168,114",
-  // Low-top Dunk/AF1 style - with swoosh detail, flat sole
-  "M 25,115 L 25,88 C 25,80 30,72 38,68 L 48,64 L 60,62 L 75,60 L 90,58 L 100,58 L 108,60 L 106,66 L 100,68 L 94,66 L 88,68 L 94,72 L 104,70 L 115,66 L 126,64 L 138,62 L 148,64 L 156,68 L 162,74 L 166,82 L 168,90 L 166,96 L 162,100 L 156,104 L 148,106 L 140,108 L 128,108 L 116,108 L 100,110 L 80,112 L 60,114 L 40,115 L 25,115 M 25,115 L 25,122 L 170,122 L 170,115 M 50,86 L 70,78 L 95,82 L 120,76 L 140,80",
-  // Running shoe / Yeezy style - with ribbed sole, sleek upper
-  "M 20,118 L 22,95 C 24,82 30,72 40,65 L 52,60 L 62,56 L 72,54 L 80,52 L 88,50 L 94,50 L 100,52 L 104,56 L 106,60 L 108,56 L 112,52 L 118,50 L 126,50 L 134,52 L 142,56 L 150,62 L 156,70 L 160,78 L 162,86 L 162,94 L 160,100 L 155,104 L 148,106 L 138,108 L 126,108 L 112,108 L 96,108 L 78,110 L 58,112 L 38,114 L 20,118 M 18,118 L 18,128 C 18,128 38,128 58,126 C 78,124 98,122 118,122 C 138,122 158,124 165,126 L 165,118 M 40,126 L 40,118 M 60,124 L 60,114 M 80,123 L 80,110 M 100,122 L 100,108 M 120,122 L 120,108 M 140,124 L 140,108"
-];
-const hatPaths = [
-  // Snapback cap - with flat brim, structured crown, button top
-  "M 100,25 C 100,25 98,22 100,20 C 102,18 104,20 104,22 L 102,25 M 56,90 L 56,80 C 56,62 68,45 86,35 C 94,30 100,27 100,27 L 104,27 C 104,27 110,30 118,35 C 136,45 148,62 148,80 L 148,90 L 148,92 L 160,92 L 168,90 L 178,88 L 185,90 L 180,95 L 168,97 L 155,98 L 148,96 L 56,96 L 56,90",
-  // Fitted cap - with curved brim, round crown
-  "M 100,22 C 100,22 98,20 100,18 C 102,16 104,18 104,20 L 102,22 M 45,95 C 45,78 52,62 68,48 C 82,36 94,28 100,25 L 104,25 C 110,28 122,36 136,48 C 152,62 159,78 159,95 L 159,98 L 162,98 C 168,97 176,95 182,92 C 188,89 192,86 194,85 C 196,84 198,86 196,88 C 192,92 186,96 178,100 C 170,104 162,105 159,105 L 45,105 L 45,95",
-  // Beanie - with ribbed texture, folded cuff
-  "M 100,18 C 100,18 98,16 100,14 C 102,12 104,14 104,16 L 102,18 M 50,85 C 48,68 55,50 70,38 C 82,28 94,22 100,20 L 104,20 C 110,22 122,28 134,38 C 149,50 156,68 154,85 L 154,90 L 154,100 L 50,100 L 50,90 L 50,85 M 54,100 L 54,108 L 150,108 L 150,100 M 60,60 C 64,48 76,36 100,28 C 124,36 136,48 140,60 M 62,72 C 66,62 78,50 100,42 C 122,50 134,62 138,72"
+// ===== NEON SILHOUETTE ANIMATION =====
+const shoeIcons = [
+  // Sneaker (high-top) - from SVGRepo
+  `<svg viewBox="0 0 32 32"><path d="M29.501,27.36H1c-0.199,0-0.36-0.161-0.36-0.36v-8c0-0.033,0.004-0.066,0.014-0.099l2-7c0.025-0.088,0.083-0.164,0.163-0.211l11-6.5c0.111-0.065,0.249-0.067,0.361-0.002C14.291,5.251,14.36,5.371,14.36,5.5v8.581l16.137,9.213c0.035,0.02,0.065,0.045,0.091,0.074c0.484,0.413,0.772,1.075,0.772,1.785c0,1.187-0.81,2.165-1.812,2.204C29.532,27.359,29.517,27.36,29.501,27.36z M1.36,26.64h28.104c0.011-0.001,0.021-0.001,0.033-0.002c0.52-0.006,0.959-0.459,1.098-1.072H1.36V26.64z M1.36,24.845h29.255c-0.064-0.391-0.25-0.734-0.522-0.952c-0.001-0.001-0.001-0.001-0.002-0.002l-7.656-4.371l-1.273,2.1l-0.615-0.373l1.264-2.084l-1.375-0.784l-1.288,2.124l-0.615-0.373l1.278-2.108l-1.375-0.784l-1.303,2.148l-0.616-0.373l1.293-2.133l-3.988-2.277c-0.112-0.064-0.181-0.183-0.181-0.312v-8.16L3.307,12.237L1.36,19.051V24.845z M8,19.36c-1.853,0-3.36-1.508-3.36-3.36S6.147,12.64,8,12.64s3.36,1.507,3.36,3.36S9.853,19.36,8,19.36z M8,13.36c-1.456,0-2.64,1.185-2.64,2.64c0,1.456,1.185,2.64,2.64,2.64s2.64-1.184,2.64-2.64S9.456,13.36,8,13.36z"/></svg>`,
+  // Boot - classic work boot
+  `<svg viewBox="0 0 512 512"><path d="M476.8,358.4H448V256c0-14.1-11.5-25.6-25.6-25.6h-51.2V128c0-14.1-11.5-25.6-25.6-25.6H204.8c-14.1,0-25.6,11.5-25.6,25.6v102.4H128c-14.1,0-25.6,11.5-25.6,25.6v51.2H35.2c-14.1,0-25.6,11.5-25.6,25.6v76.8c0,14.1,11.5,25.6,25.6,25.6h441.6c14.1,0,25.6-11.5,25.6-25.6v-25.6C502.4,369.9,490.9,358.4,476.8,358.4z M204.8,128h140.8v102.4H204.8V128z M128,256h294.4v102.4H128V256z M476.8,409.6H35.2v-76.8H102.4h307.2h67.2V409.6z"/></svg>`,
+  // Slide/sandal
+  `<svg viewBox="0 0 64 64"><path d="M58,42H6c-2.2,0-4,1.8-4,4v4c0,2.2,1.8,4,4,4h52c2.2,0,4-1.8,4-4v-4C62,43.8,60.2,42,58,42z"/><path d="M52,34H12c-1.1,0-2,0.9-2,2v4h44v-4C54,34.9,53.1,34,52,34z"/><path d="M48,26H16c-1.1,0-2,0.9-2,2v4h36v-4C50,26.9,49.1,26,48,26z"/><path d="M6,54h52c2.2,0,4-1.8,4-4H2C2,52.2,3.8,54,6,54z"/></svg>`
 ];
 
-let traceLeftIdx = 0, traceRightIdx = 0;
+const hatIcons = [
+  // Cap/snapback - from SVGRepo
+  `<svg viewBox="0 0 24 24"><path d="M4,19.4c0.7,1.2,1.9,1.9,3.3,2.1c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0l3.9-0.5c0.2,0,0.4,0,0.6,0c0,0,0.1,0,0.1,0l0,0c0.2,0,0.4,0,0.5,0l3.9,0.5c0.1,0,0.2,0,0.2,0c2.3-0.3,4-2.1,4-4.4c0-0.5-0.1-1.1-0.3-1.6c-0.1-0.1-0.1-0.3-0.3-0.4l0.3-1.9c0.4-2.2-0.2-4.5-1.6-6.1c-1.3-1.5-3-2.5-4.9-2.9c0-0.1,0-0.1,0-0.2c0-0.6-0.4-1-1-1h-2c-0.6,0-1,0.4-1,1c0,0.1,0,0.1,0,0.2C8,4.7,6.1,5.9,4.8,7.6c-1.1,1.5-1.6,3.6-1.3,5.6l0.3,1.9c-0.1,0.1-0.2,0.2-0.3,0.4C3.1,16.8,3.3,18.2,4,19.4z"/></svg>`,
+  // Baseball cap side view
+  `<svg viewBox="0 0 512 512"><path d="M486.4,307.2c-7.4-14.8-20.5-25.1-36.2-28.4l-76.8-16c-4.3-0.9-8.7,0.8-11.2,4.3c-14.8,21-38.4,33.5-63.2,33.5h-86.4c-24.8,0-48.4-12.5-63.2-33.5c-2.5-3.5-6.9-5.2-11.2-4.3l-76.8,16c-15.7,3.3-28.8,13.6-36.2,28.4C11.8,321.8,4.6,346.2,4.6,371.2c0,28.2,23,51.2,51.2,51.2h400c28.2,0,51.2-23,51.2-51.2C507,346.2,499.8,321.8,486.4,307.2z"/><path d="M298.6,89.6c-14.1,0-27.2,4.3-38.4,11.5V89.6c0-14.1,11.5-25.6,25.6-25.6h25.6V38.4h-25.6c-28.2,0-51.2,23-51.2,51.2v51.2c0,42.3,34.5,76.8,76.8,76.8h51.2c14.1,0,25.6-11.5,25.6-25.6v-25.6C388.2,118.6,347.6,89.6,298.6,89.6z"/></svg>`,
+  // Beanie/knit hat
+  `<svg viewBox="0 0 512 512"><path d="M437.3,281.6c0-85.3-58.9-157.1-138.2-177.2c4.4-8.9,6.9-18.8,6.9-29.4c0-14.1-11.5-25.6-25.6-25.6h-51.2c-14.1,0-25.6,11.5-25.6,25.6c0,10.6,2.5,20.5,6.9,29.4c-79.3,20.1-138.2,91.9-138.2,177.2v25.6c0,14.1,11.5,25.6,25.6,25.6h307.2c14.1,0,25.6-11.5,25.6-25.6v-25.6H437.3z"/><path d="M409.6,358.4H102.4c-14.1,0-25.6,11.5-25.6,25.6v51.2c0,14.1,11.5,25.6,25.6,25.6h307.2c14.1,0,25.6-11.5,25.6-25.6v-51.2C435.2,369.9,423.7,358.4,409.6,358.4z"/></svg>`
+];
 
-function animateTrace(pathEl, dotEl, pathData, duration, onComplete) {
-  pathEl.setAttribute('d', pathData);
-  pathEl.className.baseVal = 'trace-path';
-  dotEl.className.baseVal = 'trace-dot';
+let leftIdx = 0, rightIdx = 0;
+
+function cycleSilhouette(container, icons, idxRef, side) {
+  const el = document.getElementById(container);
+  if (!el) return;
   
-  // Force reflow to get path length
-  const totalLen = pathEl.getTotalLength();
-  pathEl.style.strokeDasharray = totalLen;
-  pathEl.style.strokeDashoffset = totalLen;
-  pathEl.classList.add('tracing');
-  dotEl.classList.add('active');
+  // Set the new SVG
+  el.innerHTML = icons[idxRef];
+  const svg = el.querySelector('svg');
+  if (!svg) return;
   
-  let startTime = null;
-  function step(timestamp) {
-    if (!startTime) startTime = timestamp;
-    const progress = Math.min((timestamp - startTime) / duration, 1);
-    const offset = totalLen * (1 - progress);
-    pathEl.style.strokeDashoffset = offset;
-    
-    // Move dot along path
-    const point = pathEl.getPointAtLength(totalLen * progress);
-    dotEl.setAttribute('cx', point.x);
-    dotEl.setAttribute('cy', point.y);
-    
-    if (progress < 1) {
-      requestAnimationFrame(step);
-    } else {
-      // Trace complete - glow the full path
-      dotEl.classList.remove('active');
-      pathEl.classList.remove('tracing');
-      pathEl.classList.add('glowing');
-      
-      // Hold glow for 5 seconds, then fade
-      setTimeout(() => {
-        pathEl.classList.remove('glowing');
-        pathEl.classList.add('fading');
-        setTimeout(() => {
-          if (onComplete) onComplete();
-        }, 800);
-      }, 5000);
-    }
-  }
-  requestAnimationFrame(step);
-}
-
-function runLeftTrace() {
-  const pathEl = document.getElementById('tracePathLeft');
-  const dotEl = document.getElementById('traceDotLeft');
-  if (!pathEl || !dotEl) return;
-  animateTrace(pathEl, dotEl, sneakerPaths[traceLeftIdx], 3000, () => {
-    traceLeftIdx = (traceLeftIdx + 1) % sneakerPaths.length;
-    runLeftTrace();
+  // Fade in
+  requestAnimationFrame(() => {
+    svg.classList.add('active');
   });
+  
+  // After 2s, add extra glow
+  setTimeout(() => {
+    svg.classList.add('glowing');
+  }, 2000);
+  
+  // After 5s total of glow, fade out and cycle
+  setTimeout(() => {
+    svg.classList.remove('active', 'glowing');
+    
+    // After fade out transition (1s), switch to next
+    setTimeout(() => {
+      if (side === 'left') {
+        leftIdx = (leftIdx + 1) % icons.length;
+        cycleSilhouette(container, icons, leftIdx, side);
+      } else {
+        rightIdx = (rightIdx + 1) % icons.length;
+        cycleSilhouette(container, icons, rightIdx, side);
+      }
+    }, 1200);
+  }, 7000);
 }
 
-function runRightTrace() {
-  const pathEl = document.getElementById('tracePathRight');
-  const dotEl = document.getElementById('traceDotRight');
-  if (!pathEl || !dotEl) return;
-  animateTrace(pathEl, dotEl, hatPaths[traceRightIdx], 3000, () => {
-    traceRightIdx = (traceRightIdx + 1) % hatPaths.length;
-    runRightTrace();
-  });
-}
-
-// Start the animations with a slight delay offset
-setTimeout(runLeftTrace, 1500);
-setTimeout(runRightTrace, 2500);
+// Start animations with offset
+setTimeout(() => cycleSilhouette('silLeft', shoeIcons, leftIdx, 'left'), 1500);
+setTimeout(() => cycleSilhouette('silRight', hatIcons, rightIdx, 'right'), 3000);
 </script>
