@@ -279,6 +279,19 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 .policy-list{padding-left:20px;margin:8px 0}
 .policy-list li{font-size:14px;color:var(--muted);line-height:2;padding-left:4px}
 
+/* ===== HERO NEON TRACE SILHOUETTES ===== */
+.hero{position:relative;overflow:hidden}
+.hero-trace{position:absolute;top:50%;transform:translateY(-55%);width:180px;height:160px;pointer-events:none}
+.hero-trace-left{left:6%}
+.hero-trace-right{right:6%}
+.hero-trace svg{width:100%;height:100%;overflow:visible}
+.trace-path{fill:none;stroke:var(--pr);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.trace-path.tracing{opacity:1;filter:drop-shadow(0 0 3px var(--pr))}
+.trace-path.glowing{opacity:1;stroke-width:2.5;filter:drop-shadow(0 0 6px var(--pr)) drop-shadow(0 0 14px var(--pr)) drop-shadow(0 0 28px rgba(0,191,255,.4))}
+.trace-path.fading{opacity:0;transition:opacity 0.8s ease-out}
+.trace-dot{r:4;fill:#fff;opacity:0;filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 12px var(--pr)) drop-shadow(0 0 20px var(--pr))}
+.trace-dot.active{opacity:1}
+
 /* ===== RESPONSIVE: Tablet (768px and below) ===== */
 @media(max-width:768px){
   nav{padding:0 16px}
@@ -295,6 +308,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
   .h-title{font-size:clamp(28px,7vw,52px)}
   .h-sub{font-size:13px}
   .hero-stickers{display:none}
+  .hero-trace{display:none}
 
   .shop{padding:30px 16px}
   .shop-head{flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:24px}
@@ -392,6 +406,8 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 <div id="page-home">
 
 <section class="hero"><div class="hero-sticker">Est. 2024 ★ Hype Hub</div>
+<div class="hero-trace hero-trace-left"><svg id="traceSvgLeft" viewBox="0 0 200 160"><path id="tracePathLeft" class="trace-path" d=""/><circle id="traceDotLeft" class="trace-dot" cx="0" cy="0"/></svg></div>
+<div class="hero-trace hero-trace-right"><svg id="traceSvgRight" viewBox="0 0 200 160"><path id="tracePathRight" class="trace-path" d=""/><circle id="traceDotRight" class="trace-dot" cx="0" cy="0"/></svg></div>
 <img src="assets/img/brand_logo.png" alt="DB Sneakers Graffiti Logo" class="hero-graf-logo anim-bass">
 <p class="h-sub" style="color:var(--muted);max-width:480px">Old school flavors. New school drip.</p>
 <button class="h-cta" onclick="document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'})">Shop Now</button>
@@ -1313,4 +1329,94 @@ function initApp(){
     });
   }
 }
-window.addEventListener('DOMContentLoaded',initApp);</script>
+window.addEventListener('DOMContentLoaded',initApp);
+
+// ===== NEON TRACE SILHOUETTE ANIMATION =====
+const sneakerPaths = [
+  // High-top Jordan style
+  "M 20,95 L 20,55 C 20,42 32,30 50,26 L 70,23 C 80,21 88,26 92,36 L 96,46 L 118,39 C 134,35 152,42 158,56 L 160,64 C 163,74 156,84 145,87 L 130,89 C 120,92 105,95 85,95 L 45,95 C 28,95 20,95 20,95",
+  // Low-top Dunk style
+  "M 22,92 L 22,68 C 22,58 32,50 48,47 L 82,44 C 102,42 122,44 138,50 L 155,57 C 168,63 174,75 170,86 L 168,92 C 164,96 148,98 128,98 L 55,98 C 35,98 22,95 22,92",
+  // Yeezy Boost style
+  "M 28,95 L 25,62 C 23,44 34,32 54,28 L 74,25 C 85,24 93,28 97,38 L 100,48 C 107,45 118,42 130,44 L 148,50 C 162,56 168,68 165,80 L 162,90 C 158,95 148,98 132,98 L 50,98 C 34,98 28,96 28,95"
+];
+const hatPaths = [
+  // Snapback cap
+  "M 28,90 L 30,72 C 34,52 58,36 95,30 C 120,27 145,32 155,46 L 162,58 L 176,54 L 182,64 L 168,68 L 158,64 C 150,78 122,88 82,90 L 28,90",
+  // Fitted cap
+  "M 32,88 C 32,78 40,58 66,44 C 84,35 108,32 130,40 C 146,47 155,60 158,74 L 160,80 L 174,78 L 176,86 L 158,88 C 146,90 115,92 82,90 L 32,88",
+  // Beanie
+  "M 45,98 C 42,84 44,62 58,48 C 72,34 90,28 108,26 C 126,24 142,30 152,42 C 160,52 164,66 162,82 L 158,94 C 148,98 125,100 102,100 C 76,100 50,99 45,98"
+];
+
+let traceLeftIdx = 0, traceRightIdx = 0;
+
+function animateTrace(pathEl, dotEl, pathData, duration, onComplete) {
+  pathEl.setAttribute('d', pathData);
+  pathEl.className.baseVal = 'trace-path';
+  dotEl.className.baseVal = 'trace-dot';
+  
+  // Force reflow to get path length
+  const totalLen = pathEl.getTotalLength();
+  pathEl.style.strokeDasharray = totalLen;
+  pathEl.style.strokeDashoffset = totalLen;
+  pathEl.classList.add('tracing');
+  dotEl.classList.add('active');
+  
+  let startTime = null;
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    const offset = totalLen * (1 - progress);
+    pathEl.style.strokeDashoffset = offset;
+    
+    // Move dot along path
+    const point = pathEl.getPointAtLength(totalLen * progress);
+    dotEl.setAttribute('cx', point.x);
+    dotEl.setAttribute('cy', point.y);
+    
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      // Trace complete - glow the full path
+      dotEl.classList.remove('active');
+      pathEl.classList.remove('tracing');
+      pathEl.classList.add('glowing');
+      
+      // Hold glow for 5 seconds, then fade
+      setTimeout(() => {
+        pathEl.classList.remove('glowing');
+        pathEl.classList.add('fading');
+        setTimeout(() => {
+          if (onComplete) onComplete();
+        }, 800);
+      }, 5000);
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+function runLeftTrace() {
+  const pathEl = document.getElementById('tracePathLeft');
+  const dotEl = document.getElementById('traceDotLeft');
+  if (!pathEl || !dotEl) return;
+  animateTrace(pathEl, dotEl, sneakerPaths[traceLeftIdx], 3000, () => {
+    traceLeftIdx = (traceLeftIdx + 1) % sneakerPaths.length;
+    runLeftTrace();
+  });
+}
+
+function runRightTrace() {
+  const pathEl = document.getElementById('tracePathRight');
+  const dotEl = document.getElementById('traceDotRight');
+  if (!pathEl || !dotEl) return;
+  animateTrace(pathEl, dotEl, hatPaths[traceRightIdx], 3000, () => {
+    traceRightIdx = (traceRightIdx + 1) % hatPaths.length;
+    runRightTrace();
+  });
+}
+
+// Start the animations with a slight delay offset
+setTimeout(runLeftTrace, 1500);
+setTimeout(runRightTrace, 2500);
+</script>
