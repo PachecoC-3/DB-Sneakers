@@ -1074,7 +1074,7 @@ function renderProducts(){
   g.innerHTML=items.map((p,i)=>{
     const rv = getAvgRating(p.id);
     const ratingHtml = rv.count > 0 ? `<div class="pc-rating">${stars(rv.avg)} <span class="rc">(${rv.count})</span></div>` : `<div class="pc-rating" style="font-size:11px;color:var(--muted)">No reviews yet</div>`;
-    const isSoldOut = p.quantity === 0;
+    const isSoldOut = p.badge === 'Sold Out';
     const addBtnHtml = isSoldOut ? `<button class="pc-add" style="opacity:0.4;cursor:not-allowed;background:#555" disabled>Sold Out</button>` : `<button class="pc-add" onclick="event.stopPropagation();addToCart('${p.id}')">Add</button>`;
     return `<div class="pc" onclick="openProduct('${p.id}')" style="animation:fadeIn .4s ${i*.04}s both">
     <div class="pc-img"><img src="${p.img}" alt="${p.name}" loading="lazy">${p.badge?`<div class="pc-badge">${p.badge}</div>`:''}</div>
@@ -1134,7 +1134,7 @@ function openProduct(id){
   document.querySelectorAll('.s-btn').forEach(d=>d.onclick=function(){document.querySelectorAll('.s-btn').forEach(x=>x.classList.remove('act'));this.classList.add('act')});
   renderModalReviews(currentProduct.id);
   const modalAddBtn = document.querySelector('.modal-add');
-  if(currentProduct.quantity === 0) {
+  if(currentProduct.badge === 'Sold Out') {
     modalAddBtn.textContent = 'SOLD OUT';
     modalAddBtn.disabled = true;
     modalAddBtn.style.opacity = '0.4';
@@ -1242,7 +1242,7 @@ function addModalToCart(){
 
 function addToCart(id,size,color){
   const p=allProducts.find(x=>x.id===id);if(!p)return;
-  if(p.quantity === 0){showToast('Sorry, this item is sold out');return;}
+  if(p.badge === 'Sold Out'){showToast('Sorry, this item is sold out');return;}
   const existing=cart.find(c=>c.id===id && c.size===size && c.color===color);
   if(existing){existing.qty++;}else{cart.push({...p,qty:1,size:size,color:color,cartId:Date.now()});}
   updateCart();showToast(p.name+' added to cart!');
