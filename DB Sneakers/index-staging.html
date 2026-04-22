@@ -599,6 +599,14 @@ function goToCheckout(){
     checkoutBtn.disabled = false;
   });
 }
+
+window.addEventListener('pageshow', function(e) {
+  const checkoutBtn = document.querySelector('.co-btn');
+  if (checkoutBtn && checkoutBtn.disabled) {
+    checkoutBtn.textContent = "Checkout";
+    checkoutBtn.disabled = false;
+  }
+});
 function renderCheckoutSummary(){
   var ci=document.getElementById('ckItems');
   var sub=0;

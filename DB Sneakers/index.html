@@ -397,7 +397,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 <button class="h-cta" onclick="document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'})">Shop Now</button>
 </section>
 <div class="marq"><div class="marq-in"><span>★ NEW DROPS ★</span><span>FREE SHIPPING $75+</span><span>★ HYPE HUB ★</span><span>KICKS & CAPS</span><span>★ NEW DROPS ★</span><span>FREE SHIPPING $75+</span><span>★ HYPE HUB ★</span><span>KICKS & CAPS</span></div></div>
-<section class="shop" id="shop-sec"><div class="shop-head"><h2 class="shop-title fh ani">All Products</h2><div class="shop-ctrl"><button class="fb active" data-filter onclick="filterProducts('all',this)">All</button><button class="fb" data-filter onclick="filterProducts('shoes',this)">Sneakers</button><button class="fb" data-filter onclick="filterProducts('hats',this)">Hats</button><select class="sort-sel" onchange="sortProducts(this.value)"><option value="">Sort By</option><option value="price-asc">Price ↑</option><option value="price-desc">Price ↓</option><option value="rating">Top Rated</option></select></div></div>
+<section class="shop" id="shop-sec"><div class="shop-head"><h2 class="shop-title fh ani">All Products</h2><div class="shop-ctrl"><button class="fb active" data-filter onclick="filterProducts('all',this)">All</button><button class="fb" data-filter onclick="filterProducts('shoes',this)">Sneakers</button><button class="fb" data-filter onclick="filterProducts('hats',this)">Hats</button><button class="fb" data-filter onclick="filterProducts('misc',this)">Misc</button><select class="sort-sel" onchange="sortProducts(this.value)"><option value="">Sort By</option><option value="price-asc">Price ↑</option><option value="price-desc">Price ↓</option><option value="rating">Top Rated</option></select></div></div>
 <div class="memphis">
   <div class="m-shape" style="top:10%;left:5%;transform:rotate(45deg);font-size:40px;color:var(--pr)">▲</div>
   <div class="m-shape" style="top:30%;right:10%;font-size:30px;color:var(--ac)">◎</div>
@@ -599,6 +599,14 @@ function goToCheckout(){
     checkoutBtn.disabled = false;
   });
 }
+
+window.addEventListener('pageshow', function(e) {
+  const checkoutBtn = document.querySelector('.co-btn');
+  if (checkoutBtn && checkoutBtn.disabled) {
+    checkoutBtn.textContent = "Checkout";
+    checkoutBtn.disabled = false;
+  }
+});
 function renderCheckoutSummary(){
   var ci=document.getElementById('ckItems');
   var sub=0;
@@ -928,8 +936,8 @@ function mapAndRenderProducts(products, isFirstBatch) {
       id: p.id,
       variantId: firstVariant.id,
       name: p.title,
-      cat: (p.productType.toLowerCase().includes('hat') || p.productType.toLowerCase().includes('cap')) ? 'hats' : (p.productType.toLowerCase().includes('sneaker') || p.productType.toLowerCase().includes('shoe') ? 'shoes' : 'other'),
-      type: p.productType || 'Apparel',
+      cat: ((p.productType||'').toLowerCase().includes('hat')||(p.productType||'').toLowerCase().includes('cap')||p.title.toLowerCase().includes('hat')||p.title.toLowerCase().includes('cap')||p.title.toLowerCase().includes('beanie')) ? 'hats' : (((p.productType||'').toLowerCase().includes('sneaker')||(p.productType||'').toLowerCase().includes('shoe')||p.title.toLowerCase().includes('shoe')||p.title.toLowerCase().includes('sneaker')||p.title.toLowerCase().includes('jordan')||p.title.toLowerCase().includes('yeezy')||p.title.toLowerCase().includes('dunk')) ? 'shoes' : 'misc'),
+      type: p.productType || 'Misc',
       price: parseFloat(firstVariant.price.amount),
       oldPrice: firstVariant.compareAtPrice ? parseFloat(firstVariant.compareAtPrice.amount) : null,
       badge: p.availableForSale ? '' : 'Sold Out',
