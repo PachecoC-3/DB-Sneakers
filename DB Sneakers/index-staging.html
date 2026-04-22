@@ -1074,12 +1074,14 @@ function renderProducts(){
   g.innerHTML=items.map((p,i)=>{
     const rv = getAvgRating(p.id);
     const ratingHtml = rv.count > 0 ? `<div class="pc-rating">${stars(rv.avg)} <span class="rc">(${rv.count})</span></div>` : `<div class="pc-rating" style="font-size:11px;color:var(--muted)">No reviews yet</div>`;
+    const isSoldOut = p.quantity === 0;
+    const addBtnHtml = isSoldOut ? `<button class="pc-add" style="opacity:0.4;cursor:not-allowed;background:#555" disabled>Sold Out</button>` : `<button class="pc-add" onclick="event.stopPropagation();addToCart('${p.id}')">Add</button>`;
     return `<div class="pc" onclick="openProduct('${p.id}')" style="animation:fadeIn .4s ${i*.04}s both">
     <div class="pc-img"><img src="${p.img}" alt="${p.name}" loading="lazy">${p.badge?`<div class="pc-badge">${p.badge}</div>`:''}</div>
     <div class="pc-info"><div class="pc-name">${p.name}</div><div class="pc-type">${p.type}</div>
     ${ratingHtml}
     <div class="pc-bot"><div><span class="pc-price">$${p.price.toFixed(2)}</span>${p.oldPrice?`<span class="pc-old">$${p.oldPrice.toFixed(2)}</span>`:''}</div>
-    <button class="pc-add" onclick="event.stopPropagation();addToCart('${p.id}')">Add</button></div></div></div>`;
+    ${addBtnHtml}</div></div></div>`;
   }).join('');
 
   if(totalPages > 1) {
@@ -1131,6 +1133,20 @@ function openProduct(id){
   document.getElementById('modalSizes').innerHTML=currentProduct.sizes.map((s,i)=>'<button class="s-btn'+(i===0?' act':'')+'" data-sz="'+s+'">'+s+'</button>').join('');
   document.querySelectorAll('.s-btn').forEach(d=>d.onclick=function(){document.querySelectorAll('.s-btn').forEach(x=>x.classList.remove('act'));this.classList.add('act')});
   renderModalReviews(currentProduct.id);
+  const modalAddBtn = document.querySelector('.modal-add');
+  if(currentProduct.quantity === 0) {
+    modalAddBtn.textContent = 'SOLD OUT';
+    modalAddBtn.disabled = true;
+    modalAddBtn.style.opacity = '0.4';
+    modalAddBtn.style.cursor = 'not-allowed';
+    modalAddBtn.style.background = '#555';
+  } else {
+    modalAddBtn.textContent = 'ADD TO CART';
+    modalAddBtn.disabled = false;
+    modalAddBtn.style.opacity = '1';
+    modalAddBtn.style.cursor = 'pointer';
+    modalAddBtn.style.background = '';
+  }
   document.getElementById('productModal').classList.add('open');document.body.style.overflow='hidden';
   history.pushState({modal: true}, '', '#product');
 }
@@ -1226,6 +1242,7 @@ function addModalToCart(){
 
 function addToCart(id,size,color){
   const p=allProducts.find(x=>x.id===id);if(!p)return;
+  if(p.quantity === 0){showToast('Sorry, this item is sold out');return;}
   const existing=cart.find(c=>c.id===id && c.size===size && c.color===color);
   if(existing){existing.qty++;}else{cart.push({...p,qty:1,size:size,color:color,cartId:Date.now()});}
   updateCart();showToast(p.name+' added to cart!');
