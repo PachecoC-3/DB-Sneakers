@@ -1052,7 +1052,7 @@ document.addEventListener('click', (e) => {
 let allProducts=[];
 let currentPage=1;
 const itemsPerPage=25;
-let currentFilter='all',searchQuery='',cart=[],currentProduct=null,currentSort='';
+let currentFilter='all',searchQuery='',cart=[],currentProduct=null,currentSort='alpha';
 
 function getFiltered(){
   let items=allProducts.filter(p=>{
@@ -1060,7 +1060,8 @@ function getFiltered(){
     const ms=!searchQuery||p.name.toLowerCase().includes(searchQuery.toLowerCase())||p.type.toLowerCase().includes(searchQuery.toLowerCase());
     return mc&&ms;
   });
-  if(currentSort==='price-asc')items.sort((a,b)=>a.price-b.price);
+  if(currentSort==='alpha')items.sort((a,b)=>a.name.localeCompare(b.name));
+  else if(currentSort==='price-asc')items.sort((a,b)=>a.price-b.price);
   else if(currentSort==='price-desc')items.sort((a,b)=>b.price-a.price);
   else if(currentSort==='rating')items.sort((a,b)=>b.rating-a.rating);
   else if(currentSort==='newest')items.sort((a,b)=>b.id-a.id);
