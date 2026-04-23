@@ -831,76 +831,62 @@ function fetchShopifyProducts(){
   if(!shopifyClient) return;
   document.getElementById('productGrid').innerHTML = '<div class="no-res">Loading drops from Shopify...</div>';
   
-  // Fetch ALL products by paginating through pages
-  let allFetchedProducts = [];
-  
-  function fetchPage(queryProducts) {
-    return shopifyClient.product.fetchQuery(queryProducts ? undefined : {first: 250}).then(function(products) {
-      return products;
-    });
-  }
-  
-  shopifyClient.product.fetchQuery({first: 250}).then(function(firstPage) {
-    allFetchedProducts = allFetchedProducts.concat(firstPage);
-    
-    function fetchNextIfNeeded(currentPage) {
-      if(!currentPage || !currentPage.length) return Promise.resolve();
-      return shopifyClient.fetchNextPage(currentPage).then(function(nextPage) {
-        if(nextPage && nextPage.length > 0) {
-          allFetchedProducts = allFetchedProducts.concat(nextPage);
-          return fetchNextIfNeeded(nextPage);
-        }
-      }).catch(function() { /* no more pages */ });
-    }
-    
-    return fetchNextIfNeeded(firstPage).then(function() {
-      // Now fetch inventory for ALL products via GraphQL (paginated too)
-      return fetchAllInventory(allFetchedProducts.length).then(function(invMap) {
-        allFetchedProducts.forEach(function(p) {
-          if(invMap[p.id] !== undefined) p.variants[0].quantityAvailable = invMap[p.id];
-        });
-        lastFetchedProducts = allFetchedProducts;
-        mapAndRenderProducts(allFetchedProducts, true);
-      }).catch(function(err) {
-        console.error('Inventory fetch failed, falling back:', err);
-        lastFetchedProducts = allFetchedProducts;
-        mapAndRenderProducts(allFetchedProducts, true);
-      });
-    });
-  }).catch(function(err) {
-    console.error(err);
-    document.getElementById('productGrid').innerHTML = '<div class="no-res" style="color:#FF1493;font-family:\'Archivo Black\',sans-serif;font-size:18px;">CONNECTION LOST. CHECK YOUR DIAL-UP!<br><button class="h-cta" style="margin-top:20px" onclick="fetchShopifyProducts()">RETRY CONNECTION</button></div>';
-  });
-}
-
-function fetchAllInventory(totalCount) {
-  var invMap = {};
   var token = '33f66e06740a2a5c1fdfe9fecf9b6a58';
   var url = 'https://db-sneakers-hype-hub-llc.myshopify.com/api/2024-01/graphql.json';
+  var allEdges = [];
   
-  function fetchInvPage(cursor) {
+  function fetchProductPage(cursor) {
     var after = cursor ? ', after: "' + cursor + '"' : '';
-    var query = '{ products(first: 250' + after + ') { pageInfo { hasNextPage } edges { cursor node { id variants(first: 1) { edges { node { quantityAvailable } } } } } } }';
+    var query = '{ products(first: 250' + after + ') { pageInfo { hasNextPage } edges { cursor node { id title productType availableForSale options { name values } compareAtPriceRange { maxVariantCompareAtPrice { amount } } variants(first: 10) { edges { node { id title price { amount } compareAtPrice { amount } availableForSale quantityAvailable image { src } } } } images(first: 10) { edges { node { src } } } } } } }';
     return fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': token },
       body: JSON.stringify({query: query})
     }).then(function(res) { return res.json(); }).then(function(data) {
       if(data.data && data.data.products) {
-        data.data.products.edges.forEach(function(edge) {
-          var v = edge.node.variants.edges[0];
-          invMap[edge.node.id] = v && v.node.quantityAvailable != null ? v.node.quantityAvailable : -1;
-        });
+        allEdges = allEdges.concat(data.data.products.edges);
         if(data.data.products.pageInfo.hasNextPage) {
           var lastCursor = data.data.products.edges[data.data.products.edges.length - 1].cursor;
-          return fetchInvPage(lastCursor);
+          return fetchProductPage(lastCursor);
         }
       }
-      return invMap;
+      return allEdges;
     });
   }
   
-  return fetchInvPage(null);
+  fetchProductPage(null).then(function(edges) {
+    console.log('Fetched ' + edges.length + ' products from Shopify');
+    var products = edges.map(function(edge) {
+      var n = edge.node;
+      var firstVariant = n.variants.edges[0] ? n.variants.edges[0].node : null;
+      if(!firstVariant) return null;
+      var qty = firstVariant.quantityAvailable != null ? firstVariant.quantityAvailable : (firstVariant.availableForSale ? -1 : 0);
+      var imgs = n.images.edges.map(function(ie) { return ie.node.src; });
+      var sizeOpt = n.options ? n.options.find(function(o){ return o.name === 'Size'; }) : null;
+      return {
+        id: n.id,
+        variantId: firstVariant.id,
+        name: n.title,
+        cat: ((n.productType||'').toLowerCase().indexOf('hat')>=0||(n.productType||'').toLowerCase().indexOf('cap')>=0||n.title.toLowerCase().indexOf('hat')>=0||n.title.toLowerCase().indexOf('cap')>=0||n.title.toLowerCase().indexOf('beanie')>=0) ? 'hats' : (((n.productType||'').toLowerCase().indexOf('sneaker')>=0||(n.productType||'').toLowerCase().indexOf('shoe')>=0||n.title.toLowerCase().indexOf('shoe')>=0||n.title.toLowerCase().indexOf('sneaker')>=0||n.title.toLowerCase().indexOf('jordan')>=0||n.title.toLowerCase().indexOf('yeezy')>=0||n.title.toLowerCase().indexOf('dunk')>=0||n.title.toLowerCase().indexOf('force')>=0||n.title.toLowerCase().indexOf('kobe')>=0) ? 'shoes' : 'misc'),
+        type: n.productType || 'Misc',
+        price: parseFloat(firstVariant.price.amount),
+        oldPrice: firstVariant.compareAtPrice ? parseFloat(firstVariant.compareAtPrice.amount) : null,
+        badge: n.availableForSale ? '' : 'Sold Out',
+        quantity: qty,
+        colors: [],
+        sizes: sizeOpt ? sizeOpt.values : ['One Size'],
+        img: imgs.length > 0 ? imgs[0] : '',
+        images: imgs
+      };
+    }).filter(function(p) { return p !== null; });
+    
+    allProducts = products;
+    lastFetchedProducts = products;
+    renderProducts();
+  }).catch(function(err) {
+    console.error(err);
+    document.getElementById('productGrid').innerHTML = '<div class="no-res" style="color:#FF1493;font-family:\'Archivo Black\',sans-serif;font-size:18px;">CONNECTION LOST. CHECK YOUR DIAL-UP!<br><button class="h-cta" style="margin-top:20px" onclick="fetchShopifyProducts()">RETRY CONNECTION</button></div>';
+  });
 }
 
 function loadMoreProducts() {
