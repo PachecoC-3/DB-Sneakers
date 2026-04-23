@@ -837,7 +837,7 @@ function fetchShopifyProducts(){
   
   function fetchProductPage(cursor) {
     var after = cursor ? ', after: "' + cursor + '"' : '';
-    var query = '{ products(first: 250' + after + ') { pageInfo { hasNextPage } edges { cursor node { id title productType availableForSale options { name values } compareAtPriceRange { maxVariantCompareAtPrice { amount } } variants(first: 10) { edges { node { id title price { amount } compareAtPrice { amount } availableForSale quantityAvailable image { src } } } } images(first: 10) { edges { node { src } } } } } } }';
+    var query = '{ products(first: 250' + after + ') { pageInfo { hasNextPage } edges { cursor node { id title productType availableForSale options { name values } variants(first: 10) { edges { node { id title price { amount } compareAtPrice { amount } availableForSale quantityAvailable image { src } } } } images(first: 10) { edges { node { src } } } } } } }';
     return fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': token },
