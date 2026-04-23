@@ -1093,12 +1093,13 @@ function renderProducts(){
 
   g.innerHTML=items.map((p,i)=>{
     const rv = getAvgRating(p.id);
+    const safeName = p.name.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     const ratingHtml = rv.count > 0 ? `<div class="pc-rating">${stars(rv.avg)} <span class="rc">(${rv.count})</span></div>` : `<div class="pc-rating" style="font-size:11px;color:var(--muted)">No reviews yet</div>`;
     const isSoldOut = p.badge === 'Sold Out';
     const addBtnHtml = isSoldOut ? `<button class="pc-add" style="opacity:0.4;cursor:not-allowed;background:#555" disabled>Sold Out</button>` : `<button class="pc-add" onclick="event.stopPropagation();addToCart('${p.id}')">Add</button>`;
     return `<div class="pc" onclick="openProduct('${p.id}')" style="animation:fadeIn .4s ${i*.04}s both">
-    <div class="pc-img"><img src="${p.img}" alt="${p.name}" loading="lazy">${p.badge?`<div class="pc-badge">${p.badge}</div>`:''}</div>
-    <div class="pc-info"><div class="pc-name">${p.name}</div><div class="pc-type">${p.type}</div>
+    <div class="pc-img"><img src="${p.img}" alt="${safeName}" loading="lazy">${p.badge?`<div class="pc-badge">${p.badge}</div>`:''}</div>
+    <div class="pc-info"><div class="pc-name">${safeName}</div><div class="pc-type">${p.type}</div>
     ${ratingHtml}
     <div class="pc-bot"><div><span class="pc-price">$${p.price.toFixed(2)}</span>${p.oldPrice?`<span class="pc-old">$${p.oldPrice.toFixed(2)}</span>`:''}</div>
     ${addBtnHtml}</div></div></div>`;
