@@ -13,6 +13,7 @@ a{text-decoration:none;color:inherit}img{max-width:100%}
 @keyframes mscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 @keyframes vmscroll{0%{transform:translateY(0)}100%{transform:translateY(-100%)}}
 @keyframes flicker{0%{opacity:0.97}5%{opacity:0.95}10%{opacity:0.97}15%{opacity:0.94}20%{opacity:0.98}100%{opacity:0.97}}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 
 nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,5,5,.92);backdrop-filter:blur(20px);padding:0 32px}
 .nav-in{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;gap:20px}
@@ -424,10 +425,13 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 <div id="page-home">
 
 <section class="video-hero">
-  <video autoplay muted loop playsinline poster="assets/img/brand_logo.png">
-    <source src="https://videos.pexels.com/video-files/6567985/6567985-hd_1920_1080_30fps.mp4" type="video/mp4">
+  <!-- Video BG: Replace src with Daniel's own product reel when available -->
+  <video id="heroVideo" autoplay muted loop playsinline>
+    <source src="https://cdn.coverr.co/videos/coverr-walking-in-sneakers-on-the-street-2926/1080p.mp4" type="video/mp4">
   </video>
   <div class="video-hero-overlay"></div>
+  <!-- Animated gradient fallback (plays if video fails to load) -->
+  <div id="heroFallbackBg" style="position:absolute;inset:0;z-index:0;background:linear-gradient(-45deg,#0F0F23,#1a0a2e,#0a1628,#1a1a0a);background-size:400% 400%;animation:gradientShift 12s ease infinite;display:none"></div>
   <div class="video-hero-content">
     <div class="vh-tag">★ Established 2024 ★</div>
     <h1 class="vh-title">DB SNEAKERS <span>HYPE HUB</span></h1>
@@ -436,6 +440,13 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
   </div>
   <div class="vh-scroll" onclick="document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'})">▼ SCROLL ▼</div>
 </section>
+<script>
+// If video fails to load, show animated gradient fallback
+var hv = document.getElementById('heroVideo');
+hv.addEventListener('error', function(){ document.getElementById('heroFallbackBg').style.display='block'; }, true);
+hv.querySelector('source').addEventListener('error', function(){ document.getElementById('heroFallbackBg').style.display='block'; });
+setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallbackBg').style.display='block'; }, 5000);
+</script>
 <section class="hero" style="display:none"><div class="hero-sticker">Est. 2024 ★ Hype Hub</div>
 <img src="assets/img/brand_logo.png" alt="DB Sneakers Graffiti Logo" class="hero-graf-logo anim-bass">
 <p class="h-sub" style="color:var(--muted);max-width:480px">Old school flavors. New school drip.</p>
