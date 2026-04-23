@@ -1093,12 +1093,42 @@ function renderProducts(){
 
   const pg = document.getElementById('paginationContainer');
   if(totalPages > 1) {
-    pg.innerHTML = `<div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 40px; padding-bottom: 20px;">
-      <button onclick="changePage(-1)" ${currentPage === 1 ? 'disabled style="opacity:0.5"' : ''} style="padding:10px 20px; background:var(--card-bg); border:1px solid var(--border); color:var(--text); cursor:pointer; font-family:'Archivo Black',sans-serif; text-transform:uppercase">&larr; Prev</button>
-      <span style="font-size:14px; font-weight:700">Page ${currentPage} of ${totalPages}</span>
-      <button onclick="changePage(1)" ${currentPage === totalPages ? 'disabled style="opacity:0.5"' : ''} style="padding:10px 20px; background:var(--card-bg); border:1px solid var(--border); color:var(--text); cursor:pointer; font-family:'Archivo Black',sans-serif; text-transform:uppercase">Next &rarr;</button>
-    </div>`;
+    let pageButtons = '';
+    // Build page number buttons with ellipsis
+    let pages = [];
+    pages.push(1);
+    for(let i = Math.max(2, currentPage - 2); i <= Math.min(totalPages - 1, currentPage + 2); i++) {
+      pages.push(i);
+    }
+    if(totalPages > 1) pages.push(totalPages);
+    // Remove duplicates and sort
+    pages = [...new Set(pages)].sort((a,b) => a - b);
+    
+    let prevPage = -1;
+    pages.forEach(function(p) {
+      if(prevPage > 0 && p - prevPage > 1) {
+        pageButtons += '<span style="color:var(--muted);font-size:14px">...</span>';
+      }
+      if(p === currentPage) {
+        pageButtons += '<button style="padding:8px 14px;background:var(--pr);border:none;color:#000;cursor:default;font-family:\'Archivo Black\',sans-serif;font-weight:700;font-size:14px">' + p + '</button>';
+      } else {
+        pageButtons += '<button onclick="goToPage(' + p + ')" style="padding:8px 14px;background:var(--card-bg);border:1px solid var(--border);color:var(--text);cursor:pointer;font-family:\'Archivo Black\',sans-serif;font-size:14px">' + p + '</button>';
+      }
+      prevPage = p;
+    });
+    
+    pg.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;gap:8px;margin-top:40px;padding-bottom:20px;flex-wrap:wrap">' +
+      '<button onclick="changePage(-1)" ' + (currentPage === 1 ? 'disabled style="opacity:0.3;padding:8px 16px;background:var(--card-bg);border:1px solid var(--border);color:var(--text);cursor:not-allowed;font-family:\'Archivo Black\',sans-serif;text-transform:uppercase;font-size:13px"' : 'style="padding:8px 16px;background:var(--card-bg);border:1px solid var(--border);color:var(--text);cursor:pointer;font-family:\'Archivo Black\',sans-serif;text-transform:uppercase;font-size:13px"') + '>&larr;</button>' +
+      pageButtons +
+      '<button onclick="changePage(1)" ' + (currentPage === totalPages ? 'disabled style="opacity:0.3;padding:8px 16px;background:var(--card-bg);border:1px solid var(--border);color:var(--text);cursor:not-allowed;font-family:\'Archivo Black\',sans-serif;text-transform:uppercase;font-size:13px"' : 'style="padding:8px 16px;background:var(--card-bg);border:1px solid var(--border);color:var(--text);cursor:pointer;font-family:\'Archivo Black\',sans-serif;text-transform:uppercase;font-size:13px"') + '>&rarr;</button>' +
+    '</div>';
   } else { pg.innerHTML = ''; }
+}
+
+function goToPage(page) {
+  currentPage = page;
+  renderProducts();
+  document.getElementById('shop-sec').scrollIntoView({behavior: 'smooth'});
 }
 
 function changePage(delta) {
