@@ -831,41 +831,76 @@ function fetchShopifyProducts(){
   if(!shopifyClient) return;
   document.getElementById('productGrid').innerHTML = '<div class="no-res">Loading drops from Shopify...</div>';
   
-  shopifyClient.product.fetchQuery({first: 250}).then((products) => {
-    // Fetch exact inventory counts manually since the JS SDK strips them by default
-    const query = `{ products(first: 250) { edges { node { id variants(first: 1) { edges { node { quantityAvailable } } } } } } }`;
-    fetch('https://db-sneakers-hype-hub-llc.myshopify.com/api/2024-01/graphql.json', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': '33f66e06740a2a5c1fdfe9fecf9b6a58'
-      },
-      body: JSON.stringify({query: query})
-    })
-    .then(res => res.json())
-    .then(data => {
-      const invMap = {};
-      if(data.data && data.data.products) {
-        data.data.products.edges.forEach(edge => {
-          const v = edge.node.variants.edges[0];
-          invMap[edge.node.id] = v && v.node.quantityAvailable != null ? v.node.quantityAvailable : -1;
-        });
-      }
-      products.forEach(p => {
-        if(invMap[p.id] !== undefined) p.variants[0].quantityAvailable = invMap[p.id];
-      });
-      lastFetchedProducts = products;
-      mapAndRenderProducts(products, true);
-    })
-    .catch(err => {
-      console.error('Inventory fetch failed, falling back:', err);
-      lastFetchedProducts = products;
-      mapAndRenderProducts(products, true);
+  // Fetch ALL products by paginating through pages
+  let allFetchedProducts = [];
+  
+  function fetchPage(queryProducts) {
+    return shopifyClient.product.fetchQuery(queryProducts ? undefined : {first: 250}).then(function(products) {
+      return products;
     });
-  }).catch((err) => {
+  }
+  
+  shopifyClient.product.fetchQuery({first: 250}).then(function(firstPage) {
+    allFetchedProducts = allFetchedProducts.concat(firstPage);
+    
+    function fetchNextIfNeeded(currentPage) {
+      if(!currentPage || !currentPage.length) return Promise.resolve();
+      return shopifyClient.fetchNextPage(currentPage).then(function(nextPage) {
+        if(nextPage && nextPage.length > 0) {
+          allFetchedProducts = allFetchedProducts.concat(nextPage);
+          return fetchNextIfNeeded(nextPage);
+        }
+      }).catch(function() { /* no more pages */ });
+    }
+    
+    return fetchNextIfNeeded(firstPage).then(function() {
+      // Now fetch inventory for ALL products via GraphQL (paginated too)
+      return fetchAllInventory(allFetchedProducts.length).then(function(invMap) {
+        allFetchedProducts.forEach(function(p) {
+          if(invMap[p.id] !== undefined) p.variants[0].quantityAvailable = invMap[p.id];
+        });
+        lastFetchedProducts = allFetchedProducts;
+        mapAndRenderProducts(allFetchedProducts, true);
+      }).catch(function(err) {
+        console.error('Inventory fetch failed, falling back:', err);
+        lastFetchedProducts = allFetchedProducts;
+        mapAndRenderProducts(allFetchedProducts, true);
+      });
+    });
+  }).catch(function(err) {
     console.error(err);
     document.getElementById('productGrid').innerHTML = '<div class="no-res" style="color:#FF1493;font-family:\'Archivo Black\',sans-serif;font-size:18px;">CONNECTION LOST. CHECK YOUR DIAL-UP!<br><button class="h-cta" style="margin-top:20px" onclick="fetchShopifyProducts()">RETRY CONNECTION</button></div>';
   });
+}
+
+function fetchAllInventory(totalCount) {
+  var invMap = {};
+  var token = '33f66e06740a2a5c1fdfe9fecf9b6a58';
+  var url = 'https://db-sneakers-hype-hub-llc.myshopify.com/api/2024-01/graphql.json';
+  
+  function fetchInvPage(cursor) {
+    var after = cursor ? ', after: "' + cursor + '"' : '';
+    var query = '{ products(first: 250' + after + ') { pageInfo { hasNextPage } edges { cursor node { id variants(first: 1) { edges { node { quantityAvailable } } } } } } }';
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': token },
+      body: JSON.stringify({query: query})
+    }).then(function(res) { return res.json(); }).then(function(data) {
+      if(data.data && data.data.products) {
+        data.data.products.edges.forEach(function(edge) {
+          var v = edge.node.variants.edges[0];
+          invMap[edge.node.id] = v && v.node.quantityAvailable != null ? v.node.quantityAvailable : -1;
+        });
+        if(data.data.products.pageInfo.hasNextPage) {
+          var lastCursor = data.data.products.edges[data.data.products.edges.length - 1].cursor;
+          return fetchInvPage(lastCursor);
+        }
+      }
+      return invMap;
+    });
+  }
+  
+  return fetchInvPage(null);
 }
 
 function loadMoreProducts() {
