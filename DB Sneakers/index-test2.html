@@ -137,7 +137,7 @@ nav{border-bottom:3px solid var(--ac)}
 .marq{position:relative;padding:12px 0;overflow:hidden;border-top:1px solid rgba(255,255,255,0.2);border-bottom:1px solid rgba(255,255,255,0.2);backdrop-filter:blur(10px);}
 .marq-in{display:flex;animation:mscroll 14s linear infinite;white-space:nowrap}
 .marq-in span{font-family:'Bungee',cursive;font-size:15px;color:#111;padding:0 36px}
-/* Bento grid: 6 cols, alternating row sizes with yellow */
+/* Bento grid: 6 cols, alternating row sizes */
 .product-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;background:var(--ac);position:relative;z-index:5}
 .pc:nth-child(6n+1){grid-column:span 3}
 .pc:nth-child(6n+2),.pc:nth-child(6n+3){grid-column:span 3}
@@ -145,10 +145,11 @@ nav{border-bottom:3px solid var(--ac)}
 .pc:nth-child(6n+5){grid-column:span 2}
 .pc:nth-child(6n+6){grid-column:span 2}
 .product-grid::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 42px),repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 22px);pointer-events:none;z-index:0}
-.pc{border:2px solid #111;transition:all .3s ease;position:relative;z-index:2}
-.pc:hover{border-color:#fff;box-shadow:8px 8px 0 var(--pr);transform:translate(-4px,-4px)}
-.pc-badge{font-family:'Bungee',cursive;background:#FF1493}
-.pc-add{border:2px solid #fff;box-shadow:3px 3px 0 var(--ac)}.pc-add:hover{box-shadow:1px 1px 0 var(--ac);transform:translate(2px,2px)}
+.pc{border:1px solid rgba(255,255,255,0.1);transition:border-color .3s ease;position:relative;z-index:2;background:rgba(20,20,20,0.4);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
+.pc:hover{border-color:var(--pr);}
+.pc-badge{font-family:'Archivo Black',sans-serif;background:var(--pr);color:#000;}
+.pc-add{border:1px solid rgba(255,255,255,0.2);box-shadow:none;transition:all .3s ease;background:transparent;color:#fff;}
+.pc-add:hover{background:var(--pr);color:#000;border-color:var(--pr);}
 @media(max-width:768px){.product-grid{grid-template-columns:repeat(2,1fr)!important}.pc:nth-child(n){grid-column:span 1!important}.pc:nth-child(3n){grid-column:1 / 2!important}.v-marquee{display:none!important}}
 @media(max-width:480px){.product-grid{grid-template-columns:repeat(2,1fr)!important}.pc:nth-child(n){grid-column:span 1!important}.pc:nth-child(3n){grid-column:1 / 2!important}}
 
@@ -398,7 +399,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 }
 .custom-cursor {
   position: fixed; width: 20px; height: 20px; border: 2px solid var(--pr); border-radius: 50%;
-  pointer-events: none; z-index: 10000; transform: translate(-50%, -50%);
+  pointer-events: none; z-index: 10000; left: 0; top: 0;
   transition: width 0.2s, height 0.2s, background 0.2s;
   mix-blend-mode: difference;
 }
@@ -410,7 +411,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 <div class="custom-cursor" id="customCursor"></div>
 <!-- V2 Cinematic Background Video -->
 <video autoplay loop muted playsinline style="position:fixed; top:0; left:0; width:100vw; height:100vh; object-fit:cover; z-index:-1; opacity: 0.6;">
-  <source src="https://assets.mixkit.co/videos/preview/mixkit-shoes-of-a-person-walking-on-the-street-43555-large.mp4" type="video/mp4">
+  <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4">
 </video>
 <div id="liquidTransition"></div>
 <div class="loading-ov" id="loadingScreen">
@@ -449,7 +450,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 </section>
 <div class="marq">
   <video autoplay loop muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0.6; z-index:0;">
-    <source src="https://assets.mixkit.co/videos/preview/mixkit-urban-street-fashion-and-shoes-in-a-skatepark-15337-large.mp4" type="video/mp4">
+    <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4" type="video/mp4">
   </video>
   <div class="marq-in" style="position:relative; z-index:2; text-shadow: 2px 2px 10px rgba(0,0,0,0.9); font-weight:900;"><span>★ THE CINEMATIC VANGUARD ★</span><span>LIQUID TRANSITIONS</span><span>★ GLASSMORPHISM ★</span><span>MAGNETIC CURSOR</span><span>★ THE CINEMATIC VANGUARD ★</span><span>LIQUID TRANSITIONS</span><span>★ GLASSMORPHISM ★</span><span>MAGNETIC CURSOR</span></div>
 </div>
@@ -1137,7 +1138,7 @@ function renderProducts(){
     const addBtnHtml = isSoldOut ? `<button class="pc-add" style="opacity:0.4;cursor:not-allowed;background:#555" disabled>Sold Out</button>` : `<button class="pc-add" onclick="event.stopPropagation();addToCart('${p.id}')">Add</button>`;
     
     // Inject video for visual flair on hover
-    const videoUrl = 'https://assets.mixkit.co/videos/preview/mixkit-shoes-of-a-person-walking-on-the-street-43555-large.mp4';
+    const videoUrl = 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4';
     const videoHtml = `<video src="${videoUrl}" loop muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 0.4s ease; z-index:2; pointer-events:none;" class="hover-vid"></video>`;
     
     return `<div class="pc" onclick="openProduct('${p.id}')" style="animation:fadeIn .4s ${i*.04}s both" onmouseenter="const v=this.querySelector('video'); if(v){v.play(); v.style.opacity=1;}" onmouseleave="const v=this.querySelector('video'); if(v){v.pause(); v.style.opacity=0;}">
@@ -1386,6 +1387,7 @@ let mouseY = window.innerHeight / 2;
 document.addEventListener('mousemove', (e) => {
   mouseX = e.clientX; mouseY = e.clientY;
   if(typeof gsap !== 'undefined') {
+    gsap.set('#customCursor', { xPercent: -50, yPercent: -50 });
     gsap.to('#customCursor', { x: mouseX, y: mouseY, duration: 0.1, ease: 'power2.out' });
     
     const card = e.target.closest('.pc');
@@ -1429,28 +1431,16 @@ function showPage(page){
 
   const transitionOverlay = document.getElementById('liquidTransition');
   
-  if(typeof gsap !== 'undefined') {
-    gsap.fromTo(transitionOverlay, 
-      { clipPath: `circle(0% at ${mouseX}px ${mouseY}px)` },
-      { clipPath: `circle(150% at ${mouseX}px ${mouseY}px)`, duration: 0.7, ease: "power3.inOut", onComplete: () => {
-        
-        window.scrollTo(0,0);
-        document.getElementById('page-home').style.display=page==='home'?'block':'none';
-        document.getElementById('page-checkout').style.display='none';
-        document.getElementById('page-confirm').style.display='none';
-        document.getElementById('page-track').style.display='none';
-        document.querySelectorAll('.page-sec').forEach(s=>s.classList.remove('show'));
-        if(page!=='home'){const el=document.getElementById('page-'+page);if(el)el.classList.add('show');}
-        
-        gsap.fromTo(transitionOverlay, 
-          { clipPath: `circle(150% at ${mouseX}px ${mouseY}px)` },
-          { clipPath: `circle(0% at ${mouseX}px ${mouseY}px)`, duration: 0.7, ease: "power3.inOut", delay: 0.1, onComplete: () => {
-            isTransitioning = false;
-          }}
-        );
-      }}
-    );
-  } else {
+  transitionOverlay.style.transition = "none";
+  transitionOverlay.style.clipPath = `circle(0% at ${mouseX}px ${mouseY}px)`;
+  
+  // Force reflow
+  void transitionOverlay.offsetWidth;
+  
+  transitionOverlay.style.transition = "clip-path 0.7s cubic-bezier(0.86, 0, 0.07, 1)";
+  transitionOverlay.style.clipPath = `circle(150% at ${mouseX}px ${mouseY}px)`;
+  
+  setTimeout(() => {
     window.scrollTo(0,0);
     document.getElementById('page-home').style.display=page==='home'?'block':'none';
     document.getElementById('page-checkout').style.display='none';
@@ -1458,8 +1448,14 @@ function showPage(page){
     document.getElementById('page-track').style.display='none';
     document.querySelectorAll('.page-sec').forEach(s=>s.classList.remove('show'));
     if(page!=='home'){const el=document.getElementById('page-'+page);if(el)el.classList.add('show');}
-    isTransitioning = false;
-  }
+    
+    setTimeout(() => {
+      transitionOverlay.style.clipPath = `circle(0% at ${mouseX}px ${mouseY}px)`;
+      setTimeout(() => {
+        isTransitioning = false;
+      }, 700);
+    }, 100);
+  }, 700);
 }
 
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}});},{threshold:.1});
