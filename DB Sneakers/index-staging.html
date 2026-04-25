@@ -423,7 +423,8 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
   .marq-in span{font-size:12px;letter-spacing:2px}
 }
 
-</style></head><body>
+</style></head><body style="cursor:crosshair;">
+<canvas id="sprayCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:9998; pointer-events:none;"></canvas>
 <div class="loading-ov" id="loadingScreen">
   <img src="assets/img/brand_logo.png" alt="DB Sneakers" class="loading-logo">
   <div class="loading-t">DB SNEAKERS</div>
@@ -1492,4 +1493,39 @@ function initApp(){
     });
   }
 }
+// --- GRAFFITI SPRAY PAINT ENGINE ---
+const sc = document.getElementById('sprayCanvas');
+const sctx = sc.getContext('2d');
+let isSpraying = false;
+function rzCanvas() { sc.width = window.innerWidth; sc.height = window.innerHeight; }
+window.addEventListener('resize', rzCanvas); rzCanvas();
+const sColors = ['#00f0ff', '#ff003c', '#ffd700', '#00ff3c', '#ffffff'];
+let cColor = sColors[0];
+document.addEventListener('contextmenu', (e) => {
+  if(e.target.tagName !== 'IMG') {
+    cColor = sColors[(sColors.indexOf(cColor) + 1) % sColors.length];
+  }
+});
+function sprayPaint(x, y) {
+  const d = 60; const r = 40;
+  for(let i=0; i<d; i++) {
+    const ox = (Math.random()-0.5)*r*2;
+    const oy = (Math.random()-0.5)*r*2;
+    if(ox*ox + oy*oy < r*r) {
+      sctx.fillStyle = cColor;
+      sctx.globalAlpha = Math.random()*0.6;
+      sctx.fillRect(x+ox, y+oy, 2, 2);
+    }
+  }
+}
+document.addEventListener('mousedown', (e) => { if(e.button===0) { isSpraying=true; sprayPaint(e.clientX, e.clientY); }});
+document.addEventListener('mousemove', (e) => { if(isSpraying) sprayPaint(e.clientX, e.clientY); });
+document.addEventListener('mouseup', () => { isSpraying=false; });
+setInterval(() => {
+  sctx.globalCompositeOperation = 'destination-out';
+  sctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+  sctx.fillRect(0, 0, sc.width, sc.height);
+  sctx.globalCompositeOperation = 'source-over';
+}, 200);
+
 window.addEventListener('DOMContentLoaded',initApp);</script>
