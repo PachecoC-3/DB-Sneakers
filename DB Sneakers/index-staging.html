@@ -425,7 +425,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 }
 
 </style></head><body style="cursor:crosshair; user-select:none; -webkit-user-select:none;">
-<canvas id="sprayCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:9998; pointer-events:none;"></canvas>
+<canvas id="sprayCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none;"></canvas>
 <div class="loading-ov" id="loadingScreen">
   <img src="assets/img/brand_logo.png" alt="DB Sneakers" class="loading-logo">
   <div class="loading-t">DB SNEAKERS</div>
@@ -1552,7 +1552,11 @@ function sprayPaint(x, y) {
     }
   }
 }
-document.addEventListener('mousedown', (e) => { if(e.button===0) { isSpraying=true; sprayPaint(e.clientX, e.clientY); }});
+document.addEventListener('mousedown', (e) => { 
+  if(e.button===0 && e.target.tagName !== 'MODEL-VIEWER' && e.target.tagName !== 'BUTTON') { 
+    isSpraying=true; sprayPaint(e.clientX, e.clientY); 
+  }
+});
 document.addEventListener('mousemove', (e) => { if(isSpraying) sprayPaint(e.clientX, e.clientY); });
 document.addEventListener('mouseup', () => { isSpraying=false; });
 setInterval(() => {
