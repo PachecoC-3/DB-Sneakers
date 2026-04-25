@@ -745,10 +745,10 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 <div class="ft-col"><h4>Help</h4><a onclick="showPage('shipping')" style="cursor:pointer">Shipping</a><a onclick="showPage('returns')" style="cursor:pointer">All Sales Final</a><a onclick="showPage('contact')" style="cursor:pointer">Contact</a><a onclick="showTrackPage()" style="cursor:pointer">Track Order</a></div>
 <div class="ft-col"><h4>Follow</h4><a href="https://www.instagram.com/DB_Sneakers_Inc" target="_blank" rel="noopener noreferrer">Instagram</a><a href="javascript:void(0)" onclick="setTimeout(()=>{window.open('https://tiktok.com/@DBsneakershypehub3','_blank')},50)">@DBsneakershypehub3</a><a href="javascript:void(0)" onclick="setTimeout(()=>{window.open('https://tiktok.com/@DB.Sneakers.Hype','_blank')},50)">@DB.Sneakers.Hype</a><a href="https://wa.me/19728419694" target="_blank" rel="noopener noreferrer">WhatsApp</a></div>
 </div><div class="ft-bot">© 2024-2026 DB Sneakers Hype Hub. All rights reserved.</div></div></footer>
-<!-- PHASE 7B: COMIC BOOK PAGE TURN OVERLAY -->
-<div id="pageTransitionOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; pointer-events:none; visibility:hidden; perspective: 2000px;">
-  <div id="pageTransitionFlap" style="position:absolute; top:0; left:0; width:100%; height:100%; background-color:#111; transform-origin:left center; transform:rotateY(-90deg); display:flex; align-items:center; justify-content:center; border-right: 20px solid var(--pr); box-shadow: inset -50px 0 100px rgba(0,0,0,0.8); background-image: radial-gradient(#FFD700 2px, transparent 2px); background-size: 30px 30px;">
-    <div style="color:#fff; font-family:'Archivo Black', sans-serif; font-size:8vw; text-transform:uppercase; font-style:italic; letter-spacing:4px; text-shadow:6px 6px 0 #FFD700; transform:rotate(-10deg);">NEXT CHAPTER</div>
+<!-- PHASE 7C: CURVED PAGE WIPE OVERLAY -->
+<div id="pageTransitionOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; pointer-events:none; visibility:hidden;">
+  <div id="pageTransitionFlap" style="position:absolute; top:0; left:0; width:100%; height:100%; background-color:var(--pr); display:flex; align-items:center; justify-content:center; clip-path: ellipse(0% 0% at 100% 50%);">
+    <div style="color:#000; font-family:'Archivo Black', sans-serif; font-size:8vw; text-transform:uppercase; font-style:italic; letter-spacing:4px; transform:rotate(-10deg);">NEXT CHAPTER</div>
   </div>
 </div>
 
@@ -1547,10 +1547,10 @@ function showPage(page){
   overlay.style.visibility = 'visible';
   
   if(typeof gsap !== 'undefined') {
-    // Phase 1: The Page Slams Shut (covers screen)
+    // Phase 1: The Curved Page Sweeps In (covers screen from right to left)
     gsap.fromTo(flap, 
-      { rotateY: -90 }, 
-      { rotateY: 0, duration: 0.6, ease: "power3.in", onComplete: () => {
+      { clipPath: "ellipse(0% 0% at 100% 50%)" }, 
+      { clipPath: "ellipse(200% 200% at 100% 50%)", duration: 0.8, ease: "power2.in", onComplete: () => {
         
         // Invisible DOM Swap Mid-Point
         window.scrollTo(0,0);
@@ -1561,11 +1561,14 @@ function showPage(page){
         document.querySelectorAll('.page-sec').forEach(s=>s.classList.remove('show'));
         if(page!=='home'){const el=document.getElementById('page-'+page);if(el)el.classList.add('show');}
         
-        // Phase 2: The Page Opens Outwards (reveals new screen)
-        gsap.to(flap, { rotateY: 90, duration: 0.6, ease: "power3.out", delay: 0.1, onComplete: () => {
-          overlay.style.visibility = 'hidden';
-          isTransitioning = false;
-        }});
+        // Phase 2: The Curved Page Sweeps Out (shrinks into the left edge)
+        gsap.fromTo(flap, 
+          { clipPath: "ellipse(200% 200% at 0% 50%)" },
+          { clipPath: "ellipse(0% 0% at 0% 50%)", duration: 0.8, ease: "power2.out", delay: 0.1, onComplete: () => {
+            overlay.style.visibility = 'hidden';
+            isTransitioning = false;
+          }}
+        );
         
       }}
     );
