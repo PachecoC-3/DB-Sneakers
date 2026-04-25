@@ -487,20 +487,16 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
   <div class="m-shape" style="bottom:10%;right:5%;font-size:40px;color:var(--ac)">★</div>
 </div>
 
-<!-- Hat Try-On Video Layout (Placeholder) -->
-<div class="hat-video-sec" style="margin-bottom:40px; border:3px solid var(--ac); overflow:hidden; background:#111; position:relative; box-shadow:8px 8px 0 var(--pr); min-height: 350px; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center;">
+<!-- Hat Try-On Video Layout -->
+<div class="hat-video-sec" style="margin-bottom:40px; border:3px solid var(--ac); overflow:hidden; background:#111; position:relative; box-shadow:8px 8px 0 var(--pr); min-height: 400px; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center;">
   <div style="position:absolute; top:20px; left:20px; z-index:5; background:var(--pr); color:#111; padding:8px 16px; font-family:'Bungee', cursive; font-size:12px; transform:rotate(-3deg); border:2px solid #fff;">FEATURED HEADWEAR</div>
   
-  <div style="font-size:48px; margin-bottom:12px; filter:drop-shadow(2px 2px 0 var(--ac));">🎥</div>
-  <h3 style="font-family:'Archivo Black', sans-serif; color:var(--text); letter-spacing:2px; text-transform:uppercase; font-size:24px;">Hat Try-On Video</h3>
-  <p style="color:var(--muted); font-size:13px; max-width:400px; padding: 0 20px; margin-top:8px;">[Placeholder layout ready for Daniel's .mp4 Video. Replace the source in index-staging.html when ready.]</p>
-  
-  <video autoplay loop muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0.4; pointer-events:none;">
+  <video autoplay loop muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; pointer-events:none; z-index:1;">
       <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" type="video/mp4">
   </video>
   
   <div style="position:absolute; bottom:20px; right:20px; z-index:5; background:#000; color:var(--ac); padding:10px 20px; font-family:'IBM Plex Mono', monospace; font-size:12px; border:1px solid var(--border);">
-    COMING SOON
+    DEMO VIDEO PLAYING
   </div>
 </div>
 
@@ -642,7 +638,7 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 </div>
 </div>
 <div class="modal-ov" id="productModal"><div class="modal-c"><button class="modal-x" onclick="closeProduct()">&times;</button>
-<div class="modal-g"><div class="modal-img-wrap"><div class="modal-img" style="position:relative;"><img id="modalImg" src="" alt="Product"><img class="wm-overlay" src="assets/img/brand_logo.png" alt="watermark"></div><div id="modalThumbs" class="modal-thumbs"></div></div>
+<div class="modal-g"><div class="modal-img-wrap"><div class="modal-img"><div style="position:relative; display:inline-block;"><img id="modalImg" src="" alt="Product" style="max-height:600px; object-fit:contain;"><img class="wm-overlay" src="assets/img/brand_logo.png" alt="watermark"></div></div><div id="modalThumbs" class="modal-thumbs"></div></div>
 <div class="modal-inf"><div id="modalType" class="modal-tp"></div><h2 id="modalName" class="modal-nm"></h2>
 <div class="modal-rt" id="modalRating"></div><div style="display:flex;align-items:center"><span id="modalPrice" class="modal-pr"></span><span id="modalOldPrice" class="modal-op"></span></div>
 <p id="modalDesc" class="modal-desc"></p><div class="modal-sec"><label>Color</label><div class="c-dots" id="modalColors"></div></div>
