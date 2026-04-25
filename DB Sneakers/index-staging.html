@@ -745,10 +745,11 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 <div class="ft-col"><h4>Help</h4><a onclick="showPage('shipping')" style="cursor:pointer">Shipping</a><a onclick="showPage('returns')" style="cursor:pointer">All Sales Final</a><a onclick="showPage('contact')" style="cursor:pointer">Contact</a><a onclick="showTrackPage()" style="cursor:pointer">Track Order</a></div>
 <div class="ft-col"><h4>Follow</h4><a href="https://www.instagram.com/DB_Sneakers_Inc" target="_blank" rel="noopener noreferrer">Instagram</a><a href="javascript:void(0)" onclick="setTimeout(()=>{window.open('https://tiktok.com/@DBsneakershypehub3','_blank')},50)">@DBsneakershypehub3</a><a href="javascript:void(0)" onclick="setTimeout(()=>{window.open('https://tiktok.com/@DB.Sneakers.Hype','_blank')},50)">@DB.Sneakers.Hype</a><a href="https://wa.me/19728419694" target="_blank" rel="noopener noreferrer">WhatsApp</a></div>
 </div><div class="ft-bot">© 2024-2026 DB Sneakers Hype Hub. All rights reserved.</div></div></footer>
-<!-- PHASE 7: SPRAY-PAINT PAGE TRANSITION OVERLAY -->
-<div id="pageTransitionOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; pointer-events:none; visibility:hidden; overflow:hidden;">
-  <canvas id="pageTransitionCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%;"></canvas>
-  <div id="pageTransitionBrand" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%) scale(0.5); opacity:0; color:#fff; font-family:'Archivo Black', sans-serif; font-size:48px; text-transform:uppercase; font-style:italic; letter-spacing:4px; text-shadow:4px 4px 0 #FFD700;">DB SNEAKERS</div>
+<!-- PHASE 7B: COMIC BOOK PAGE TURN OVERLAY -->
+<div id="pageTransitionOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; pointer-events:none; visibility:hidden; perspective: 2000px;">
+  <div id="pageTransitionFlap" style="position:absolute; top:0; left:0; width:100%; height:100%; background-color:#111; transform-origin:left center; transform:rotateY(-90deg); display:flex; align-items:center; justify-content:center; border-right: 20px solid var(--pr); box-shadow: inset -50px 0 100px rgba(0,0,0,0.8); background-image: radial-gradient(#FFD700 2px, transparent 2px); background-size: 30px 30px;">
+    <div style="color:#fff; font-family:'Archivo Black', sans-serif; font-size:8vw; text-transform:uppercase; font-style:italic; letter-spacing:4px; text-shadow:6px 6px 0 #FFD700; transform:rotate(-10deg);">NEXT CHAPTER</div>
+  </div>
 </div>
 
 <script>
@@ -1541,39 +1542,17 @@ function showPage(page){
   isTransitioning = true;
   
   const overlay = document.getElementById('pageTransitionOverlay');
-  const canvas = document.getElementById('pageTransitionCanvas');
-  const ctx = canvas.getContext('2d');
-  const brand = document.getElementById('pageTransitionBrand');
+  const flap = document.getElementById('pageTransitionFlap');
   
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
   overlay.style.visibility = 'visible';
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
   
-  let splatters = 0;
-  
-  // Phase 1: Rapid paint splatters cover the screen
-  const paintInterval = setInterval(() => {
-    for(let i=0; i<20; i++) {
-      ctx.fillStyle = i % 4 === 0 ? '#FFD700' : (i % 3 === 0 ? '#00e5ff' : '#111111');
-      const radius = Math.random() * (window.innerWidth > 768 ? 200 : 100) + 50;
-      const x = Math.random() * canvas.width;
-      const y = Math.random() * canvas.height;
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    splatters++;
-    
-    // Once screen is covered (approx 400ms)
-    if(splatters > 20) {
-      clearInterval(paintInterval);
-      
-      // Flash the DB Sneakers Brand Logo
-      if(typeof gsap !== 'undefined') gsap.to(brand, {opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)"});
-      
-      // Invisible DOM Swap
-      setTimeout(() => {
+  if(typeof gsap !== 'undefined') {
+    // Phase 1: The Page Slams Shut (covers screen)
+    gsap.fromTo(flap, 
+      { rotateY: -90 }, 
+      { rotateY: 0, duration: 0.6, ease: "power3.in", onComplete: () => {
+        
+        // Invisible DOM Swap Mid-Point
         window.scrollTo(0,0);
         document.getElementById('page-home').style.display=page==='home'?'block':'none';
         document.getElementById('page-checkout').style.display='none';
@@ -1582,21 +1561,25 @@ function showPage(page){
         document.querySelectorAll('.page-sec').forEach(s=>s.classList.remove('show'));
         if(page!=='home'){const el=document.getElementById('page-'+page);if(el)el.classList.add('show');}
         
-        // Phase 2: Reveal
-        if(typeof gsap !== 'undefined') {
-          gsap.to(brand, {opacity: 0, scale: 1.5, duration: 0.3, delay: 0.1});
-          gsap.to(canvas, {y: window.innerHeight, duration: 0.6, ease: "power4.in", delay: 0.1, onComplete: () => {
-            overlay.style.visibility = 'hidden';
-            gsap.set(canvas, {y: 0});
-            isTransitioning = false;
-          }});
-        } else {
+        // Phase 2: The Page Opens Outwards (reveals new screen)
+        gsap.to(flap, { rotateY: 90, duration: 0.6, ease: "power3.out", delay: 0.1, onComplete: () => {
           overlay.style.visibility = 'hidden';
           isTransitioning = false;
-        }
-      }, 300);
-    }
-  }, 20);
+        }});
+        
+      }}
+    );
+  } else {
+    // Fallback if GSAP fails
+    window.scrollTo(0,0);
+    document.getElementById('page-home').style.display=page==='home'?'block':'none';
+    document.getElementById('page-checkout').style.display='none';
+    document.getElementById('page-confirm').style.display='none';
+    document.getElementById('page-track').style.display='none';
+    document.querySelectorAll('.page-sec').forEach(s=>s.classList.remove('show'));
+    if(page!=='home'){const el=document.getElementById('page-'+page);if(el)el.classList.add('show');}
+    isTransitioning = false;
+  }
 }
 
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}});},{threshold:.1});
