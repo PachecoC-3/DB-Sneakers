@@ -89,10 +89,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,5,5,.92);b
 .pc-add:hover{background:var(--ac);color:var(--bg)}.no-res{text-align:center;padding:60px;color:var(--muted);grid-column:1/-1}
 
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:3000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .3s;padding:20px}
-.modal-ov.open{opacity:1;visibility:visible}.modal-c{background:var(--panel);max-width:920px;width:100%;max-height:90vh;overflow-y:auto;position:relative;border-radius:8px}
-.modal-x{position:absolute;top:14px;right:16px;background:none;border:none;font-size:28px;color:var(--muted);cursor:pointer;z-index:2}
-.modal-g{display:grid;grid-template-columns:1fr 1fr}.modal-img-wrap{display:flex;flex-direction:column;background:#000;overflow:hidden}.modal-img{min-height:400px;flex:1;overflow:hidden;display:flex;align-items:center;justify-content:center}.modal-img img{max-width:100%;max-height:100%;object-fit:contain}.modal-thumbs{display:flex;gap:8px;padding:12px;justify-content:center;background:#000;overflow-x:auto}.modal-thumbs img{width:60px;height:60px;object-fit:cover;cursor:pointer;border:2px solid transparent;border-radius:4px;flex-shrink:0;transition:border-color .2s}.modal-thumbs img.active{border-color:var(--pr)}
-.modal-inf{padding:32px}.modal-tp{font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}.modal-nm{font-family:'Archivo Black',sans-serif;font-size:28px;font-weight:700;text-transform:uppercase;margin-top:6px}
+.modal-ov.open{opacity:1;visibility:visible}.modal-c{background:var(--panel);max-width:920px;width:100%;max-height:90vh;overflow:hidden;position:relative;border-radius:8px;display:flex;flex-direction:column}
+.modal-x{position:absolute;top:14px;right:16px;background:var(--bg);border:none;font-size:24px;color:var(--text);cursor:pointer;z-index:10;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.5);}
+.modal-g{display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden;}
+.modal-img-wrap{display:flex;flex-direction:column;background:#000;overflow:hidden;max-height:90vh;}
+.modal-img{flex:1;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.modal-img img{max-width:100%;max-height:100%;object-fit:contain}
+.modal-thumbs{display:flex;gap:8px;padding:12px;justify-content:center;background:#000;overflow-x:auto}
+.modal-thumbs img{width:60px;height:60px;object-fit:cover;cursor:pointer;border:2px solid transparent;border-radius:4px;flex-shrink:0;transition:border-color .2s}
+.modal-thumbs img.active{border-color:var(--pr)}
+.modal-inf{padding:32px;overflow-y:auto;max-height:90vh;}
+.modal-tp{font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}.modal-nm{font-family:'Archivo Black',sans-serif;font-size:28px;font-weight:700;text-transform:uppercase;margin-top:6px}
 .modal-rt{color:var(--ac);font-size:14px;margin-top:8px}.modal-rt .rc{color:var(--muted);font-size:12px}
 .modal-pr{font-family:'Archivo Black',sans-serif;font-size:28px;font-weight:700;color:var(--ac);margin-top:12px}.modal-op{font-size:18px;color:var(--muted);text-decoration:line-through;margin-left:12px}
 .modal-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-top:14px}.modal-sec{margin-top:18px}.modal-sec label{display:block;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;color:var(--muted)}
@@ -128,7 +135,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,5,5,.92);b
 footer{background:var(--panel);border-top:1px solid var(--border);padding:48px 40px 24px}.ft-in{max-width:1400px;margin:0 auto}.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
 .ft-brand img{height:80px;margin-bottom:12px}.ft-brand p{color:var(--muted);font-size:13px;line-height:1.8}.ft-col h4{font-family:'Archivo Black',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--pr);margin-bottom:14px}.ft-col a{display:block;color:var(--muted);font-size:13px;margin-bottom:8px;transition:color .2s;cursor:pointer}.ft-col a:hover{color:var(--ac)}.ft-bot{text-align:center;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)}
 
-@media(max-width:1024px){.modal-g{grid-template-columns:1fr}.modal-img{min-height:280px}.ab-grid,.ct-grid{grid-template-columns:1fr}.ft-grid{grid-template-columns:1fr 1fr}.product-grid{grid-template-columns:repeat(4,1fr)}.pc:nth-child(n){grid-column:span 2}}
+@media(max-width:1024px){.modal-g{grid-template-columns:1fr;overflow:visible}.modal-c{overflow-y:auto}.modal-inf{overflow-y:visible;max-height:none}.modal-img-wrap{max-height:60vh}.modal-img{min-height:280px}.ab-grid,.ct-grid{grid-template-columns:1fr}.ft-grid{grid-template-columns:1fr 1fr}.product-grid{grid-template-columns:repeat(4,1fr)}.pc:nth-child(n){grid-column:span 2}}
 @media(max-width:768px){.product-grid{grid-template-columns:repeat(2,1fr)}.pc:nth-child(n){grid-column:span 1}.nav-center{display:none}.mob-menu{display:block}.cart-d{width:100%;right:-100%}.ft-grid{grid-template-columns:1fr}.v-marquee{display:none}.shop{padding:40px 16px}.hero{padding:60px 20px;min-height:60vh}.hero-graf-logo{width:min(280px,70vw)}.h-title{font-size:clamp(32px,7vw,60px)}.shop-head{flex-direction:column;align-items:flex-start}.shop-ctrl{width:100%;overflow-x:auto}.marq{padding:8px 0}.marq-in span{font-size:12px;padding:0 20px}.hero-stickers{gap:8px}.stk{font-size:10px;padding:6px 12px}.pc-img{height:220px}.pc-info{padding:12px}.pc-name{font-size:14px}.pc-price{font-size:18px}.pc-add{padding:6px 12px;font-size:10px}.modal-inf{padding:20px}.modal-nm{font-size:22px}.modal-pr{font-size:22px}.ck-wrap{grid-template-columns:1fr}.ck-row-2{grid-template-columns:1fr}footer{padding:32px 16px 16px}}
 @media(max-width:480px){.product-grid{grid-template-columns:1fr}.pc-img{height:260px}nav{padding:0 12px}.nav-in{height:60px;gap:10px}.nav-logo{height:50px}.search-box{width:100px;padding:6px 10px 6px 28px;font-size:12px}.cart-b{padding:8px 14px;font-size:11px;letter-spacing:1px}.hero{padding:40px 16px;min-height:50vh;margin-top:60px}.hero-graf-logo{width:min(240px,75vw)}.h-title{font-size:clamp(28px,8vw,48px)}.h-sub{font-size:13px}.h-cta{padding:12px 28px;font-size:12px}.shop-title{font-size:24px}.fb{padding:6px 14px;font-size:11px}.sort-sel{padding:6px 10px;font-size:11px}.pc-bot{flex-direction:column;align-items:flex-start;gap:8px}.pc-add{width:100%}.modal-inf{padding:16px}.modal-nm{font-size:18px}.modal-pr{font-size:20px}.modal-add{padding:14px;font-size:14px}footer{padding:24px 12px 12px}.ft-brand img{height:60px}.ct-grid{gap:24px}.pg-hero h1{font-size:28px}.back-b{margin-top:24px}}
 
@@ -529,26 +536,33 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 <div class="marq"><div class="marq-in"><span>★ NEW DROPS ★</span><span>FREE SHIPPING $75+</span><span>★ HYPE HUB ★</span><span>KICKS & CAPS</span><span>★ NEW DROPS ★</span><span>FREE SHIPPING $75+</span><span>★ HYPE HUB ★</span><span>KICKS & CAPS</span></div></div>
 <section class="shop" id="shop-sec">
 
-<!-- LAYER 2: INDUSTRIAL TAPE -->
-<div class="layer-tape" style="position:absolute; inset:-50%; z-index:0; pointer-events:none; transform:rotate(-15deg); display:flex; flex-direction:column; justify-content:center; gap:20vh;">
-  <div class="tape-strip" style="background:rgba(0,0,0,0.8); color:var(--pr); font-family:'Archivo Black', sans-serif; font-size:4rem; white-space:nowrap; padding:10px 0; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-    <span style="display:inline-block; animation:scrollTape 20s linear infinite;">// DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION //</span>
-  </div>
-  <div class="tape-strip" style="background:rgba(0,0,0,0.8); color:var(--pr); font-family:'Archivo Black', sans-serif; font-size:4rem; white-space:nowrap; padding:10px 0; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-    <span style="display:inline-block; animation:scrollTape 20s linear infinite reverse;">// LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS //</span>
+<!-- PHASE 6 BACKGROUND ENGINE WRAPPER -->
+<div style="position:absolute; inset:0; z-index:0; pointer-events:none;">
+  <div class="shop-bg-animations" style="position:sticky; top:0; left:0; width:100%; height:100vh; overflow:hidden;">
+    
+    <!-- LAYER 2: INDUSTRIAL TAPE -->
+    <div class="layer-tape" style="position:absolute; inset:-50%; transform:rotate(-15deg); display:flex; flex-direction:column; justify-content:center; gap:30vh;">
+      <div class="tape-strip" style="background:rgba(0,0,0,0.8); color:var(--pr); font-family:'Archivo Black', sans-serif; font-size:5rem; white-space:nowrap; padding:15px 0; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+        <span style="display:inline-block; animation:scrollTape 15s linear infinite;">// DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION //</span>
+      </div>
+      <div class="tape-strip" style="background:rgba(0,0,0,0.8); color:var(--pr); font-family:'Archivo Black', sans-serif; font-size:5rem; white-space:nowrap; padding:15px 0; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+        <span style="display:inline-block; animation:scrollTape 15s linear infinite reverse;">// LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS //</span>
+      </div>
+    </div>
+    <style>@keyframes scrollTape { 0% { transform:translateX(0); } 100% { transform:translateX(-33%); } }</style>
+
+    <!-- LAYER 3: FLOATING PARALLAX SVGS -->
+    <div class="layer-parallax" style="position:absolute; inset:0;">
+      <div class="px-item px-1" style="position:absolute; font-size:6rem; filter:drop-shadow(0 20px 20px rgba(0,0,0,0.4)); opacity:0.9; left:5%; top:10%;">👑</div>
+      <div class="px-item px-2" style="position:absolute; font-size:6rem; filter:drop-shadow(0 20px 20px rgba(0,0,0,0.4)); opacity:0.9; right:5%; top:60%;">🎲</div>
+      <div class="px-item px-3" style="position:absolute; font-size:7rem; filter:drop-shadow(0 20px 20px rgba(0,0,0,0.4)); opacity:0.9; left:25%; bottom:5%;">★</div>
+    </div>
+
+    <!-- LAYER 4: INTERACTIVE SPLATTER CANVAS -->
+    <canvas id="splatterCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1;"></canvas>
+
   </div>
 </div>
-<style>@keyframes scrollTape { 0% { transform:translateX(0); } 100% { transform:translateX(-33%); } }</style>
-
-<!-- LAYER 3: FLOATING PARALLAX SVGS -->
-<div class="layer-parallax" style="position:absolute; inset:0; z-index:0; pointer-events:none;">
-  <div class="px-item px-1" style="position:absolute; font-size:5rem; filter:drop-shadow(0 20px 20px rgba(0,0,0,0.3)); opacity:0.8; left:10%; top:20%;">👑</div>
-  <div class="px-item px-2" style="position:absolute; font-size:5rem; filter:drop-shadow(0 20px 20px rgba(0,0,0,0.3)); opacity:0.8; right:15%; top:50%;">🎲</div>
-  <div class="px-item px-3" style="position:absolute; font-size:5rem; filter:drop-shadow(0 20px 20px rgba(0,0,0,0.3)); opacity:0.8; left:30%; bottom:10%;">★</div>
-</div>
-
-<!-- LAYER 4: INTERACTIVE SPLATTER CANVAS -->
-<canvas id="splatterCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; pointer-events:none;"></canvas>
 
 <div class="shop-head" style="position:relative; z-index:10;"><h2 class="shop-title fh ani">All Products</h2><div class="shop-ctrl"><button class="fb active" data-filter onclick="filterProducts('all',this)">All</button><button class="fb" data-filter onclick="filterProducts('shoes',this)">Sneakers</button><button class="fb" data-filter onclick="filterProducts('hats',this)">Hats</button><button class="fb" data-filter onclick="filterProducts('misc',this)">Misc</button><select class="sort-sel" onchange="sortProducts(this.value)"><option value="">Sort By</option><option value="price-asc">Price ↑</option><option value="price-desc">Price ↓</option><option value="rating">Top Rated</option></select></div></div>
 <div class="memphis">
@@ -1313,6 +1327,10 @@ function renderProducts(){
       '<button onclick="changePage(1)" ' + (currentPage === totalPages ? 'disabled style="opacity:0.3;padding:8px 16px;background:var(--card-bg);border:1px solid var(--border);color:var(--text);cursor:not-allowed;font-family:\'Archivo Black\',sans-serif;text-transform:uppercase;font-size:13px"' : 'style="padding:8px 16px;background:var(--card-bg);border:1px solid var(--border);color:var(--text);cursor:pointer;font-family:\'Archivo Black\',sans-serif;text-transform:uppercase;font-size:13px"') + '>&rarr;</button>' +
     '</div>';
   } else { pg.innerHTML = ''; }
+  
+  if (typeof ScrollTrigger !== 'undefined') {
+    setTimeout(() => { ScrollTrigger.refresh(); }, 100);
+  }
 }
 
 function goToPage(page) {
@@ -1695,9 +1713,9 @@ function triggerLiveSales() {
 
 // --- PHASE 6: LAYERED BACKGROUND ENGINE ---
 // GSAP Parallax
-gsap.to(".px-1", {y: -200, rotation: 45, scrollTrigger: {trigger: ".shop", start: "top bottom", end: "bottom top", scrub: 1}});
-gsap.to(".px-2", {y: -300, rotation: -45, scrollTrigger: {trigger: ".shop", start: "top bottom", end: "bottom top", scrub: 2}});
-gsap.to(".px-3", {y: -150, rotation: 90, scrollTrigger: {trigger: ".shop", start: "top bottom", end: "bottom top", scrub: 1.5}});
+gsap.to(".px-1", {y: -1500, rotation: 180, scrollTrigger: {trigger: ".shop", start: "top bottom", end: "bottom top", scrub: 1}});
+gsap.to(".px-2", {y: -2500, rotation: -180, scrollTrigger: {trigger: ".shop", start: "top bottom", end: "bottom top", scrub: 2}});
+gsap.to(".px-3", {y: -1000, rotation: 360, scrollTrigger: {trigger: ".shop", start: "top bottom", end: "bottom top", scrub: 1.5}});
 
 // Splatter Canvas Engine
 const splatterCanvas = document.getElementById('splatterCanvas');
