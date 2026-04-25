@@ -745,6 +745,12 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 <div class="ft-col"><h4>Help</h4><a onclick="showPage('shipping')" style="cursor:pointer">Shipping</a><a onclick="showPage('returns')" style="cursor:pointer">All Sales Final</a><a onclick="showPage('contact')" style="cursor:pointer">Contact</a><a onclick="showTrackPage()" style="cursor:pointer">Track Order</a></div>
 <div class="ft-col"><h4>Follow</h4><a href="https://www.instagram.com/DB_Sneakers_Inc" target="_blank" rel="noopener noreferrer">Instagram</a><a href="javascript:void(0)" onclick="setTimeout(()=>{window.open('https://tiktok.com/@DBsneakershypehub3','_blank')},50)">@DBsneakershypehub3</a><a href="javascript:void(0)" onclick="setTimeout(()=>{window.open('https://tiktok.com/@DB.Sneakers.Hype','_blank')},50)">@DB.Sneakers.Hype</a><a href="https://wa.me/19728419694" target="_blank" rel="noopener noreferrer">WhatsApp</a></div>
 </div><div class="ft-bot">© 2024-2026 DB Sneakers Hype Hub. All rights reserved.</div></div></footer>
+<!-- PHASE 7: SPRAY-PAINT PAGE TRANSITION OVERLAY -->
+<div id="pageTransitionOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; pointer-events:none; visibility:hidden; overflow:hidden;">
+  <canvas id="pageTransitionCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%;"></canvas>
+  <div id="pageTransitionBrand" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%) scale(0.5); opacity:0; color:#fff; font-family:'Archivo Black', sans-serif; font-size:48px; text-transform:uppercase; font-style:italic; letter-spacing:4px; text-shadow:4px 4px 0 #FFD700;">DB SNEAKERS</div>
+</div>
+
 <script>
 function goToCheckout(){
   if(cart.length===0)return;
@@ -1527,11 +1533,70 @@ function submitContact(e) {
   }).catch((error) => alert("Failed to send message: " + error));
 }
 
+let isTransitioning = false;
 function showPage(page){
-  window.scrollTo(0,0);
-  document.getElementById('page-home').style.display=page==='home'?'block':'none';document.getElementById('page-checkout').style.display='none';document.getElementById('page-confirm').style.display='none';document.getElementById('page-track').style.display='none';
-  document.querySelectorAll('.page-sec').forEach(s=>s.classList.remove('show'));
-  if(page!=='home'){const el=document.getElementById('page-'+page);if(el)el.classList.add('show');}
+  const currentOpenPage = document.querySelector('.page-sec.show') ? document.querySelector('.page-sec.show').id.replace('page-','') : 'home';
+  if(currentOpenPage === page && page !== 'home') return;
+  if(isTransitioning) return;
+  isTransitioning = true;
+  
+  const overlay = document.getElementById('pageTransitionOverlay');
+  const canvas = document.getElementById('pageTransitionCanvas');
+  const ctx = canvas.getContext('2d');
+  const brand = document.getElementById('pageTransitionBrand');
+  
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  overlay.style.visibility = 'visible';
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  let splatters = 0;
+  
+  // Phase 1: Rapid paint splatters cover the screen
+  const paintInterval = setInterval(() => {
+    for(let i=0; i<20; i++) {
+      ctx.fillStyle = i % 4 === 0 ? '#FFD700' : (i % 3 === 0 ? '#00e5ff' : '#111111');
+      const radius = Math.random() * (window.innerWidth > 768 ? 200 : 100) + 50;
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    splatters++;
+    
+    // Once screen is covered (approx 400ms)
+    if(splatters > 20) {
+      clearInterval(paintInterval);
+      
+      // Flash the DB Sneakers Brand Logo
+      if(typeof gsap !== 'undefined') gsap.to(brand, {opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)"});
+      
+      // Invisible DOM Swap
+      setTimeout(() => {
+        window.scrollTo(0,0);
+        document.getElementById('page-home').style.display=page==='home'?'block':'none';
+        document.getElementById('page-checkout').style.display='none';
+        document.getElementById('page-confirm').style.display='none';
+        document.getElementById('page-track').style.display='none';
+        document.querySelectorAll('.page-sec').forEach(s=>s.classList.remove('show'));
+        if(page!=='home'){const el=document.getElementById('page-'+page);if(el)el.classList.add('show');}
+        
+        // Phase 2: Reveal
+        if(typeof gsap !== 'undefined') {
+          gsap.to(brand, {opacity: 0, scale: 1.5, duration: 0.3, delay: 0.1});
+          gsap.to(canvas, {y: window.innerHeight, duration: 0.6, ease: "power4.in", delay: 0.1, onComplete: () => {
+            overlay.style.visibility = 'hidden';
+            gsap.set(canvas, {y: 0});
+            isTransitioning = false;
+          }});
+        } else {
+          overlay.style.visibility = 'hidden';
+          isTransitioning = false;
+        }
+      }, 300);
+    }
+  }, 20);
 }
 
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}});},{threshold:.1});
