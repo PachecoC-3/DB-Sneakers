@@ -1534,8 +1534,8 @@ function submitContact(e) {
 
 let isTransitioning = false;
 function playPageTurnSound() {
-    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/211/211-preview.mp3');
-    audio.volume = 0.6;
+    const audio = new Audio('https://actions.google.com/sounds/v1/foley/book_page_turn.ogg');
+    audio.volume = 0.8;
     audio.play().catch(e => console.log('Audio auto-play blocked', e));
 }
 
@@ -1551,15 +1551,15 @@ function showPage(page){
   overlay.style.visibility = 'visible';
   overlay.innerHTML = `
     <div id="bookContainer" style="width: 100vw; height: 100vh;">
-      <div class="my-page" style="background: transparent;"></div>
-      <div class="my-page" style="background: var(--pr); display:flex; align-items:center; justify-content:center; border-right: 15px solid #111;">
+      <div class="my-page" style="background-color: transparent;"></div>
+      <div class="my-page" style="background-color: #FFD700; display:flex; align-items:center; justify-content:center; border-right: 15px solid #111;">
         <div style="font-family:'Archivo Black'; font-size:10vw; transform:rotate(-10deg); color:#000;">NEXT</div>
       </div>
-      <div class="my-page" style="background: #111; display:flex; align-items:center; justify-content:center; border-left: 15px solid var(--ac);">
+      <div class="my-page" style="background-color: #111111; display:flex; align-items:center; justify-content:center; border-left: 15px solid #00e5ff;">
         <div style="font-family:'Archivo Black'; font-size:10vw; transform:rotate(-10deg); color:#fff;">CHAPTER</div>
       </div>
-      <div class="my-page" style="background: transparent;"></div>
-      <div class="my-page" style="background: transparent;"></div>
+      <div class="my-page" style="background-color: transparent;"></div>
+      <div class="my-page" style="background-color: transparent;"></div>
     </div>
   `;
   
