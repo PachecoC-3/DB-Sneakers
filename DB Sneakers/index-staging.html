@@ -68,10 +68,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,5,5,.92);b
 .shop-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:40px}
 .shop-title{font-family:'Archivo Black',sans-serif;font-size:36px;font-weight:700;text-transform:uppercase;letter-spacing:2px}
 .shop-ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.fb{padding:8px 20px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'IBM Plex Mono',monospace;transition:all .2s}
-.fb.active{background:var(--pr);color:var(--bg);border-color:var(--pr)}.fb:hover:not(.active){border-color:var(--pr);color:var(--pr)}
-.sort-sel{padding:8px 14px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:12px;font-family:'IBM Plex Mono',monospace;cursor:pointer;outline:none}
-.sort-sel option{background:var(--bg);color:var(--text)}
+.fb{padding:8px 20px;background:rgba(17,17,17,0.9);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);border:2px solid rgba(255,255,255,0.2);color:#fff;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Archivo Black',sans-serif;transition:all .2s;box-shadow: 0 4px 15px rgba(0,0,0,0.5);}
+.fb.active{background:var(--ac);color:#000;border-color:var(--ac);box-shadow: 0 0 15px var(--ac);}
+.fb:hover:not(.active){border-color:var(--ac);color:var(--ac);background:rgba(0,229,255,0.1);}
+.sort-sel{padding:8px 14px;background:rgba(17,17,17,0.9);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);border:2px solid rgba(255,255,255,0.2);color:#fff;font-size:12px;font-weight:700;font-family:'Archivo Black',sans-serif;letter-spacing:1px;text-transform:uppercase;cursor:pointer;outline:none;box-shadow: 0 4px 15px rgba(0,0,0,0.5);transition:all 0.2s;}
+.sort-sel:hover{border-color:var(--ac);color:var(--ac);}
+.sort-sel option{background:#111;color:#fff;}
 
 .product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .pc{background:var(--card-bg);overflow:hidden;cursor:pointer;transition:all .3s;animation:fadeIn .4s ease both}
