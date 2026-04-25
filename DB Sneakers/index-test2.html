@@ -19,8 +19,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Archivo+Black&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
-:root{--pr:#00BFFF;--ac:#FFD700;--bg:#0F0F23;--panel:#1A1A2E;--text:#FFF;--muted:#999;--border:rgba(255,215,0,.2);--card-bg:#1A1A2E;--fh:'Archivo Black',sans-serif;--fb:'IBM Plex Mono',monospace}
-body{font-family:'IBM Plex Mono',monospace;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+:root{--pr:#00e5ff;--ac:#FFD700;--bg:#050505;--panel:rgba(10,10,10,0.4);--text:#FFF;--muted:rgba(255,255,255,0.6);--border:rgba(255,255,255,0.1);--card-bg:rgba(20,20,20,0.4);--fh:'Archivo Black',sans-serif;--fb:'IBM Plex Mono',monospace}
+body{font-family:'IBM Plex Mono',monospace;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+/* Glassmorphism Overrides */
+.pc, nav, .cart-b, .fb, .s-suggest, .search-box {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border) !important;
+}
 a{text-decoration:none;color:inherit}img{max-width:100%}
 .fh{font-family:'Archivo Black',sans-serif}
 .ani{opacity:0;transform:translateY(30px);transition:all .6s ease}.ani.vis{opacity:1;transform:translateY(0)}
@@ -128,7 +134,7 @@ nav{border-bottom:3px solid var(--ac)}
 .h-cta:hover{box-shadow:2px 2px 0 var(--ac);transform:translate(3px,3px)}
 .hero-stickers{display:flex;gap:16px;margin-top:28px;justify-content:center;flex-wrap:wrap}
 .stk{background:var(--ac);color:#111;padding:8px 16px;font-family:'Bungee',cursive;font-size:11px;border:2px solid #111;box-shadow:3px 3px 0 #111}
-.marq{background:var(--pr);padding:12px 0;overflow:hidden;border-top:3px solid var(--ac);border-bottom:3px solid var(--ac)}
+.marq{position:relative;padding:12px 0;overflow:hidden;border-top:1px solid rgba(255,255,255,0.2);border-bottom:1px solid rgba(255,255,255,0.2);backdrop-filter:blur(10px);}
 .marq-in{display:flex;animation:mscroll 14s linear infinite;white-space:nowrap}
 .marq-in span{font-family:'Bungee',cursive;font-size:15px;color:#111;padding:0 36px}
 /* Bento grid: 6 cols, alternating row sizes with yellow */
@@ -381,7 +387,32 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
   .marq-in span{font-size:12px;letter-spacing:2px}
 }
 
-</style></head><body>
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<style>
+/* V2 Page Transition & Cursor */
+#liquidTransition {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: var(--bg); z-index: 9999; pointer-events: none;
+  clip-path: circle(0% at 50% 50%);
+}
+.custom-cursor {
+  position: fixed; width: 20px; height: 20px; border: 2px solid var(--pr); border-radius: 50%;
+  pointer-events: none; z-index: 10000; transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  mix-blend-mode: difference;
+}
+.custom-cursor.hover {
+  width: 50px; height: 50px; background: rgba(0,229,255,0.2);
+}
+</style>
+</head><body style="cursor:none;">
+<div class="custom-cursor" id="customCursor"></div>
+<!-- V2 Cinematic Background Video -->
+<video autoplay loop muted playsinline style="position:fixed; top:0; left:0; width:100vw; height:100vh; object-fit:cover; z-index:-1; opacity: 0.6;">
+  <source src="https://assets.mixkit.co/videos/preview/mixkit-shoes-of-a-person-walking-on-the-street-43555-large.mp4" type="video/mp4">
+</video>
+<div id="liquidTransition"></div>
 <div class="loading-ov" id="loadingScreen">
   <div class="loading-t">LOADING HYPE...</div>
   <div class="loading-b"><div class="loading-f" id="loadingBar"></div></div>
@@ -416,7 +447,12 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 <p class="h-sub" style="color:var(--muted);max-width:480px">Old school flavors. New school drip.</p>
 <button class="h-cta" onclick="document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'})">Shop Now</button>
 </section>
-<div class="marq"><div class="marq-in"><span>★ NEW DROPS ★</span><span>FREE SHIPPING $75+</span><span>★ HYPE HUB ★</span><span>KICKS & CAPS</span><span>★ NEW DROPS ★</span><span>FREE SHIPPING $75+</span><span>★ HYPE HUB ★</span><span>KICKS & CAPS</span></div></div>
+<div class="marq">
+  <video autoplay loop muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0.6; z-index:0;">
+    <source src="https://assets.mixkit.co/videos/preview/mixkit-urban-street-fashion-and-shoes-in-a-skatepark-15337-large.mp4" type="video/mp4">
+  </video>
+  <div class="marq-in" style="position:relative; z-index:2; text-shadow: 2px 2px 10px rgba(0,0,0,0.9); font-weight:900;"><span>★ THE CINEMATIC VANGUARD ★</span><span>LIQUID TRANSITIONS</span><span>★ GLASSMORPHISM ★</span><span>MAGNETIC CURSOR</span><span>★ THE CINEMATIC VANGUARD ★</span><span>LIQUID TRANSITIONS</span><span>★ GLASSMORPHISM ★</span><span>MAGNETIC CURSOR</span></div>
+</div>
 <section class="shop" id="shop-sec"><div class="shop-head"><h2 class="shop-title fh ani">All Products</h2><div class="shop-ctrl"><button class="fb active" data-filter onclick="filterProducts('all',this)">All</button><button class="fb" data-filter onclick="filterProducts('shoes',this)">Sneakers</button><button class="fb" data-filter onclick="filterProducts('hats',this)">Hats</button><button class="fb" data-filter onclick="filterProducts('misc',this)">Misc</button><select class="sort-sel" onchange="sortProducts(this.value)"><option value="">Sort By</option><option value="price-asc">Price ↑</option><option value="price-desc">Price ↓</option><option value="rating">Top Rated</option></select></div></div>
 <div class="memphis">
   <div class="m-shape" style="top:10%;left:5%;transform:rotate(45deg);font-size:40px;color:var(--pr)">▲</div>
@@ -1099,8 +1135,17 @@ function renderProducts(){
     const ratingHtml = rv.count > 0 ? `<div class="pc-rating">${stars(rv.avg)} <span class="rc">(${rv.count})</span></div>` : `<div class="pc-rating" style="font-size:11px;color:var(--muted)">No reviews yet</div>`;
     const isSoldOut = p.badge === 'Sold Out';
     const addBtnHtml = isSoldOut ? `<button class="pc-add" style="opacity:0.4;cursor:not-allowed;background:#555" disabled>Sold Out</button>` : `<button class="pc-add" onclick="event.stopPropagation();addToCart('${p.id}')">Add</button>`;
-    return `<div class="pc" onclick="openProduct('${p.id}')" style="animation:fadeIn .4s ${i*.04}s both">
-    <div class="pc-img"><img src="${p.img}" alt="${safeName}" loading="lazy">${p.badge?`<div class="pc-badge">${p.badge}</div>`:''}</div>
+    
+    // Inject video for visual flair on hover
+    const videoUrl = 'https://assets.mixkit.co/videos/preview/mixkit-shoes-of-a-person-walking-on-the-street-43555-large.mp4';
+    const videoHtml = `<video src="${videoUrl}" loop muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 0.4s ease; z-index:2; pointer-events:none;" class="hover-vid"></video>`;
+    
+    return `<div class="pc" onclick="openProduct('${p.id}')" style="animation:fadeIn .4s ${i*.04}s both" onmouseenter="const v=this.querySelector('video'); if(v){v.play(); v.style.opacity=1;}" onmouseleave="const v=this.querySelector('video'); if(v){v.pause(); v.style.opacity=0;}">
+    <div class="pc-img" style="position:relative; overflow:hidden;">
+      <img src="${p.img}" alt="${safeName}" loading="lazy" style="position:relative; z-index:1;">
+      ${videoHtml}
+      ${p.badge?`<div class="pc-badge" style="z-index:3;">${p.badge}</div>`:''}
+    </div>
     <div class="pc-info"><div class="pc-name">${safeName}</div><div class="pc-type">${p.type}</div>
     ${ratingHtml}
     <div class="pc-bot"><div><span class="pc-price">$${p.price.toFixed(2)}</span>${p.oldPrice?`<span class="pc-old">$${p.oldPrice.toFixed(2)}</span>`:''}</div>
@@ -1335,11 +1380,86 @@ function submitContact(e) {
   }).catch((error) => alert("Failed to send message: " + error));
 }
 
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  if(typeof gsap !== 'undefined') {
+    gsap.to('#customCursor', { x: mouseX, y: mouseY, duration: 0.1, ease: 'power2.out' });
+    
+    const card = e.target.closest('.pc');
+    if(card) {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -15;
+      const rotateY = ((x - centerX) / centerX) * 15;
+      gsap.to(card, { rotateX: rotateX, rotateY: rotateY, transformPerspective: 1000, duration: 0.4, ease: 'power2.out' });
+    }
+  }
+});
+
+document.addEventListener('mouseover', (e) => {
+  const hoverable = e.target.closest('button, a, .pc, select, input');
+  if(hoverable) {
+    document.getElementById('customCursor').classList.add('hover');
+  }
+});
+
+document.addEventListener('mouseout', (e) => {
+  const hoverable = e.target.closest('.pc');
+  if(hoverable && typeof gsap !== 'undefined') {
+    gsap.to(hoverable, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'power2.out' });
+  }
+  const el = e.target.closest('button, a, .pc, select, input');
+  if(el) {
+    document.getElementById('customCursor').classList.remove('hover');
+  }
+});
+
+let isTransitioning = false;
 function showPage(page){
-  window.scrollTo(0,0);
-  document.getElementById('page-home').style.display=page==='home'?'block':'none';document.getElementById('page-checkout').style.display='none';document.getElementById('page-confirm').style.display='none';document.getElementById('page-track').style.display='none';
-  document.querySelectorAll('.page-sec').forEach(s=>s.classList.remove('show'));
-  if(page!=='home'){const el=document.getElementById('page-'+page);if(el)el.classList.add('show');}
+  const currentOpenPage = document.querySelector('.page-sec.show') ? document.querySelector('.page-sec.show').id.replace('page-','') : 'home';
+  if(currentOpenPage === page && page !== 'home') return;
+  if(isTransitioning) return;
+  isTransitioning = true;
+
+  const transitionOverlay = document.getElementById('liquidTransition');
+  
+  if(typeof gsap !== 'undefined') {
+    gsap.fromTo(transitionOverlay, 
+      { clipPath: `circle(0% at ${mouseX}px ${mouseY}px)` },
+      { clipPath: `circle(150% at ${mouseX}px ${mouseY}px)`, duration: 0.7, ease: "power3.inOut", onComplete: () => {
+        
+        window.scrollTo(0,0);
+        document.getElementById('page-home').style.display=page==='home'?'block':'none';
+        document.getElementById('page-checkout').style.display='none';
+        document.getElementById('page-confirm').style.display='none';
+        document.getElementById('page-track').style.display='none';
+        document.querySelectorAll('.page-sec').forEach(s=>s.classList.remove('show'));
+        if(page!=='home'){const el=document.getElementById('page-'+page);if(el)el.classList.add('show');}
+        
+        gsap.fromTo(transitionOverlay, 
+          { clipPath: `circle(150% at ${mouseX}px ${mouseY}px)` },
+          { clipPath: `circle(0% at ${mouseX}px ${mouseY}px)`, duration: 0.7, ease: "power3.inOut", delay: 0.1, onComplete: () => {
+            isTransitioning = false;
+          }}
+        );
+      }}
+    );
+  } else {
+    window.scrollTo(0,0);
+    document.getElementById('page-home').style.display=page==='home'?'block':'none';
+    document.getElementById('page-checkout').style.display='none';
+    document.getElementById('page-confirm').style.display='none';
+    document.getElementById('page-track').style.display='none';
+    document.querySelectorAll('.page-sec').forEach(s=>s.classList.remove('show'));
+    if(page!=='home'){const el=document.getElementById('page-'+page);if(el)el.classList.add('show');}
+    isTransitioning = false;
+  }
 }
 
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}});},{threshold:.1});
