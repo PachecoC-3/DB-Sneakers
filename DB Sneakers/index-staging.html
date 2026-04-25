@@ -426,11 +426,6 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 
 </style></head><body style="cursor:crosshair; user-select:none; -webkit-user-select:none;">
 
-<!-- FOMO: Hype Drop Banner -->
-<div id="hypeBanner" style="background:var(--pr); color:#000; text-align:center; padding:10px; font-family:'Archivo Black', sans-serif; font-size:14px; letter-spacing:2px; z-index:1000; position:relative;">
-  🚨 NEXT EXCLUSIVE DROP UNLOCKS IN: <span id="hypeTimer">00:00:00</span> 🚨
-</div>
-
 <canvas id="sprayCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none;"></canvas>
 
 <!-- Lo-Fi Boombox Audio Engine -->
@@ -467,6 +462,10 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 </div>
 
 <nav>
+<!-- FOMO: Hype Drop Banner -->
+<div id="hypeBanner" style="background:var(--pr); color:#000; text-align:center; padding:8px; font-family:'Archivo Black', sans-serif; font-size:13px; letter-spacing:2px; z-index:1000; position:relative;">
+  🚨 NEXT EXCLUSIVE DROP UNLOCKS IN: <span id="hypeTimer">00:00:00</span> 🚨
+</div>
 <div class="nav-in">
 <img src="assets/img/brand_logo.png" alt="DB Sneakers" class="nav-logo" onclick="showPage('home');window.scrollTo(0,0)">
 <div class="nav-center">
@@ -1236,7 +1235,7 @@ function renderProducts(){
     if (!isSoldOut && (p.id.charCodeAt(p.id.length-1) % 3 === 0)) {
       const tags = ["Only 2 left!", "🔥 Trending", "Selling Fast"];
       const tagText = tags[p.id.charCodeAt(0) % tags.length];
-      scarcityHtml = `<div style="position:absolute; bottom:10px; right:10px; background:#ff0033; color:#fff; font-size:10px; font-weight:bold; padding:4px 8px; border-radius:4px; z-index:3; box-shadow:0 0 10px rgba(255,0,0,0.5); animation:pulse 2s infinite;">${tagText}</div>`;
+      scarcityHtml = `<div style="position:absolute; bottom:10px; left:10px; background:#ff0033; color:#fff; font-size:10px; font-weight:bold; padding:4px 8px; border-radius:4px; z-index:3; box-shadow:0 0 10px rgba(255,0,0,0.5); animation:pulse 2s infinite;">${tagText}</div>`;
     }
 
     return `<div class="pc" onclick="openProduct('${p.id}')">
