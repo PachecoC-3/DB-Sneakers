@@ -1,5 +1,23 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<!-- SEO & Open Graph Tags -->
+<meta name="description" content="Premium Kicks & Caps — Curated for the Culture. Shop the latest sneaker drops and hype apparel at DB Sneakers.">
+<meta property="og:title" content="DB Sneakers Hype Hub">
+<meta property="og:description" content="Premium Kicks & Caps — Curated for the Culture.">
+<meta property="og:image" content="https://dbsneakershypehubllc.com/assets/img/brand_logo.png">
+<meta property="og:url" content="https://dbsneakershypehubllc.com/">
+<meta name="twitter:card" content="summary_large_image">
+<!-- Google Analytics 4 (Placeholder) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_MEASUREMENT_ID"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'YOUR_GA_MEASUREMENT_ID');
+</script>
+<!-- GSAP Animation Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <title>DB Sneakers Hype Hub — Retro 90s</title>
 <link rel="icon" type="image/png" href="assets/img/brand_logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Archivo+Black&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -1141,13 +1159,24 @@ function renderProducts(){
     const ratingHtml = rv.count > 0 ? `<div class="pc-rating">${stars(rv.avg)} <span class="rc">(${rv.count})</span></div>` : `<div class="pc-rating" style="font-size:11px;color:var(--muted)">No reviews yet</div>`;
     const isSoldOut = p.badge === 'Sold Out';
     const addBtnHtml = isSoldOut ? `<button class="pc-add" style="opacity:0.4;cursor:not-allowed;background:#555" disabled>Sold Out</button>` : `<button class="pc-add" onclick="event.stopPropagation();addToCart('${p.id}')">Add</button>`;
-    return `<div class="pc" onclick="openProduct('${p.id}')" style="animation:fadeIn .4s ${i*.04}s both">
+    return `<div class="pc" onclick="openProduct('${p.id}')">
     <div class="pc-img"><img src="${p.img}" alt="${safeName}" loading="lazy">${p.badge?`<div class="pc-badge">${p.badge}</div>`:''}</div>
     <div class="pc-info"><div class="pc-name">${safeName}</div><div class="pc-type">${p.type}</div>
     ${ratingHtml}
     <div class="pc-bot"><div><span class="pc-price">$${p.price.toFixed(2)}</span>${p.oldPrice?`<span class="pc-old">$${p.oldPrice.toFixed(2)}</span>`:''}</div>
     ${addBtnHtml}</div></div></div>`;
   }).join('');
+
+  if (typeof gsap !== 'undefined') {
+    gsap.from("#productGrid .pc", {
+      duration: 0.6,
+      y: 50,
+      opacity: 0,
+      stagger: 0.05,
+      ease: "back.out(1.2)",
+      clearProps: "all"
+    });
+  }
 
   const pg = document.getElementById('paginationContainer');
   if(totalPages > 1) {
