@@ -63,7 +63,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,5,5,.92);b
 .h-tag{font-family:'Archivo Black',sans-serif;font-size:13px;letter-spacing:6px;text-transform:uppercase;color:var(--pr)}
 .h-title{font-family:'Archivo Black',sans-serif;font-weight:700;text-transform:uppercase}.h-sub{font-size:16px;color:var(--muted);letter-spacing:1px}
 
-.shop{padding:60px 40px;max-width:1400px;margin:0 auto}
+.shop{padding:60px 40px;max-width:1400px;margin:0 auto;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 50%, #FFD700, #ffcc00, #ffb300, #FFD700);background-size:400% 400%;animation:liquidPulse 15s ease infinite;}
+@keyframes liquidPulse{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 .shop-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:40px}
 .shop-title{font-family:'Archivo Black',sans-serif;font-size:36px;font-weight:700;text-transform:uppercase;letter-spacing:2px}
 .shop-ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
@@ -163,7 +164,7 @@ nav{border-bottom:3px solid var(--ac)}
 .marq-in{display:flex;animation:mscroll 14s linear infinite;white-space:nowrap}
 .marq-in span{font-family:'Bungee',cursive;font-size:15px;color:#111;padding:0 36px}
 /* Bento grid: 6 cols, alternating row sizes with yellow */
-.product-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;background:var(--ac);position:relative;z-index:5}
+.product-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;background:transparent;position:relative;z-index:5}
 .pc:nth-child(6n+1){grid-column:span 3}
 .pc:nth-child(6n+2),.pc:nth-child(6n+3){grid-column:span 3}
 .pc:nth-child(6n+4){grid-column:span 2}
@@ -526,7 +527,30 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 <button class="h-cta" onclick="document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'})">Shop Now</button>
 </section>
 <div class="marq"><div class="marq-in"><span>★ NEW DROPS ★</span><span>FREE SHIPPING $75+</span><span>★ HYPE HUB ★</span><span>KICKS & CAPS</span><span>★ NEW DROPS ★</span><span>FREE SHIPPING $75+</span><span>★ HYPE HUB ★</span><span>KICKS & CAPS</span></div></div>
-<section class="shop" id="shop-sec"><div class="shop-head"><h2 class="shop-title fh ani">All Products</h2><div class="shop-ctrl"><button class="fb active" data-filter onclick="filterProducts('all',this)">All</button><button class="fb" data-filter onclick="filterProducts('shoes',this)">Sneakers</button><button class="fb" data-filter onclick="filterProducts('hats',this)">Hats</button><button class="fb" data-filter onclick="filterProducts('misc',this)">Misc</button><select class="sort-sel" onchange="sortProducts(this.value)"><option value="">Sort By</option><option value="price-asc">Price ↑</option><option value="price-desc">Price ↓</option><option value="rating">Top Rated</option></select></div></div>
+<section class="shop" id="shop-sec">
+
+<!-- LAYER 2: INDUSTRIAL TAPE -->
+<div class="layer-tape" style="position:absolute; inset:-50%; z-index:0; pointer-events:none; transform:rotate(-15deg); display:flex; flex-direction:column; justify-content:center; gap:20vh;">
+  <div class="tape-strip" style="background:rgba(0,0,0,0.8); color:var(--pr); font-family:'Archivo Black', sans-serif; font-size:4rem; white-space:nowrap; padding:10px 0; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+    <span style="display:inline-block; animation:scrollTape 20s linear infinite;">// DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION //</span>
+  </div>
+  <div class="tape-strip" style="background:rgba(0,0,0,0.8); color:var(--pr); font-family:'Archivo Black', sans-serif; font-size:4rem; white-space:nowrap; padding:10px 0; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+    <span style="display:inline-block; animation:scrollTape 20s linear infinite reverse;">// LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS //</span>
+  </div>
+</div>
+<style>@keyframes scrollTape { 0% { transform:translateX(0); } 100% { transform:translateX(-33%); } }</style>
+
+<!-- LAYER 3: FLOATING PARALLAX SVGS -->
+<div class="layer-parallax" style="position:absolute; inset:0; z-index:0; pointer-events:none;">
+  <div class="px-item px-1" style="position:absolute; font-size:5rem; filter:drop-shadow(0 20px 20px rgba(0,0,0,0.3)); opacity:0.8; left:10%; top:20%;">👑</div>
+  <div class="px-item px-2" style="position:absolute; font-size:5rem; filter:drop-shadow(0 20px 20px rgba(0,0,0,0.3)); opacity:0.8; right:15%; top:50%;">🎲</div>
+  <div class="px-item px-3" style="position:absolute; font-size:5rem; filter:drop-shadow(0 20px 20px rgba(0,0,0,0.3)); opacity:0.8; left:30%; bottom:10%;">★</div>
+</div>
+
+<!-- LAYER 4: INTERACTIVE SPLATTER CANVAS -->
+<canvas id="splatterCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; pointer-events:none;"></canvas>
+
+<div class="shop-head" style="position:relative; z-index:10;"><h2 class="shop-title fh ani">All Products</h2><div class="shop-ctrl"><button class="fb active" data-filter onclick="filterProducts('all',this)">All</button><button class="fb" data-filter onclick="filterProducts('shoes',this)">Sneakers</button><button class="fb" data-filter onclick="filterProducts('hats',this)">Hats</button><button class="fb" data-filter onclick="filterProducts('misc',this)">Misc</button><select class="sort-sel" onchange="sortProducts(this.value)"><option value="">Sort By</option><option value="price-asc">Price ↑</option><option value="price-desc">Price ↓</option><option value="rating">Top Rated</option></select></div></div>
 <div class="memphis">
   <div class="m-shape" style="top:10%;left:5%;transform:rotate(45deg);font-size:40px;color:var(--pr)">▲</div>
   <div class="m-shape" style="top:30%;right:10%;font-size:30px;color:var(--ac)">◎</div>
@@ -1668,6 +1692,44 @@ function triggerLiveSales() {
     loopLiveSales();
   }, Math.random() * 15000 + 15000);
 })();
+
+// --- PHASE 6: LAYERED BACKGROUND ENGINE ---
+// GSAP Parallax
+gsap.to(".px-1", {y: -200, rotation: 45, scrollTrigger: {trigger: ".shop", start: "top bottom", end: "bottom top", scrub: 1}});
+gsap.to(".px-2", {y: -300, rotation: -45, scrollTrigger: {trigger: ".shop", start: "top bottom", end: "bottom top", scrub: 2}});
+gsap.to(".px-3", {y: -150, rotation: 90, scrollTrigger: {trigger: ".shop", start: "top bottom", end: "bottom top", scrub: 1.5}});
+
+// Splatter Canvas Engine
+const splatterCanvas = document.getElementById('splatterCanvas');
+const spctx = splatterCanvas.getContext('2d');
+function resizeSplatter() {
+  splatterCanvas.width = splatterCanvas.offsetWidth;
+  splatterCanvas.height = splatterCanvas.offsetHeight;
+}
+window.addEventListener('resize', resizeSplatter);
+resizeSplatter();
+
+let lastSplatter = 0;
+document.getElementById('shop-sec').addEventListener('mousemove', (e) => {
+  const now = Date.now();
+  if (now - lastSplatter > 60) {
+    const rect = splatterCanvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const colors = ['#000000', '#00ffff', '#ff00ff'];
+    spctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+    spctx.beginPath();
+    spctx.arc(x, y, Math.random() * 10 + 5, 0, Math.PI * 2);
+    spctx.fill();
+    for(let i=0; i<4; i++) {
+      spctx.beginPath();
+      spctx.arc(x + (Math.random()-0.5)*30, y + (Math.random()-0.5)*30, Math.random() * 4 + 1, 0, Math.PI * 2);
+      spctx.fill();
+    }
+    lastSplatter = now;
+  }
+});
 
 window.addEventListener('DOMContentLoaded', () => {
   initApp();
