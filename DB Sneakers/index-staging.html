@@ -69,9 +69,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,5,5,.92);b
 .pc{background:var(--card-bg);overflow:hidden;cursor:pointer;transition:all .3s;animation:fadeIn .4s ease both}
 .pc:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(0,0,0,.3)}
 .pc-img{height:340px;overflow:hidden;position:relative;background:#111 }
-.pc-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s; pointer-events:none;} /* pointer-events none prevents drag/save */
-.wm-overlay{position:absolute;bottom:10px;right:10px;width:40px;opacity:0.8;pointer-events:none;z-index:10;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.7))}
-.pc:hover .pc-img img{transform:scale(1.06)}
+.pc-img > img:not(.wm-overlay){width:100%;height:100%;object-fit:cover;transition:transform .5s; pointer-events:none;}
+.wm-overlay{position:absolute;bottom:10px;right:10px;width:50px !important;height:auto !important;opacity:0.8;pointer-events:none;z-index:10;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.7))}
+.pc:hover .pc-img > img:not(.wm-overlay){transform:scale(1.06)}
 .pc-badge{position:absolute;top:12px;left:12px;background:var(--ac);color:var(--bg);padding:4px 12px;font-family:'Archivo Black',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
 .pc-info{padding:16px}.pc-name{font-family:'Archivo Black',sans-serif;font-size:16px;font-weight:600;text-transform:uppercase}.pc-type{font-size:12px;color:var(--muted);margin-top:3px;letter-spacing:1px}
 .pc-rating{color:var(--ac);font-size:12px;margin-top:6px}.pc-rating .rc{color:var(--muted);font-size:11px}
@@ -495,8 +495,8 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
   <h3 style="font-family:'Archivo Black', sans-serif; color:var(--text); letter-spacing:2px; text-transform:uppercase; font-size:24px;">Hat Try-On Video</h3>
   <p style="color:var(--muted); font-size:13px; max-width:400px; padding: 0 20px; margin-top:8px;">[Placeholder layout ready for Daniel's .mp4 Video. Replace the source in index-staging.html when ready.]</p>
   
-  <video autoplay loop muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0.1; pointer-events:none;">
-      <!-- <source src="assets/video/hat-tryon.mp4" type="video/mp4"> -->
+  <video autoplay loop muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0.4; pointer-events:none;">
+      <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" type="video/mp4">
   </video>
   
   <div style="position:absolute; bottom:20px; right:20px; z-index:5; background:#000; color:var(--ac); padding:10px 20px; font-family:'IBM Plex Mono', monospace; font-size:12px; border:1px solid var(--border);">
