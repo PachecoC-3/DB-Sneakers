@@ -18,6 +18,7 @@
 <!-- GSAP Animation Library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
 <title>DB Sneakers Hype Hub — Retro 90s</title>
 <link rel="icon" type="image/png" href="assets/img/brand_logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Archivo+Black&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -468,11 +469,27 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
     <div class="vh-tag">★ Established 2024 ★</div>
     <h1 class="vh-title">DB SNEAKERS <span>HYPE HUB</span></h1>
     <p class="vh-sub">Premium Kicks & Caps — Curated for the Culture</p>
+    <div style="font-family:'Archivo Black',sans-serif;font-size:20px;letter-spacing:10px;text-transform:uppercase;color:var(--text);margin-top:20px;filter:drop-shadow(2px 2px 0 var(--pr))">The Vault is Open</div>
     <button class="vh-cta" onclick="document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'})">EXPLORE THE COLLECTION</button>
   </div>
-  <div class="vh-scroll" onclick="document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'})">▼ SCROLL ▼</div>
+  
+  <!-- 3D Interactive Shoe -->
+  <model-viewer id="heroShoe" src="assets/model/shoe.glb" camera-controls disable-zoom disable-pan auto-rotate rotation-per-second="10deg" camera-orbit="-20deg 75deg 105%" shadow-intensity="1.5" environment-image="neutral" exposure="1.2" style="position:absolute; bottom:-100px; right:10%; width: 450px; height: 450px; z-index: 20; filter: drop-shadow(0px 30px 40px rgba(0,0,0,0.9)); pointer-events:auto;"></model-viewer>
+
 </section>
 <script>
+gsap.registerPlugin(ScrollTrigger);
+gsap.to("#heroShoe", {
+  scrollTrigger: {
+    trigger: ".video-hero",
+    start: "top top",
+    scrub: true
+  },
+  y: 200,
+  rotation: 20,
+  opacity: 0.5
+});
+
 // If video fails to load, show animated gradient fallback
 var hv = document.getElementById('heroVideo');
 hv.addEventListener('error', function(){ document.getElementById('heroFallbackBg').style.display='block'; }, true);
@@ -1493,6 +1510,23 @@ function initApp(){
     });
   }
 }
+
+// --- 3D SNEAKER SCROLL ENGINE ---
+gsap.to("#heroShoe", {
+  scrollTrigger: {
+    trigger: "body",
+    start: "top top",
+    end: "bottom bottom",
+    scrub: 1.5,
+    onUpdate: self => {
+      const shoe = document.getElementById('heroShoe');
+      if (shoe) {
+        shoe.cameraOrbit = `${-20 + (self.progress * 720)}deg 75deg 105%`;
+      }
+    }
+  }
+});
+
 // --- GRAFFITI SPRAY PAINT ENGINE ---
 const sc = document.getElementById('sprayCanvas');
 const sctx = sc.getContext('2d');
