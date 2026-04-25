@@ -1343,20 +1343,61 @@ function renderProducts(){
   }
 }
 
+function triggerProductTransition(callback) {
+  const overlay = document.getElementById('pageTransitionOverlay');
+  const logo = document.getElementById('vaultLogo');
+  
+  if(typeof gsap !== 'undefined') {
+    gsap.to(overlay, { top: "0%", duration: 0.5, ease: "bounce.out", onComplete: () => {
+      gsap.to(logo, { opacity: 1, scale: 1, duration: 0.2, yoyo: true, repeat: 1 });
+      setTimeout(() => {
+        callback();
+        gsap.to(overlay, { top: "100%", duration: 0.5, ease: "power2.in", onComplete: () => {
+          gsap.set(overlay, { top: "-100%" });
+        }});
+      }, 300);
+    }});
+  } else {
+    callback();
+  }
+}
+
 function goToPage(page) {
-  currentPage = page;
-  renderProducts();
-  document.getElementById('shop-sec').scrollIntoView({behavior: 'smooth'});
+  if (currentPage === page) return;
+  triggerProductTransition(() => {
+    currentPage = page;
+    renderProducts();
+    document.getElementById('shop-sec').scrollIntoView({behavior: 'auto'});
+  });
 }
 
 function changePage(delta) {
-  currentPage += delta;
-  renderProducts();
-  document.getElementById('shop-sec').scrollIntoView({behavior: 'smooth'});
+  triggerProductTransition(() => {
+    currentPage += delta;
+    renderProducts();
+    document.getElementById('shop-sec').scrollIntoView({behavior: 'auto'});
+  });
 }
 
-function filterProducts(cat,el){window.scrollTo(0,0);currentFilter=cat;currentPage=1;document.querySelectorAll('[data-filter]').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');renderProducts();}
-function sortProducts(v){currentSort=v;currentPage=1;renderProducts();}
+function filterProducts(cat,el){
+  triggerProductTransition(() => {
+    document.getElementById('shop-sec').scrollIntoView({behavior: 'auto'});
+    currentFilter=cat;
+    currentPage=1;
+    document.querySelectorAll('[data-filter]').forEach(t=>t.classList.remove('active'));
+    if(el)el.classList.add('active');
+    renderProducts();
+  });
+}
+
+function sortProducts(v){
+  triggerProductTransition(() => {
+    document.getElementById('shop-sec').scrollIntoView({behavior: 'auto'});
+    currentSort=v;
+    currentPage=1;
+    renderProducts();
+  });
+}
 
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
