@@ -433,7 +433,6 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 }
 
 </style>
-<script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
 </head><body style="cursor:crosshair; user-select:none; -webkit-user-select:none;">
 
 <canvas id="sprayCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none;"></canvas>
@@ -747,8 +746,10 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 <div class="ft-col"><h4>Help</h4><a onclick="showPage('shipping')" style="cursor:pointer">Shipping</a><a onclick="showPage('returns')" style="cursor:pointer">All Sales Final</a><a onclick="showPage('contact')" style="cursor:pointer">Contact</a><a onclick="showTrackPage()" style="cursor:pointer">Track Order</a></div>
 <div class="ft-col"><h4>Follow</h4><a href="https://www.instagram.com/DB_Sneakers_Inc" target="_blank" rel="noopener noreferrer">Instagram</a><a href="javascript:void(0)" onclick="setTimeout(()=>{window.open('https://tiktok.com/@DBsneakershypehub3','_blank')},50)">@DBsneakershypehub3</a><a href="javascript:void(0)" onclick="setTimeout(()=>{window.open('https://tiktok.com/@DB.Sneakers.Hype','_blank')},50)">@DB.Sneakers.Hype</a><a href="https://wa.me/19728419694" target="_blank" rel="noopener noreferrer">WhatsApp</a></div>
 </div><div class="ft-bot">© 2024-2026 DB Sneakers Hype Hub. All rights reserved.</div></div></footer>
-<!-- PHASE 7D: PHYSICS PAGE TURN OVERLAY -->
-<div id="pageTransitionOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; pointer-events:none; visibility:hidden;"></div>
+<!-- PHASE 7E: VAULT DOOR OVERLAY -->
+<div id="pageTransitionOverlay" style="position:fixed; top:-100%; left:0; width:100%; height:100%; z-index:9999; pointer-events:none; background-color:#111; display:flex; flex-direction:column; align-items:center; justify-content:center; border-bottom: 20px solid var(--pr); box-shadow: 0px 50px 100px rgba(0,0,0,0.8); background-image: repeating-linear-gradient(45deg, #1a1a1a 0px, #1a1a1a 20px, #111111 20px, #111111 40px);">
+  <div id="vaultLogo" style="color:var(--pr); font-family:'Archivo Black', sans-serif; font-size:10vw; text-transform:uppercase; font-style:italic; letter-spacing:4px; text-shadow:4px 4px 0 #00e5ff; transform: scale(0.8); opacity: 0;">DB SNEAKERS</div>
+</div>
 
 <script>
 function goToCheckout(){
@@ -1533,11 +1534,6 @@ function submitContact(e) {
 }
 
 let isTransitioning = false;
-function playPageTurnSound() {
-    const audio = new Audio('https://www.soundjay.com/misc/sounds/page-flip-01a.mp3');
-    audio.volume = 0.8;
-    audio.play().catch(e => console.log('Audio auto-play blocked', e));
-}
 
 function showPage(page){
   const currentOpenPage = document.querySelector('.page-sec.show') ? document.querySelector('.page-sec.show').id.replace('page-','') : 'home';
@@ -1545,44 +1541,17 @@ function showPage(page){
   if(isTransitioning) return;
   isTransitioning = true;
   
-  playPageTurnSound();
-  
   const overlay = document.getElementById('pageTransitionOverlay');
-  overlay.style.visibility = 'visible';
-  overlay.innerHTML = `
-    <div id="bookContainer" style="width: 100vw; height: 100vh;">
-      <div class="my-page" style="background-color: transparent; width:100%; height:100%;"></div>
-      <div class="my-page" style="background-color: #FFD700; width:100%; height:100%; display:flex; align-items:center; justify-content:center; border-right: 15px solid #111;">
-        <div style="font-family:'Archivo Black'; font-size:10vw; transform:rotate(-10deg); color:#000;">NEXT</div>
-      </div>
-      <div class="my-page" style="background-color: #111111; width:100%; height:100%; display:flex; align-items:center; justify-content:center; border-left: 15px solid #00e5ff;">
-        <div style="font-family:'Archivo Black'; font-size:10vw; transform:rotate(-10deg); color:#fff;">CHAPTER</div>
-      </div>
-      <div class="my-page" style="background-color: transparent; width:100%; height:100%;"></div>
-      <div class="my-page" style="background-color: transparent; width:100%; height:100%;"></div>
-    </div>
-  `;
+  const logo = document.getElementById('vaultLogo');
   
-  if(typeof St !== 'undefined' && St.PageFlip) {
-    const pageFlip = new St.PageFlip(document.getElementById('bookContainer'), {
-        width: window.innerWidth,
-        height: window.innerHeight,
-        usePortrait: true,
-        showCover: true,
-        drawShadow: true,
-        flippingTime: 800,
-        useMouseEvents: false
-    });
-    
-    pageFlip.loadFromHTML(document.querySelectorAll('.my-page'));
-    
-    // First flip: Covers the screen
-    setTimeout(() => {
-        pageFlip.flipNext();
-    }, 50);
-    
-    // When the first flip finishes (we are on page 2)
-    setTimeout(() => {
+  if(typeof gsap !== 'undefined') {
+    // Drop the vault door down
+    gsap.to(overlay, { top: "0%", duration: 0.5, ease: "bounce.out", onComplete: () => {
+      
+      // Flash logo
+      gsap.to(logo, { opacity: 1, scale: 1, duration: 0.2, yoyo: true, repeat: 1 });
+      
+      setTimeout(() => {
         // Invisible DOM Swap Mid-Point
         window.scrollTo(0,0);
         document.getElementById('page-home').style.display=page==='home'?'block':'none';
@@ -1592,23 +1561,16 @@ function showPage(page){
         document.querySelectorAll('.page-sec').forEach(s=>s.classList.remove('show'));
         if(page!=='home'){const el=document.getElementById('page-'+page);if(el)el.classList.add('show');}
         
-        playPageTurnSound();
-        
-        // Second flip: Reveals the screen
-        setTimeout(() => {
-            pageFlip.flipNext();
-            
-            // Clean up when done
-            setTimeout(() => {
-                pageFlip.destroy();
-                overlay.innerHTML = '';
-                overlay.style.visibility = 'hidden';
-                isTransitioning = false;
-            }, 900);
-        }, 100);
-    }, 900);
+        // Slide the vault door down to reveal
+        gsap.to(overlay, { top: "100%", duration: 0.6, ease: "power4.in", delay: 0.1, onComplete: () => {
+          // Reset the door to the top invisibly
+          gsap.set(overlay, { top: "-100%" });
+          isTransitioning = false;
+        }});
+      }, 400);
+    }});
   } else {
-    // Fallback if StPageFlip fails to load
+    // Fallback if GSAP fails
     window.scrollTo(0,0);
     document.getElementById('page-home').style.display=page==='home'?'block':'none';
     document.getElementById('page-checkout').style.display='none';
