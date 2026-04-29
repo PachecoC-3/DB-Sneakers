@@ -480,12 +480,15 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
   🚨 NEXT EXCLUSIVE DROP UNLOCKS IN: <span id="hypeTimer">00:00:00</span> 🚨
 </div>
 <div class="nav-in">
-<img src="assets/img/brand_logo.png" alt="DB Sneakers" class="nav-logo" onclick="showPage('home');window.scrollTo(0,0)">
+<img src="assets/img/brand_logo.png" alt="DB Sneakers" class="nav-logo" onclick="resetHome()">
 <div class="nav-center">
-<a onclick="showPage('home')">Shop</a><a onclick="showPage('about')">About</a><a onclick="showPage('contact')">Contact</a><a onclick="showTrackPage()">Track</a>
+<a onclick="resetHome()">Shop</a><a onclick="showPage('about')">About</a><a onclick="showPage('contact')">Contact</a><a onclick="showTrackPage()">Track</a>
 </div>
 <div class="nav-right">
 <div class="s-wrap"><span class="s-icon">🔍</span><input id="searchInput" class="search-box" placeholder="Search..." oninput="handleSearch(this.value)" onkeydown="handleSearchKey(event)"><div id="searchSuggest" class="s-suggest"></div></div>
+<a href="https://db-sneakers-hype-hub-llc.myshopify.com/account" style="text-decoration:none; color:var(--text); display:flex; align-items:center; margin-right:12px; transition:color 0.3s;" onmouseover="this.style.color='var(--pr)'" onmouseout="this.style.color='var(--text)'" title="Account">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+</a>
 <button class="cart-b" onclick="toggleCart()">Cart <span class="cart-n" id="cartCount">0</span></button>
 <button class="mob-menu" onclick="document.querySelector('.nav-center').style.display=document.querySelector('.nav-center').style.display==='flex'?'none':'flex'">☰</button>
 </div>
@@ -590,7 +593,9 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
           const playlist = [
               "assets/video/db-sneakers-hat-intro.mp4",
               "assets/video/db-sneakers-77-hat-try-on.mp4",
-              "assets/video/db-sneakers-b-series-ad.mp4"
+              "assets/video/db-sneakers-b-series-ad.mp4",
+              "assets/video/gato-video-ad.mp4",
+              "assets/video/grey-jordans-ad.mp4"
           ];
           let currentVideoIndex = 0;
           video.addEventListener("ended", function() {
@@ -751,7 +756,7 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 
 <div class="cart-ov" id="cartOverlay" onclick="toggleCart()"></div>
 <div class="cart-d" id="cartDrawer"><div class="cart-hd"><h2>Your Cart</h2><button class="cart-cls" onclick="toggleCart()">&times;</button></div>
-<div class="cart-bd" id="cartItems"><div class="empty-c">Your cart is empty</div></div>
+<div class="cart-bd" id="cartItems"><div class="empty-c" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;padding-top:40px;"><style>@keyframes floatCart{0%{transform:translateY(0px) rotate(0deg);}50%{transform:translateY(-15px) rotate(5deg);text-shadow:0 10px 20px rgba(0,229,255,0.4);}100%{transform:translateY(0px) rotate(0deg);}}@keyframes glowPulse{0%{box-shadow:0 0 5px var(--pr);}50%{box-shadow:0 0 20px var(--pr),0 0 30px var(--pr);}100%{box-shadow:0 0 5px var(--pr);}}</style><div style="font-size:70px; animation: floatCart 3s ease-in-out infinite;">🛒</div><div style="font-family:'Archivo Black', sans-serif; font-size:20px; color:var(--text); letter-spacing:1px;">CART IS EMPTY</div><p style="color:var(--muted); font-size:14px; text-align:center; margin-bottom:10px;">Time to cop some heat.</p><button class="co-btn" style="width:auto; padding:12px 30px; animation: glowPulse 2s infinite;" onclick="toggleCart(); document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'})">COP NOW</button></div></div>
 <div class="cart-ft" id="cartFoot" style="display:none"><div class="ct-row"><span>Total</span><span id="cartTotal">$0</span></div>
 <button class="co-btn" onclick="goToCheckout()">Checkout</button></div></div>
 <div class="toast" id="toast">Added to cart!</div>
@@ -760,8 +765,8 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 <div class="ft-brand"></div>
 <div class="ft-col"><h4>Shop</h4><a onclick="filterProducts('shoes');showPage('home')" style="cursor:pointer">Sneakers</a><a onclick="filterProducts('hats');showPage('home')" style="cursor:pointer">Hats</a><a onclick="filterProducts('sale');showPage('home');setTimeout(function(){document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'})},100)" style="cursor:pointer">Sale</a></div>
 <div class="ft-col"><h4>Help</h4><a onclick="showPage('shipping')" style="cursor:pointer">Shipping</a><a onclick="showPage('returns')" style="cursor:pointer">All Sales Final</a><a onclick="showPage('contact')" style="cursor:pointer">Contact</a><a onclick="showTrackPage()" style="cursor:pointer">Track Order</a></div>
-<div class="ft-col"><h4>Follow</h4><a href="https://www.instagram.com/DB_Sneakers_Inc" target="_blank" rel="noopener noreferrer">Instagram</a><a href="javascript:void(0)" onclick="setTimeout(()=>{window.open('https://tiktok.com/@DBsneakershypehub3','_blank')},50)">@DBsneakershypehub3</a><a href="javascript:void(0)" onclick="setTimeout(()=>{window.open('https://tiktok.com/@DB.Sneakers.Hype','_blank')},50)">@DB.Sneakers.Hype</a><a href="https://wa.me/19728419694" target="_blank" rel="noopener noreferrer">WhatsApp</a></div>
-</div><div class="ft-bot">© 2024-2026 DB Sneakers Hype Hub. All rights reserved.</div></div></footer>
+<div class="ft-col"><h4>Follow</h4><div style="display:flex;gap:15px;margin-top:10px;"><a href="https://www.instagram.com/DB_Sneakers_Inc" target="_blank" rel="noopener noreferrer" style="color:var(--text);transition:color 0.3s;" onmouseover="this.style.color='var(--pr)'" onmouseout="this.style.color='var(--text)'"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a><a href="https://tiktok.com/@DBsneakershypehub3" target="_blank" rel="noopener noreferrer" style="color:var(--text);transition:color 0.3s;" onmouseover="this.style.color='var(--pr)'" onmouseout="this.style.color='var(--text)'" title="@DBsneakershypehub3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg></a><a href="https://tiktok.com/@DB.Sneakers.Hype" target="_blank" rel="noopener noreferrer" style="color:var(--text);transition:color 0.3s;" onmouseover="this.style.color='var(--pr)'" onmouseout="this.style.color='var(--text)'" title="@DB.Sneakers.Hype"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg></a><a href="https://wa.me/19728419694" target="_blank" rel="noopener noreferrer" style="color:var(--text);transition:color 0.3s;" onmouseover="this.style.color='var(--pr)'" onmouseout="this.style.color='var(--text)'"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></a></div></div>
+</div><div class="ft-bot"><div style="max-width:800px; margin: 0 auto 12px auto; font-size:10px; color:var(--muted); opacity:0.8; line-height:1.5;"><strong>Disclaimer:</strong> Select promotional videos featured on this platform are created using artificial intelligence (AI) for creative illustrative purposes. The individuals depicted in these specific videos are purely fictional and do not represent any real persons, living or deceased. Any resemblance to actual individuals is entirely coincidental.</div>© 2024-2026 DB Sneakers Hype Hub. All rights reserved.</div></div></footer>
 <!-- PHASE 7E: VAULT DOOR OVERLAY -->
 <div id="pageTransitionOverlay" style="position:fixed; top:-100%; left:0; width:100%; height:100%; z-index:9999; pointer-events:none; background-color:#111; display:flex; flex-direction:column; align-items:center; justify-content:center; border-bottom: 20px solid var(--pr); box-shadow: 0px 50px 100px rgba(0,0,0,0.8); background-image: repeating-linear-gradient(45deg, #1a1a1a 0px, #1a1a1a 20px, #111111 20px, #111111 40px);">
   <div id="vaultLogo" style="color:var(--pr); font-family:'Archivo Black', sans-serif; font-size:10vw; text-transform:uppercase; font-style:italic; letter-spacing:4px; text-shadow:4px 4px 0 #00e5ff; transform: scale(0.8); opacity: 0;">DB SNEAKERS</div>
@@ -1088,6 +1093,11 @@ function fetchShopifyProducts(){
     allProducts = products;
     lastFetchedProducts = products;
     renderProducts();
+    const hash = window.location.hash;
+    if(hash.startsWith('#product-')) {
+      const pid = hash.replace('#product-','');
+      setTimeout(() => openProduct(pid), 100);
+    }
   }).catch(function(err) {
     console.error(err);
     document.getElementById('productGrid').innerHTML = '<div class="no-res" style="color:#FF1493;font-family:\'Archivo Black\',sans-serif;font-size:18px;">CONNECTION LOST. CHECK YOUR DIAL-UP!<br><button class="h-cta" style="margin-top:20px" onclick="fetchShopifyProducts()">RETRY CONNECTION</button></div>';
@@ -1235,12 +1245,14 @@ function handleSearchKey(e) {
   if(e.key === 'Enter') {
     e.preventDefault();
     document.getElementById('searchSuggest').classList.remove('show');
-    let items = getFiltered();
-    if(items.length > 0) {
-      openProduct(items[0].id);
-      document.getElementById('searchInput').value = '';
-      searchQuery = '';
-      renderProducts();
+    const isOpen = document.querySelector('.page-sec.show');
+    if (isOpen) {
+      showPage('home');
+      setTimeout(() => {
+        document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'});
+      }, 800);
+    } else {
+      document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'});
     }
   }
 }
@@ -1256,6 +1268,14 @@ document.addEventListener('click', (e) => {
 
 let allProducts=[];
 let currentPage=1;
+function resetHome() {
+  document.getElementById('searchInput').value = '';
+  searchQuery = '';
+  currentFilter = 'all';
+  renderProducts();
+  showPage('home');
+  window.scrollTo(0,0);
+}
 const itemsPerPage=25;
 let currentFilter='all',searchQuery='',cart=[],currentProduct=null,currentSort='alpha';
 
@@ -1276,8 +1296,14 @@ function getFiltered(){
 function stars(r){let s='';for(let i=1;i<=5;i++)s+=i<=Math.floor(r)?'★':'☆';return s;}
 
 function renderProducts(){
+  const isDefaultHome = (searchQuery === '' && currentFilter === 'all');
+  const videoHero = document.querySelector('.video-hero');
+  const hatVideoSec = document.querySelector('.hat-video-sec');
+  if(videoHero) videoHero.style.display = isDefaultHome ? 'flex' : 'none';
+  if(hatVideoSec) hatVideoSec.style.display = isDefaultHome ? 'flex' : 'none';
+
   const g=document.getElementById('productGrid'),allItems=getFiltered();
-  if(!allItems.length){g.innerHTML='<div class="no-res">No products found.</div>';return;}
+  if(!allItems.length){g.innerHTML='<div class="no-res" style="grid-column:1/-1;text-align:center;padding:100px 20px;font-size:24px;color:var(--muted);font-family:\\\'Archivo Black\\\',sans-serif;">No products found matching "'+searchQuery+'".</div>';return;}
   
   const totalPages = Math.ceil(allItems.length / itemsPerPage);
   const startIdx = (currentPage - 1) * itemsPerPage;
@@ -1457,16 +1483,27 @@ function openProduct(id){
     modalAddBtn.style.background = '';
   }
   document.getElementById('productModal').classList.add('open');document.body.style.overflow='hidden';
-  history.pushState({modal: true}, '', '#product');
+  history.pushState({modal: true}, '', '#product-' + id);
 }
 function closeProduct(){
-  document.getElementById('productModal').classList.remove('open');document.body.style.overflow='';
-  if(history.state && history.state.modal) { history.back(); }
-}
-window.addEventListener('popstate', function(e) {
-  if (document.getElementById('productModal').classList.contains('open')) {
+  if(history.state && history.state.modal) { 
+    history.back(); 
+  } else { 
+    history.replaceState(null, null, window.location.pathname + window.location.search);
     document.getElementById('productModal').classList.remove('open');
     document.body.style.overflow='';
+  }
+}
+window.addEventListener('popstate', function(e) {
+  const hash = window.location.hash;
+  if(hash.startsWith('#product-')) {
+    const pid = hash.replace('#product-','');
+    openProduct(pid);
+  } else {
+    if (document.getElementById('productModal').classList.contains('open')) {
+      document.getElementById('productModal').classList.remove('open');
+      document.body.style.overflow='';
+    }
   }
 });
 
@@ -1565,7 +1602,7 @@ function removeFromCart(cartId){cart=cart.filter(c=>c.cartId!==cartId);updateCar
 function updateCart(){
   document.getElementById('cartCount').textContent=cart.reduce((s,c)=>s+c.qty,0);
   const c=document.getElementById('cartItems'),f=document.getElementById('cartFoot');
-  if(!cart.length){c.innerHTML='<div class="empty-c">Your cart is empty</div>';f.style.display='none';return;}
+  if(!cart.length){c.innerHTML='<div class="empty-c" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;padding-top:40px;"><div style="font-size:70px; animation: floatCart 3s ease-in-out infinite;">🛒</div><div style="font-family:\\\'Archivo Black\\\', sans-serif; font-size:20px; color:var(--text); letter-spacing:1px;">CART IS EMPTY</div><p style="color:var(--muted); font-size:14px; text-align:center; margin-bottom:10px;">Time to cop some heat.</p><button class="co-btn" style="width:auto; padding:12px 30px; animation: glowPulse 2s infinite;" onclick="toggleCart(); document.getElementById(\\\'shop-sec\\\').scrollIntoView({behavior:\\\'smooth\\\'})">COP NOW</button></div>';f.style.display='none';return;}
   let total=0;
   c.innerHTML=cart.map(item=>{total+=item.price*item.qty;
     return`<div class="ci"><img src="${item.img}" alt="${item.name}"><div class="ci-inf"><div class="ci-n">${item.name}</div><div class="ci-opt">${item.size?`Size: ${item.size}`:''}${item.color?` | Color: <span class="ci-dot" style="background:${item.color}"></span>`:''}</div><div class="ci-p">$${(item.price*item.qty).toFixed(2)}</div><div class="ci-qty"><button class="qty-btn" onclick="changeQty(${item.cartId},-1)">−</button><span class="qty-num">${item.qty}</span><button class="qty-btn" onclick="changeQty(${item.cartId},1)">+</button></div><div class="ci-rm" onclick="removeFromCart(${item.cartId})">Remove</div></div></div>`;
