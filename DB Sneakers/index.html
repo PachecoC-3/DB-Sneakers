@@ -20,7 +20,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
 <title>DB Sneakers Hype Hub — Retro 90s</title>
-<link rel="icon" type="image/png" href="assets/img/brand_logo.png">
+<link rel="icon" type="image/png" href="/assets/img/brand_logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Archivo+Black&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
@@ -445,7 +445,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 <div id="boomboxToggle" style="position:fixed; bottom:30px; left:30px; width:60px; height:60px; background:var(--ac); border-radius:50%; z-index:100; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow: 0 0 20px rgba(0,255,255,0.5); border: 2px solid #000; transition: transform 0.3s; pointer-events:auto;" class="magnetic" title="Play Lo-Fi Beats">
   <span style="font-size:28px; line-height:1;">📻</span>
   <audio id="lofiAudio" loop>
-    <source src="assets/audio/lofi-beat.mp3" type="audio/mpeg">
+    <source src="/assets/audio/lofi-beat.mp3" type="audio/mpeg">
   </audio>
 </div>
 
@@ -460,7 +460,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 </div>
 
 <div class="loading-ov" id="loadingScreen">
-  <img src="assets/img/brand_logo.png" alt="DB Sneakers" class="loading-logo">
+  <img src="/assets/img/brand_logo.png" alt="DB Sneakers" class="loading-logo">
   <div class="loading-t">DB SNEAKERS</div>
   <div class="loading-sub">HYPE HUB — EST. 2024</div>
   <div class="loading-b"><div class="loading-f" id="loadingBar"></div></div>
@@ -480,7 +480,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
   🚨 NEXT EXCLUSIVE DROP UNLOCKS IN: <span id="hypeTimer">00:00:00</span> 🚨
 </div>
 <div class="nav-in">
-<img src="assets/img/brand_logo.png" alt="DB Sneakers" class="nav-logo" onclick="resetHome()">
+<img src="/assets/img/brand_logo.png" alt="DB Sneakers" class="nav-logo" onclick="resetHome()">
 <div class="nav-center">
 <a onclick="resetHome()">Shop</a><a onclick="showPage('about')">About</a><a onclick="showPage('contact')">Contact</a><a onclick="showTrackPage()">Track</a>
 </div>
@@ -500,7 +500,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
 <section class="video-hero">
   <!-- Video BG: Replace src with Daniel's own product reel when available -->
   <video id="heroVideo" autoplay muted loop playsinline>
-    <source src="assets/hero-bg.mp4" type="video/mp4">
+    <source src="/assets/hero-bg.mp4" type="video/mp4">
   </video>
   <div class="video-hero-overlay"></div>
   <!-- Animated gradient fallback (plays if video fails to load) -->
@@ -514,7 +514,7 @@ body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml
   </div>
   
   <!-- 3D Interactive Shoe -->
-  <model-viewer id="heroShoe" src="assets/model/shoe.glb" camera-controls disable-zoom disable-pan auto-rotate rotation-per-second="10deg" camera-orbit="-20deg 75deg 105%" shadow-intensity="1.5" environment-image="neutral" exposure="1.2" style="position:absolute; bottom:50px; right:10%; width: 450px; height: 450px; z-index: 20; filter: drop-shadow(0px 30px 40px rgba(0,0,0,0.9)); pointer-events:auto;"></model-viewer>
+  <model-viewer id="heroShoe" src="/assets/model/shoe.glb" camera-controls disable-zoom disable-pan auto-rotate rotation-per-second="10deg" camera-orbit="-20deg 75deg 105%" shadow-intensity="1.5" environment-image="neutral" exposure="1.2" style="position:absolute; bottom:50px; right:10%; width: 450px; height: 450px; z-index: 20; filter: drop-shadow(0px 30px 40px rgba(0,0,0,0.9)); pointer-events:auto;"></model-viewer>
 
 </section>
 <script>
@@ -537,7 +537,7 @@ hv.querySelector('source').addEventListener('error', function(){ document.getEle
 setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallbackBg').style.display='block'; }, 5000);
 </script>
 <section class="hero" style="display:none"><div class="hero-sticker">Est. 2024 ★ Hype Hub</div>
-<img src="assets/img/brand_logo.png" alt="DB Sneakers Graffiti Logo" class="hero-graf-logo anim-bass">
+<img src="/assets/img/brand_logo.png" alt="DB Sneakers Graffiti Logo" class="hero-graf-logo anim-bass">
 <p class="h-sub" style="color:var(--muted);max-width:480px">Old school flavors. New school drip.</p>
 <button class="h-cta" onclick="document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'})">Shop Now</button>
 </section>
@@ -585,20 +585,20 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 <div class="hat-video-sec" style="margin-bottom:40px; border:3px solid var(--ac); overflow:hidden; background:#111; position:relative; box-shadow:8px 8px 0 var(--pr); aspect-ratio: 16/9; width: 100%; max-height: 80vh; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center;">
 
   <video id="hatVideoSlideshow" autoplay muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; pointer-events:none; z-index:1;">
-      <source src="assets/video/db-sneakers-hat-intro.mp4" type="video/mp4">
+      <source src="/assets/video/db-sneakers-hat-intro.mp4" type="video/mp4">
   </video>
   <script>
       document.addEventListener("DOMContentLoaded", function() {
           const video = document.getElementById("hatVideoSlideshow");
           const playlist = [
-              "assets/video/db-sneakers-hat-intro.mp4",
-              "assets/video/db-sneakers-77-hat-try-on.mp4",
-              "assets/video/db-sneakers-b-series-ad.mp4",
-              "assets/video/gato-video-ad.mp4",
-              "assets/video/grey-jordans-ad.mp4",
-              "assets/video/bb-video-ad.mp4",
-              "assets/video/sd-chrome-flames-ad.mp4",
-              "assets/video/sad-boyz-ad.mp4"
+              "/assets/video/db-sneakers-hat-intro.mp4",
+              "/assets/video/db-sneakers-77-hat-try-on.mp4",
+              "/assets/video/db-sneakers-b-series-ad.mp4",
+              "/assets/video/gato-video-ad.mp4",
+              "/assets/video/grey-jordans-ad.mp4",
+              "/assets/video/bb-video-ad.mp4",
+              "/assets/video/sd-chrome-flames-ad.mp4",
+              "/assets/video/sad-boyz-ad.mp4"
           ];
           let currentVideoIndex = 0;
           video.addEventListener("ended", function() {
@@ -749,7 +749,7 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 </div>
 </div>
 <div class="modal-ov" id="productModal"><div class="modal-c"><button class="modal-x" onclick="closeProduct()">&times;</button>
-<div class="modal-g"><div class="modal-img-wrap"><div class="modal-img"><div style="position:relative; display:inline-block;"><img id="modalImg" src="" alt="Product" style="max-height:600px; object-fit:contain;"><img class="wm-overlay" src="assets/img/brand_logo.png" alt="watermark"></div></div><div id="modalThumbs" class="modal-thumbs"></div></div>
+<div class="modal-g"><div class="modal-img-wrap"><div class="modal-img"><div style="position:relative; display:inline-block;"><img id="modalImg" src="" alt="Product" style="max-height:600px; object-fit:contain;"><img class="wm-overlay" src="/assets/img/brand_logo.png" alt="watermark"></div></div><div id="modalThumbs" class="modal-thumbs"></div></div>
 <div class="modal-inf"><div id="modalType" class="modal-tp"></div><h2 id="modalName" class="modal-nm"></h2>
 <div class="modal-rt" id="modalRating"></div><div style="display:flex;align-items:center"><span id="modalPrice" class="modal-pr"></span><span id="modalOldPrice" class="modal-op"></span></div>
 <p id="modalDesc" class="modal-desc"></p><div class="modal-sec"><label>Color</label><div class="c-dots" id="modalColors"></div></div>
@@ -1333,7 +1333,7 @@ function renderProducts(){
     }
 
     return `<div class="pc" onclick="openProduct('${p.id}')">
-    <div class="pc-img"><img src="${p.img}" alt="${safeName}" loading="lazy">${p.badge?`<div class="pc-badge">${p.badge}</div>`:''}${scarcityHtml}<img class="wm-overlay" src="assets/img/brand_logo.png" alt="watermark"></div>
+    <div class="pc-img"><img src="${p.img}" alt="${safeName}" loading="lazy">${p.badge?`<div class="pc-badge">${p.badge}</div>`:''}${scarcityHtml}<img class="wm-overlay" src="/assets/img/brand_logo.png" alt="watermark"></div>
     <div class="pc-info"><div class="pc-name">${safeName}</div><div class="pc-type">${p.type}</div>
     ${ratingHtml}
     <div class="pc-bot"><div><span class="pc-price">$${p.price.toFixed(2)}</span>${p.oldPrice?`<span class="pc-old">$${p.oldPrice.toFixed(2)}</span>`:''}</div>
@@ -1910,4 +1910,4 @@ document.getElementById('shop-sec').addEventListener('mousemove', (e) => {
 window.addEventListener('DOMContentLoaded', () => {
   initApp();
   initMagneticButtons();
-});</script>
+});</script>
