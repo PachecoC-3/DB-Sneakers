@@ -1747,9 +1747,9 @@ function initApp(){
 // --- 3D SNEAKER SCROLL ENGINE ---
 gsap.to("#heroShoe", {
   scrollTrigger: {
-    trigger: "body",
+    trigger: ".video-hero",
     start: "top top",
-    end: "bottom bottom",
+    end: "bottom top",
     scrub: 1.5,
     onUpdate: self => {
       const shoe = document.getElementById('heroShoe');
@@ -1764,6 +1764,9 @@ gsap.to("#heroShoe", {
 const sc = document.getElementById('sprayCanvas');
 const sctx = sc.getContext('2d');
 let isSpraying = false;
+let lastSprayTime = 0;
+const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
 function rzCanvas() { sc.width = window.innerWidth; sc.height = window.innerHeight; }
 window.addEventListener('resize', rzCanvas); rzCanvas();
 const sColors = ['#00f0ff', '#ff003c', '#ffd700', '#00ff3c', '#ffffff'];
@@ -1774,6 +1777,8 @@ document.addEventListener('contextmenu', (e) => {
   }
 });
 function sprayPaint(x, y) {
+  if (isTouchDevice) return; // Disable spray on touch devices
+  lastSprayTime = Date.now();
   const d = 60; const r = 40;
   for(let i=0; i<d; i++) {
     const ox = (Math.random()-0.5)*r*2;
@@ -1793,6 +1798,7 @@ document.addEventListener('mousedown', (e) => {
 document.addEventListener('mousemove', (e) => { if(isSpraying) sprayPaint(e.clientX, e.clientY); });
 document.addEventListener('mouseup', () => { isSpraying=false; });
 setInterval(() => {
+  if (Date.now() - lastSprayTime > 3000) return; // Skip redraw if idle
   sctx.globalCompositeOperation = 'destination-out';
   sctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
   sctx.fillRect(0, 0, sc.width, sc.height);
@@ -1818,6 +1824,9 @@ boombox.addEventListener('click', () => {
 
 // --- MAGNETIC BUTTON ENGINE ---
 function initMagneticButtons() {
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  if (isTouchDevice) return; // Disable hover tracking on touch devices
+
   const magnets = document.querySelectorAll('.magnetic');
   magnets.forEach(magnet => {
     magnet.addEventListener('mousemove', function(e) {
@@ -1887,6 +1896,9 @@ resizeSplatter();
 
 let lastSplatter = 0;
 document.getElementById('shop-sec').addEventListener('mousemove', (e) => {
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  if (isTouchDevice) return; // Disable background splatter on touch devices
+
   const now = Date.now();
   if (now - lastSplatter > 60) {
     const rect = splatterCanvas.getBoundingClientRect();
