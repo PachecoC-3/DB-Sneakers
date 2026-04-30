@@ -1050,7 +1050,7 @@ function fetchShopifyProducts(){
   
   function fetchProductPage(cursor) {
     var after = cursor ? ', after: "' + cursor + '"' : '';
-    var query = '{ products(first: 250' + after + ') { pageInfo { hasNextPage } edges { cursor node { id title productType availableForSale options { name values } variants(first: 10) { edges { node { id title price { amount } compareAtPrice { amount } availableForSale quantityAvailable image { src } } } } images(first: 10) { edges { node { src } } } } } } }';
+    var query = '{ products(first: 250' + after + ') { pageInfo { hasNextPage } edges { cursor node { id handle title productType availableForSale options { name values } variants(first: 10) { edges { node { id title price { amount } compareAtPrice { amount } availableForSale quantityAvailable image { src } } } } images(first: 10) { edges { node { src } } } } } } }';
     return fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': token },
@@ -1078,6 +1078,7 @@ function fetchShopifyProducts(){
       var sizeOpt = n.options ? n.options.find(function(o){ return o.name === 'Size'; }) : null;
       return {
         id: n.id,
+        handle: n.handle,
         variantId: firstVariant.id,
         name: n.title,
         cat: ((n.productType||'').toLowerCase().indexOf('hat')>=0||(n.productType||'').toLowerCase().indexOf('cap')>=0||n.title.toLowerCase().indexOf('hat')>=0||n.title.toLowerCase().indexOf('cap')>=0||n.title.toLowerCase().indexOf('beanie')>=0) ? 'hats' : (((n.productType||'').toLowerCase().indexOf('sneaker')>=0||(n.productType||'').toLowerCase().indexOf('shoe')>=0||n.title.toLowerCase().indexOf('shoe')>=0||n.title.toLowerCase().indexOf('sneaker')>=0||n.title.toLowerCase().indexOf('jordan')>=0||n.title.toLowerCase().indexOf('yeezy')>=0||n.title.toLowerCase().indexOf('dunk')>=0||n.title.toLowerCase().indexOf('force')>=0||n.title.toLowerCase().indexOf('kobe')>=0) ? 'shoes' : 'misc'),
@@ -1443,7 +1444,13 @@ function sortProducts(v){
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
 function openProduct(id){
-  currentProduct=allProducts.find(p=>p.id===id);if(!currentProduct)return;
+  currentProduct=allProducts.find(p=>p.id===id);
+  if(!currentProduct) {
+    let decoded = decodeURIComponent(id);
+    currentProduct=allProducts.find(p=>p.id===decoded || p.handle===decoded);
+  }
+  if(!currentProduct) return;
+  id = currentProduct.id;
   document.getElementById('modalImg').src=currentProduct.img;
 
   const thumbsContainer = document.getElementById('modalThumbs');
