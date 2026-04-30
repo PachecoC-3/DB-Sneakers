@@ -126,9 +126,9 @@ git add . && git commit -m "LIVE: Video hero + all staging features" && git push
 ### Checkout Redirect (theme.liquid)
 Added to `layout/theme.liquid` line 9:
 ```html
-<script>window.location.href = "https://dbsneakershypehubllc.com/";</script>
+<script>window.location.replace("https://dbsneakershypehubllc.com" + window.location.pathname + window.location.search);</script>
 ```
-This redirects anyone hitting the old Shopify storefront to the custom site.
+This intelligently redirects anyone hitting the old Shopify storefront to the custom site, while preserving the exact product path so the custom site can open it automatically!
 
 ---
 
