@@ -1097,8 +1097,12 @@ function fetchShopifyProducts(){
     allProducts = products;
     lastFetchedProducts = products;
     renderProducts();
+    const path = window.location.pathname;
     const hash = window.location.hash;
-    if(hash.startsWith('#product-')) {
+    if(path.indexOf('/products/') >= 0) {
+      const handle = path.split('/products/')[1].split('/')[0];
+      setTimeout(() => openProduct(handle), 100);
+    } else if(hash.startsWith('#product-')) {
       const pid = hash.replace('#product-','');
       setTimeout(() => openProduct(pid), 100);
     }
