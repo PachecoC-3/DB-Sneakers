@@ -79,7 +79,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,5,5,.92);b
 .pc{background:var(--card-bg);overflow:hidden;cursor:pointer;transition:all .3s;animation:fadeIn .4s ease both}
 .pc:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(0,0,0,.3)}
 .pc-img{height:340px;overflow:hidden;position:relative;background:#111 }
-.pc-img > img:not(.wm-overlay){width:100%;height:100%;object-fit:cover;transition:transform .5s; pointer-events:none;}
+.pc-img > img:not(.wm-overlay){width:100%;height:100%;object-fit:contain;transition:transform .5s; pointer-events:none;}
 .wm-overlay{position:absolute;bottom:10px;right:10px;width:50px !important;height:auto !important;opacity:0.8;pointer-events:none;z-index:10;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.7))}
 .pc:hover .pc-img > img:not(.wm-overlay){transform:scale(1.06)}
 .pc-badge{position:absolute;top:12px;left:12px;background:var(--ac);color:var(--bg);padding:4px 12px;font-family:'Archivo Black',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
@@ -749,7 +749,7 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 </div>
 </div>
 <div class="modal-ov" id="productModal"><div class="modal-c"><button class="modal-x" onclick="closeProduct()">&times;</button>
-<div class="modal-g"><div class="modal-img-wrap"><div class="modal-img"><div style="position:relative; display:inline-block;"><img id="modalImg" src="" alt="Product" style="max-height:600px; object-fit:contain;"><img class="wm-overlay" src="/assets/img/brand_logo.png" alt="watermark"></div></div><div id="modalThumbs" class="modal-thumbs"></div></div>
+<div class="modal-g"><div class="modal-img-wrap"><div class="modal-img" style="position:relative;"><img id="modalImg" src="" alt="Product" style="width:100%; height:100%; max-height:600px; object-fit:contain;"><img class="wm-overlay" src="/assets/img/brand_logo.png" alt="watermark"></div><div id="modalThumbs" class="modal-thumbs"></div></div>
 <div class="modal-inf"><div id="modalType" class="modal-tp"></div><h2 id="modalName" class="modal-nm"></h2>
 <div class="modal-rt" id="modalRating"></div><div style="display:flex;align-items:center"><span id="modalPrice" class="modal-pr"></span><span id="modalOldPrice" class="modal-op"></span></div>
 <p id="modalDesc" class="modal-desc"></p><div class="modal-sec"><label>Color</label><div class="c-dots" id="modalColors"></div></div>
