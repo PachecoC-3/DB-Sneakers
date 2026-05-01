@@ -566,8 +566,7 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
       <div class="px-item px-3" style="position:absolute; font-size:7rem; filter:drop-shadow(0 20px 20px rgba(0,0,0,0.4)); opacity:0.9; left:25%; bottom:5%;">★</div>
     </div>
 
-    <!-- LAYER 4: INTERACTIVE SPLATTER CANVAS -->
-    <canvas id="splatterCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1;"></canvas>
+
 
   </div>
 </div>
@@ -1778,40 +1777,7 @@ gsap.to(".px-1", {y: -1500, rotation: 180, scrollTrigger: {trigger: ".shop", sta
 gsap.to(".px-2", {y: -2500, rotation: -180, scrollTrigger: {trigger: ".shop", start: "top bottom", end: "bottom top", scrub: 2}});
 gsap.to(".px-3", {y: -1000, rotation: 360, scrollTrigger: {trigger: ".shop", start: "top bottom", end: "bottom top", scrub: 1.5}});
 
-// Splatter Canvas Engine
-const splatterCanvas = document.getElementById('splatterCanvas');
-const spctx = splatterCanvas.getContext('2d');
-function resizeSplatter() {
-  splatterCanvas.width = splatterCanvas.offsetWidth;
-  splatterCanvas.height = splatterCanvas.offsetHeight;
-}
-window.addEventListener('resize', resizeSplatter);
-resizeSplatter();
 
-let lastSplatter = 0;
-document.getElementById('shop-sec').addEventListener('mousemove', (e) => {
-  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-  if (isTouchDevice) return; // Disable background splatter on touch devices
-
-  const now = Date.now();
-  if (now - lastSplatter > 60) {
-    const rect = splatterCanvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    const colors = ['#000000', '#00ffff', '#ff00ff'];
-    spctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
-    spctx.beginPath();
-    spctx.arc(x, y, Math.random() * 10 + 5, 0, Math.PI * 2);
-    spctx.fill();
-    for(let i=0; i<4; i++) {
-      spctx.beginPath();
-      spctx.arc(x + (Math.random()-0.5)*30, y + (Math.random()-0.5)*30, Math.random() * 4 + 1, 0, Math.PI * 2);
-      spctx.fill();
-    }
-    lastSplatter = now;
-  }
-});
 
 window.addEventListener('DOMContentLoaded', () => {
   initApp();
