@@ -1495,7 +1495,10 @@ function addToCart(id,size,color){
   if(p.badge === 'Sold Out'){showToast('Sorry, this item is sold out');return;}
   const existing=cart.find(c=>c.id===id && c.size===size && c.color===color);
   if(existing){existing.qty++;}else{cart.push({...p,qty:1,size:size,color:color,cartId:Date.now()});}
-  updateCart();showToast(p.name+' added to cart!');
+  updateCart();
+  closeProduct();
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartDrawer').classList.add('open');
 }
 function changeQty(cartId,delta){
   const item=cart.find(c=>c.cartId===cartId);if(!item)return;
