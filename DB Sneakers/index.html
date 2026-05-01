@@ -52,7 +52,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,5,5,.92);b
 .cart-b{padding:10px 20px;background:var(--pr);color:var(--bg);font-family:'Archivo Black',sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;border:none;cursor:pointer;text-transform:uppercase;transition:all .3s;display:flex;align-items:center;gap:8px}
 .cart-b:hover{background:var(--ac);color:var(--text)}.cart-n{background:var(--ac);color:var(--bg);width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px}
 .mob-menu{display:none;background:none;border:none;font-size:24px;color:var(--text);cursor:pointer}
-.s-suggest{position:absolute;top:100%;left:0;right:0;background:var(--panel);border:1px solid var(--border);border-top:none;z-index:200;display:none;max-height:300px;overflow-y:auto;box-shadow:0 8px 16px rgba(0,0,0,0.5)}
+.s-suggest{position:absolute;top:100%;right:0;width:350px;max-width:90vw;background:var(--panel);border:1px solid var(--border);border-top:none;z-index:200;display:none;max-height:300px;overflow-y:auto;box-shadow:0 8px 16px rgba(0,0,0,0.5)}
 .s-suggest.show{display:block}
 .s-item{padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:10px;transition:background 0.2s}
 .s-item:hover{background:rgba(255,255,255,0.1)}
@@ -1131,7 +1131,7 @@ function updateSuggestions(v) {
         <img src="${p.img}" alt="">
         <div class="s-item-info">
           <span class="s-item-name">${p.name}</span>
-          <span class="s-item-price">$${p.price.toFixed(2)}</span>
+          <span class="s-item-price">$${p.price.toFixed(2)} ${p.oldPrice && p.oldPrice > p.price ? `<span style="text-decoration:line-through; font-size:11px; color:var(--muted); margin-left:4px">$${p.oldPrice.toFixed(2)}</span>` : ''}</span>
         </div>
       </div>
     `).join('');
@@ -1179,7 +1179,7 @@ let currentFilter='all',searchQuery='',cart=[],currentProduct=null,currentSort='
 
 function getFiltered(){
   let items=allProducts.filter(p=>{
-    const mc=currentFilter==='all'||currentFilter==='sale'?(currentFilter==='sale'?p.oldPrice!=null:true):p.cat===currentFilter;
+    const mc=currentFilter==='all'||currentFilter==='sale'?(currentFilter==='sale'?p.oldPrice!=null && p.oldPrice>p.price:true):p.cat===currentFilter;
     const ms=!searchQuery||p.name.toLowerCase().includes(searchQuery.toLowerCase())||p.type.toLowerCase().includes(searchQuery.toLowerCase());
     return mc&&ms;
   });
@@ -1226,7 +1226,7 @@ function renderProducts(){
     <div class="pc-img"><img src="${p.img}" alt="${safeName}" loading="lazy">${p.badge?`<div class="pc-badge">${p.badge}</div>`:''}${scarcityHtml}<img class="wm-overlay" src="/assets/img/brand_logo.png" alt="watermark"></div>
     <div class="pc-info"><div class="pc-name">${safeName}</div><div class="pc-type">${p.type}</div>
     ${ratingHtml}
-    <div class="pc-bot"><div><span class="pc-price">$${p.price.toFixed(2)}</span>${p.oldPrice?`<span class="pc-old">$${p.oldPrice.toFixed(2)}</span>`:''}</div>
+    <div class="pc-bot"><div><span class="pc-price">$${p.price.toFixed(2)}</span>${(p.oldPrice && p.oldPrice > p.price)?`<span class="pc-old">$${p.oldPrice.toFixed(2)}</span>`:''}</div>
     ${addBtnHtml}</div></div></div>`;
   }).join('');
 
@@ -1362,7 +1362,7 @@ function openProduct(id){
   document.getElementById('modalName').textContent=currentProduct.name;
   document.getElementById('modalType').textContent=currentProduct.type;
   document.getElementById('modalPrice').textContent='$'+currentProduct.price.toFixed(2);
-  const op=document.getElementById('modalOldPrice');op.textContent=currentProduct.oldPrice?'$'+currentProduct.oldPrice.toFixed(2):'';op.style.display=currentProduct.oldPrice?'inline':'none';
+  const op=document.getElementById('modalOldPrice');op.textContent=(currentProduct.oldPrice && currentProduct.oldPrice > currentProduct.price)?'$'+currentProduct.oldPrice.toFixed(2):'';op.style.display=(currentProduct.oldPrice && currentProduct.oldPrice > currentProduct.price)?'inline':'none';
   const rv = getAvgRating(currentProduct.id);
   document.getElementById('modalRating').innerHTML = rv.count > 0 ? stars(rv.avg)+' <span class="rc">('+rv.count+' review'+(rv.count!==1?'s':'')+')</span>' : '<span class="rc" style="color:var(--muted)">No reviews yet</span>';
   
