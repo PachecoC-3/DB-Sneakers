@@ -714,7 +714,7 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 <button class="trk-back" onclick="showPage('home')">&larr; Back to Shop</button>
 </div>
 </div>
-<div class="modal-ov" id="productModal"><div class="modal-c"><button class="modal-x" onclick="closeProduct()">&times;</button>
+<div class="modal-ov" id="productModal" onclick="if(event.target===this) closeProduct()"><div class="modal-c"><button class="modal-x" onclick="closeProduct()">&times;</button>
 <div class="modal-g"><div class="modal-img-wrap"><div class="modal-img" style="position:relative;"><img id="modalImg" src="" alt="Product" style="width:100%; height:100%; max-height:600px; object-fit:contain;"><img class="wm-overlay" src="/assets/img/brand_logo.png" alt="watermark"></div><div id="modalThumbs" class="modal-thumbs"></div></div>
 <div class="modal-inf"><div id="modalType" class="modal-tp"></div><h2 id="modalName" class="modal-nm"></h2>
 <div class="modal-rt" id="modalRating"></div><div style="display:flex;align-items:center"><span id="modalPrice" class="modal-pr"></span><span id="modalOldPrice" class="modal-op"></span></div>
@@ -1387,15 +1387,15 @@ function openProduct(id){
     modalAddBtn.style.background = '';
   }
   document.getElementById('productModal').classList.add('open');document.body.style.overflow='hidden';
-  history.pushState({modal: true}, '', '#product-' + id);
+  if(window.location.hash !== '#product-' + id) {
+    history.pushState({modal: true}, '', '#product-' + id);
+  }
 }
 function closeProduct(){
-  if(history.state && history.state.modal) { 
-    history.back(); 
-  } else { 
-    history.replaceState(null, null, window.location.pathname + window.location.search);
-    document.getElementById('productModal').classList.remove('open');
-    document.body.style.overflow='';
+  document.getElementById('productModal').classList.remove('open');
+  document.body.style.overflow='';
+  if(window.location.hash.startsWith('#product-')) {
+    history.pushState(null, '', window.location.pathname + window.location.search);
   }
 }
 window.addEventListener('popstate', function(e) {
