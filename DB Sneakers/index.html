@@ -174,11 +174,11 @@ nav{border-bottom:3px solid var(--ac)}
 .marq-in span{font-family:'Bungee',cursive;font-size:15px;color:#111;padding:0 36px}
 /* Bento grid: 6 cols, alternating row sizes with yellow */
 .product-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;background:transparent;position:relative;z-index:5}
-.pc:nth-child(6n+1){grid-column:span 3}
-.pc:nth-child(6n+2),.pc:nth-child(6n+3){grid-column:span 3}
-.pc:nth-child(6n+4){grid-column:span 2}
-.pc:nth-child(6n+5){grid-column:span 2}
-.pc:nth-child(6n+6){grid-column:span 2}
+div.pc:nth-of-type(6n+1){grid-column:span 3}
+div.pc:nth-of-type(6n+2),div.pc:nth-of-type(6n+3){grid-column:span 3}
+div.pc:nth-of-type(6n+4){grid-column:span 2}
+div.pc:nth-of-type(6n+5){grid-column:span 2}
+div.pc:nth-of-type(6n+6){grid-column:span 2}
 .product-grid::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 42px),repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 22px);pointer-events:none;z-index:0}
 .pc{border:2px solid #111;transition:all .3s ease;position:relative;z-index:2}
 .pc:hover{border-color:#fff;box-shadow:8px 8px 0 var(--pr);transform:translate(-4px,-4px)}
@@ -1222,12 +1222,17 @@ function renderProducts(){
       scarcityHtml = `<div style="position:absolute; bottom:10px; left:10px; background:#ff0033; color:#fff; font-size:10px; font-weight:bold; padding:4px 8px; border-radius:4px; z-index:3; box-shadow:0 0 10px rgba(255,0,0,0.5); animation:pulse 2s infinite;">${tagText}</div>`;
     }
 
-    return `<div class="pc" onclick="openProduct('${p.id}')">
+    let html = `<div class="pc" onclick="openProduct('${p.id}')">
     <div class="pc-img"><img src="${p.img}" alt="${safeName}" loading="lazy">${p.badge?`<div class="pc-badge">${p.badge}</div>`:''}${scarcityHtml}<img class="wm-overlay" src="/assets/img/brand_logo.png" alt="watermark"></div>
     <div class="pc-info"><div class="pc-name">${safeName}</div><div class="pc-type">${p.type}</div>
     ${ratingHtml}
     <div class="pc-bot"><div><span class="pc-price">$${p.price.toFixed(2)}</span>${(p.oldPrice && p.oldPrice > p.price)?`<span class="pc-old">$${p.oldPrice.toFixed(2)}</span>`:''}</div>
     ${addBtnHtml}</div></div></div>`;
+    
+    if ((i + 1) % 6 === 0 && (i + 1) < items.length) {
+      html += `<span class="grid-spacer" style="display:block; grid-column:1/-1; height:250px; pointer-events:none;"></span>`;
+    }
+    return html;
   }).join('');
 
   if (typeof gsap !== 'undefined') {
