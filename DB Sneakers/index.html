@@ -709,42 +709,12 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 <div id="page-track" class="track-page">
 <div class="trk-wrap">
 <h1>Track Your Order</h1>
-<p class="trk-sub">Enter your order number to see shipment status</p>
+<p class="trk-sub">Enter your tracking number to see shipment status</p>
 <div class="trk-search">
-<input type="text" id="trkInput" placeholder="Enter order # (e.g. DB-X7KF2M)">
+<input type="text" id="trkInput" placeholder="Enter tracking # (e.g. 940011...)">
 <button onclick="trackOrder()">Track</button>
 </div>
-<div id="trkResult" class="trk-result">
-<div class="trk-card">
-<div class="trk-header">
-<div class="trk-order-num" id="trkOrderNum">Order #DB-000000</div>
-<div class="trk-status-badge shipped" id="trkBadge">Shipped</div>
-</div>
-<div class="trk-info-grid">
-<div class="trk-info-item"><label>Carrier</label><span id="trkCarrier">USPS</span></div>
-<div class="trk-info-item"><label>Tracking #</label><span id="trkNum">9400111899223100</span></div>
-<div class="trk-info-item"><label>Est. Delivery</label><span id="trkEta">--</span></div>
-<div class="trk-info-item"><label>Items</label><span id="trkItems">--</span></div>
-</div>
-<div class="trk-progress">
-<div class="trk-bar">
-<div class="trk-bar-fill" id="trkBarFill" style="width:0%"></div>
-<div class="trk-step done" id="trkStep0"><div class="trk-dot">&#10003;</div><div class="trk-step-label">Ordered</div></div>
-<div class="trk-step" id="trkStep1"><div class="trk-dot">&#9881;</div><div class="trk-step-label">Processing</div></div>
-<div class="trk-step" id="trkStep2"><div class="trk-dot">&#9992;</div><div class="trk-step-label">Shipped</div></div>
-<div class="trk-step" id="trkStep3"><div class="trk-dot">&#128666;</div><div class="trk-step-label">In Transit</div></div>
-<div class="trk-step" id="trkStep4"><div class="trk-dot">&#10003;</div><div class="trk-step-label">Delivered</div></div>
-</div>
-</div>
-</div>
-<div class="trk-timeline" id="trkTimeline">
-<h3>Tracking Updates</h3>
-</div>
-</div>
-<div id="trkEmpty" class="trk-empty" style="display:none">
-<div class="trk-empty-icon">&#128270;</div>
-<p>No order found with that number.<br>Please check and try again.</p>
-</div>
+<div id="YQContainer" style="width: 100%; margin-top: 20px; min-height: 500px; border-radius: 8px; overflow: hidden; display: none;"></div>
 <button class="trk-back" onclick="showPage('home')">&larr; Back to Shop</button>
 </div>
 </div>
@@ -945,43 +915,30 @@ function trackOrder(){
   var val=document.getElementById('trkInput').value.trim().toUpperCase();
   if(!val)return;
   showTrackPage();
-  var order=completedOrders.find(function(o){return o.orderNum===val;});
-  if(!order){
-    document.getElementById('trkResult').classList.remove('show');
-    document.getElementById('trkEmpty').style.display='block';
-    return;
+  
+  var container = document.getElementById('YQContainer');
+  container.style.display = 'block';
+
+  if (typeof YQV5 !== 'undefined') {
+    doTrack(val);
+  } else {
+    var script = document.createElement('script');
+    script.src = "//www.17track.net/en/externalcall.js";
+    script.onload = function() {
+      doTrack(val);
+    };
+    document.body.appendChild(script);
   }
-  document.getElementById('trkEmpty').style.display='none';
-  document.getElementById('trkResult').classList.add('show');
-  document.getElementById('trkOrderNum').textContent='Order #'+order.orderNum;
-  document.getElementById('trkCarrier').textContent=order.carrier;
-  document.getElementById('trkNum').textContent=order.trackingNum;
-  document.getElementById('trkEta').textContent=order.eta;
-  document.getElementById('trkItems').textContent=order.items+' item'+(order.items>1?'s':'');
-  var statuses=['processing','processing','shipped','transit','delivered'];
-  var labels=['Ordered','Processing','Shipped','In Transit','Delivered'];
-  var badge=document.getElementById('trkBadge');
-  badge.textContent=labels[order.status];
-  badge.className='trk-status-badge '+statuses[order.status];
-  var pcts=[0,12,37,62,100];
-  document.getElementById('trkBarFill').style.width=pcts[order.status]+'%';
-  for(var i=0;i<5;i++){
-    var step=document.getElementById('trkStep'+i);
-    step.className='trk-step';
-    if(i<order.status)step.classList.add('done');
-    else if(i===order.status)step.classList.add('active');
-  }
-  var events=[];
-  var d=new Date();
-  events.push({time:order.orderDate,desc:'Order placed',loc:'Online'});
-  if(order.status>=1)events.push({time:new Date(d.getTime()-86400000*2).toLocaleDateString('en-US',{month:'short',day:'numeric'})+' 2:30 PM',desc:'Payment confirmed - order processing',loc:'DB Sneakers Warehouse'});
-  if(order.status>=2)events.push({time:new Date(d.getTime()-86400000).toLocaleDateString('en-US',{month:'short',day:'numeric'})+' 8:15 AM',desc:'Package shipped via '+order.carrier,loc:'Distribution Center, Los Angeles, CA'});
-  if(order.status>=3){events.push({time:new Date(d.getTime()-43200000).toLocaleDateString('en-US',{month:'short',day:'numeric'})+' 11:42 PM',desc:'In transit - departed facility',loc:'Regional Hub, Phoenix, AZ'});events.push({time:'Today 6:10 AM',desc:'Package arrived at local facility',loc:order.city+', '+order.state});}
-  if(order.status>=4)events.push({time:'Today 1:23 PM',desc:'Delivered - left at front door',loc:order.city+', '+order.state});
-  var tl=document.getElementById('trkTimeline');
-  tl.innerHTML='<h3>Tracking Updates</h3>'+events.reverse().map(function(e){
-    return '<div class="trk-event"><div class="trk-event-time">'+e.time+'</div><div><div class="trk-event-desc">'+e.desc+'</div><div class="trk-event-loc">'+e.loc+'</div></div></div>';
-  }).join('');
+}
+
+function doTrack(num) {
+  YQV5.trackSingle({
+      YQ_ContainerId:"YQContainer",
+      YQ_Height:500,
+      YQ_Fc:"0",
+      YQ_Lang:"en",
+      YQ_Num:num
+  });
 }
 
 
