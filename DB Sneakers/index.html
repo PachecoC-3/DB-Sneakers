@@ -231,7 +231,7 @@ nav{border-bottom:3px solid var(--ac)}
 .oc-btn{display:inline-block;padding:14px 40px;background:var(--ac);color:var(--bg);border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:16px;text-transform:uppercase;letter-spacing:2px}
 @media(max-width:768px){.ck-wrap{grid-template-columns:1fr}.ck-row-2{grid-template-columns:1fr}}
 
-.track-page{display:none;min-height:100vh;padding:100px 20px 60px}
+.track-page{display:none;min-height:100vh;padding:140px 20px 60px}
 .track-page.show{display:block}
 .trk-wrap{max-width:700px;margin:0 auto}
 .trk-wrap h1{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:3px;font-size:36px;text-align:center;margin-bottom:8px}
@@ -923,7 +923,7 @@ function trackOrder(){
     doTrack(val);
   } else {
     var script = document.createElement('script');
-    script.src = "//www.17track.net/en/externalcall.js";
+    script.src = "https://www.17track.net/en/externalcall.js";
     script.onload = function() {
       doTrack(val);
     };
