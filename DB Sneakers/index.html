@@ -585,13 +585,13 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 <div class="hat-video-sec" style="margin-bottom:40px; border:3px solid var(--ac); overflow:hidden; background:#111; position:relative; box-shadow:8px 8px 0 var(--pr); aspect-ratio: 16/9; width: 100%; max-height: 80vh; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center;">
 
   <video id="hatVideoSlideshow" autoplay muted playsinline style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; pointer-events:none; z-index:1;">
-      <source src="/assets/video/db-sneakers-hat-intro.mp4" type="video/mp4">
+      <source src="/assets/video/rico-hat-video.mp4" type="video/mp4">
   </video>
   <script>
       document.addEventListener("DOMContentLoaded", function() {
           const video = document.getElementById("hatVideoSlideshow");
           const playlist = [
-              "/assets/video/db-sneakers-hat-intro.mp4",
+              "/assets/video/rico-hat-video.mp4",
               "/assets/video/db-sneakers-77-hat-try-on.mp4",
               "/assets/video/db-sneakers-b-series-ad.mp4",
               "/assets/video/gato-video-ad.mp4",
@@ -1174,7 +1174,7 @@ function resetHome() {
   showPage('home');
   window.scrollTo(0,0);
 }
-const itemsPerPage=25;
+const itemsPerPage=1000;
 let currentFilter='all',searchQuery='',cart=[],currentProduct=null,currentSort='alpha';
 
 function getFiltered(){
