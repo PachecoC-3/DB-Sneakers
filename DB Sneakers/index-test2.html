@@ -64,7 +64,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(5,5,5,.92);b
 .h-tag{font-family:'Archivo Black',sans-serif;font-size:13px;letter-spacing:6px;text-transform:uppercase;color:var(--pr)}
 .h-title{font-family:'Archivo Black',sans-serif;font-weight:700;text-transform:uppercase}.h-sub{font-size:16px;color:var(--muted);letter-spacing:1px}
 
-.shop{padding:60px 40px;max-width:1400px;margin:0 auto;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 50%, #FFD700, #ffcc00, #ffb300, #FFD700);background-size:400% 400%;animation:liquidPulse 15s ease infinite;}
+.shop{padding:60px 2%;max-width:100%;margin:0 auto;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 50%, #FFD700, #ffcc00, #ffb300, #FFD700);background-size:400% 400%;animation:liquidPulse 15s ease infinite;}
 @keyframes liquidPulse{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 .shop-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:40px}
 .shop-title{font-family:'Archivo Black',sans-serif;font-size:36px;font-weight:700;text-transform:uppercase;letter-spacing:2px}
@@ -176,12 +176,7 @@ nav{border-bottom:3px solid var(--ac)}
 /* Bento grid: 6 cols, alternating row sizes with yellow */
 .shop-filtered{padding-top:100px!important;min-height:100vh}
 @media(max-width:768px){.shop-filtered{padding-top:140px!important;min-height:100vh}}
-.product-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;background:transparent;position:relative;z-index:5}
-div.pc:nth-of-type(6n+1){grid-column:span 3}
-div.pc:nth-of-type(6n+2),div.pc:nth-of-type(6n+3){grid-column:span 3}
-div.pc:nth-of-type(6n+4){grid-column:span 2}
-div.pc:nth-of-type(6n+5){grid-column:span 2}
-div.pc:nth-of-type(6n+6){grid-column:span 2}
+.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;background:transparent;position:relative;z-index:5}
 .product-grid::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 42px),repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 22px);pointer-events:none;z-index:0}
 .pc{border:2px solid #111;transition:all .3s ease;position:relative;z-index:2}
 .pc:hover{border-color:#fff;box-shadow:8px 8px 0 var(--pr);transform:translate(-4px,-4px)}
@@ -189,8 +184,8 @@ div.pc:nth-of-type(6n+6){grid-column:span 2}
 .pc-add{border:2px solid #fff;box-shadow:3px 3px 0 var(--ac)}.pc-add:hover{box-shadow:1px 1px 0 var(--ac);transform:translate(2px,2px)}
 #paginationContainer { position:relative; z-index:100; }
 .shop-ctrl, .fb, .sort-sel { position:relative; z-index:100; }
-@media(max-width:768px){.product-grid{grid-template-columns:repeat(2,1fr)!important}.pc:nth-child(n){grid-column:span 1!important}.pc:nth-child(3n){grid-column:1 / 2!important}.v-marquee{display:none!important}}
-@media(max-width:480px){.product-grid{grid-template-columns:repeat(2,1fr)!important}.pc:nth-child(n){grid-column:span 1!important}.pc:nth-child(3n){grid-column:1 / 2!important}}
+@media(max-width:768px){.product-grid{grid-template-columns:repeat(2,1fr)!important}.pc:nth-child(n){grid-column:span 1!important}.v-marquee{display:none!important}}
+@media(max-width:480px){.product-grid{grid-template-columns:repeat(2,1fr)!important}.pc:nth-child(n){grid-column:span 1!important}}
 
 
 .checkout-page{display:none;min-height:100vh;padding:100px 20px 60px}
