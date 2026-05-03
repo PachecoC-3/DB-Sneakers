@@ -174,11 +174,11 @@ nav{border-bottom:3px solid var(--ac)}
 .marq-in span{font-family:'Bungee',cursive;font-size:15px;color:#111;padding:0 36px}
 /* Bento grid: 6 cols, alternating row sizes with yellow */
 .product-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;background:transparent;position:relative;z-index:5}
-.pc:nth-child(6n+1){grid-column:span 3}
-.pc:nth-child(6n+2),.pc:nth-child(6n+3){grid-column:span 3}
-.pc:nth-child(6n+4){grid-column:span 2}
-.pc:nth-child(6n+5){grid-column:span 2}
-.pc:nth-child(6n+6){grid-column:span 2}
+div.pc:nth-of-type(6n+1){grid-column:span 3}
+div.pc:nth-of-type(6n+2),div.pc:nth-of-type(6n+3){grid-column:span 3}
+div.pc:nth-of-type(6n+4){grid-column:span 2}
+div.pc:nth-of-type(6n+5){grid-column:span 2}
+div.pc:nth-of-type(6n+6){grid-column:span 2}
 .product-grid::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 42px),repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,transparent 1px,transparent 22px);pointer-events:none;z-index:0}
 .pc{border:2px solid #111;transition:all .3s ease;position:relative;z-index:2}
 .pc:hover{border-color:#fff;box-shadow:8px 8px 0 var(--pr);transform:translate(-4px,-4px)}
@@ -575,17 +575,6 @@ function closeMobileMenu() {
 <div style="position:absolute; inset:0; z-index:0; pointer-events:none;">
   <div class="shop-bg-animations" style="position:sticky; top:0; left:0; width:100%; height:100vh; overflow:hidden;">
     
-    <!-- LAYER 2: INDUSTRIAL TAPE -->
-    <div class="layer-tape" style="position:absolute; inset:-50%; transform:rotate(-15deg); display:flex; flex-direction:column; justify-content:center; gap:30vh;">
-      <div class="tape-strip" style="background:rgba(0,0,0,0.8); color:var(--pr); font-family:'Archivo Black', sans-serif; font-size:5rem; white-space:nowrap; padding:15px 0; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-        <span style="display:inline-block; animation:scrollTape 15s linear infinite;">// DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION //</span>
-      </div>
-      <div class="tape-strip" style="background:rgba(0,0,0,0.8); color:var(--pr); font-family:'Archivo Black', sans-serif; font-size:5rem; white-space:nowrap; padding:15px 0; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-        <span style="display:inline-block; animation:scrollTape 15s linear infinite reverse;">// LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS //</span>
-      </div>
-    </div>
-    <style>@keyframes scrollTape { 0% { transform:translateX(0); } 100% { transform:translateX(-33%); } }</style>
-
     <!-- LAYER 3: FLOATING PARALLAX SVGS -->
     <div class="layer-parallax" style="position:absolute; inset:0;">
       <div class="px-item px-1" style="position:absolute; font-size:6rem; filter:drop-shadow(0 20px 20px rgba(0,0,0,0.4)); opacity:0.9; left:5%; top:10%;">👑</div>
@@ -1249,12 +1238,22 @@ function renderProducts(){
       scarcityHtml = `<div style="position:absolute; bottom:10px; left:10px; background:#ff0033; color:#fff; font-size:10px; font-weight:bold; padding:4px 8px; border-radius:4px; z-index:3; box-shadow:0 0 10px rgba(255,0,0,0.5); animation:pulse 2s infinite;">${tagText}</div>`;
     }
 
-    return `<div class="pc" onclick="openProduct('${p.id}')">
+    let html = `<div class="pc" onclick="openProduct('${p.id}')">
     <div class="pc-img"><img src="${p.img}" alt="${safeName}" loading="lazy">${p.badge?`<div class="pc-badge">${p.badge}</div>`:''}${scarcityHtml}<img class="wm-overlay" src="/assets/img/brand_logo.png" alt="watermark"></div>
     <div class="pc-info"><div class="pc-name">${safeName}</div><div class="pc-type">${p.type}</div>
     ${ratingHtml}
     <div class="pc-bot"><div><span class="pc-price">$${p.price.toFixed(2)}</span>${(p.oldPrice && p.oldPrice > p.price)?`<span class="pc-old">$${p.oldPrice.toFixed(2)}</span>`:''}</div>
     ${addBtnHtml}</div></div></div>`;
+    
+    if ((i + 1) % 6 === 0 && (i + 1) < items.length) {
+      const direction = ((i + 1) / 6) % 2 === 0 ? 'reverse' : 'normal';
+      html += `<span class="grid-spacer" style="display:flex; align-items:center; grid-column:1/-1; height:200px; pointer-events:none; width:100vw; margin-left:50%; transform:translateX(-50%); overflow:hidden;">
+        <div class="tape-strip" style="width:100%; background:rgba(0,0,0,0.9); color:var(--ac); font-family:'Archivo Black', sans-serif; font-size:4rem; white-space:nowrap; padding:15px 0; box-shadow:0 10px 30px rgba(0,0,0,0.5); border-top:2px solid var(--ac); border-bottom:2px solid var(--ac);">
+          <span style="display:inline-block; animation:scrollTape 15s linear infinite ${direction};">// DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION //</span>
+        </div>
+      </span>`;
+    }
+    return html;
   }).join('');
 
   if (typeof gsap !== 'undefined') {
