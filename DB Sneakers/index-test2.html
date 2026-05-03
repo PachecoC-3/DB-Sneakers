@@ -1351,7 +1351,7 @@ function changePage(delta) {
 
 function filterProducts(cat,el){
   triggerProductTransition(() => {
-    document.getElementById('shop-sec').scrollIntoView({behavior: 'auto'});
+    document.getElementById('shop-sec').scrollIntoView({behavior: 'smooth'});
     currentFilter=cat;
     currentPage=1;
     document.querySelectorAll('[data-filter]').forEach(t=>t.classList.remove('active'));
@@ -1362,7 +1362,7 @@ function filterProducts(cat,el){
 
 function sortProducts(v){
   triggerProductTransition(() => {
-    document.getElementById('shop-sec').scrollIntoView({behavior: 'auto'});
+    document.getElementById('shop-sec').scrollIntoView({behavior: 'smooth'});
     currentSort=v;
     currentPage=1;
     renderProducts();
