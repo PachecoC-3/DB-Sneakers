@@ -174,8 +174,8 @@ nav{border-bottom:3px solid var(--ac)}
 .marq-in{display:flex;animation:mscroll 14s linear infinite;white-space:nowrap}
 .marq-in span{font-family:'Bungee',cursive;font-size:15px;color:#111;padding:0 36px}
 /* Bento grid: 6 cols, alternating row sizes with yellow */
-.shop-filtered{padding-top:100px!important}
-@media(max-width:768px){.shop-filtered{padding-top:140px!important}}
+.shop-filtered{padding-top:100px!important;min-height:100vh}
+@media(max-width:768px){.shop-filtered{padding-top:140px!important;min-height:100vh}}
 .product-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;background:transparent;position:relative;z-index:5}
 div.pc:nth-of-type(6n+1){grid-column:span 3}
 div.pc:nth-of-type(6n+2),div.pc:nth-of-type(6n+3){grid-column:span 3}
