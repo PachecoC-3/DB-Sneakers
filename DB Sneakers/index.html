@@ -548,15 +548,7 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
 <div style="position:absolute; inset:0; z-index:0; pointer-events:none;">
   <div class="shop-bg-animations" style="position:sticky; top:0; left:0; width:100%; height:100vh; overflow:hidden;">
     
-    <!-- LAYER 2: INDUSTRIAL TAPE -->
-    <div class="layer-tape" style="position:absolute; inset:-50%; transform:rotate(-15deg); display:flex; flex-direction:column; justify-content:center; gap:30vh;">
-      <div class="tape-strip" style="background:rgba(0,0,0,0.8); color:var(--pr); font-family:'Archivo Black', sans-serif; font-size:5rem; white-space:nowrap; padding:15px 0; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-        <span style="display:inline-block; animation:scrollTape 15s linear infinite;">// DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION //</span>
-      </div>
-      <div class="tape-strip" style="background:rgba(0,0,0,0.8); color:var(--pr); font-family:'Archivo Black', sans-serif; font-size:5rem; white-space:nowrap; padding:15px 0; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-        <span style="display:inline-block; animation:scrollTape 15s linear infinite reverse;">// LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS //</span>
-      </div>
-    </div>
+
     <style>@keyframes scrollTape { 0% { transform:translateX(0); } 100% { transform:translateX(-33%); } }</style>
 
     <!-- LAYER 3: FLOATING PARALLAX SVGS -->
@@ -1230,7 +1222,12 @@ function renderProducts(){
     ${addBtnHtml}</div></div></div>`;
     
     if ((i + 1) % 6 === 0 && (i + 1) < items.length) {
-      html += `<span class="grid-spacer" style="display:block; grid-column:1/-1; height:250px; pointer-events:none;"></span>`;
+      const direction = ((i + 1) / 6) % 2 === 0 ? 'reverse' : 'normal';
+      html += `<span class="grid-spacer" style="display:flex; align-items:center; grid-column:1/-1; height:200px; pointer-events:none; width:100vw; margin-left:50%; transform:translateX(-50%); overflow:hidden;">
+        <div class="tape-strip" style="width:100%; background:rgba(0,0,0,0.9); color:var(--ac); font-family:'Archivo Black', sans-serif; font-size:4rem; white-space:nowrap; padding:15px 0; box-shadow:0 10px 30px rgba(0,0,0,0.5); border-top:2px solid var(--ac); border-bottom:2px solid var(--ac);">
+          <span style="display:inline-block; animation:scrollTape 15s linear infinite ${direction};">// DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION //</span>
+        </div>
+      </span>`;
     }
     return html;
   }).join('');
