@@ -1224,8 +1224,8 @@ function renderProducts(){
     
     if ((i + 1) % 6 === 0 && (i + 1) < items.length) {
       const direction = ((i + 1) / 6) % 2 === 0 ? 'reverse' : 'normal';
-      html += `<span class="grid-spacer" style="display:flex; align-items:center; grid-column:1/-1; height:200px; pointer-events:none; width:100vw; margin-left:50%; transform:translateX(-50%); overflow:hidden;">
-        <div class="tape-strip" style="width:100%; background:rgba(0,0,0,0.9); color:var(--ac); font-family:'Archivo Black', sans-serif; font-size:4rem; white-space:nowrap; padding:15px 0; box-shadow:0 10px 30px rgba(0,0,0,0.5); border-top:2px solid var(--ac); border-bottom:2px solid var(--ac);">
+      html += `<span class="grid-spacer" style="display:flex; align-items:center; grid-column:1/-1; height:200px; pointer-events:none; width:100%; position:relative; overflow:visible;">
+        <div class="tape-strip" style="position:absolute; left:50%; transform:translateX(-50%); width:100vw; background:rgba(0,0,0,0.9); color:var(--ac); font-family:'Archivo Black', sans-serif; font-size:4rem; white-space:nowrap; padding:15px 0; box-shadow:0 10px 30px rgba(0,0,0,0.5); border-top:2px solid var(--ac); border-bottom:2px solid var(--ac); z-index:2;">
           <span style="display:inline-block; animation:scrollTape 15s linear infinite ${direction};">// DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION // DB SNEAKERS // EXCLUSIVE DROPS // LIMITED EDITION //</span>
         </div>
       </span>`;
