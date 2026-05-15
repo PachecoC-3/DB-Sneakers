@@ -1,0 +1,7 @@
+# Mobile Grid Alignment & Border Loss
+
+- **Symptom:** The mobile shopping experience for DB Sneakers suffered from layout inconsistencies. The product grid alignment broke, cards lost proper width constraints, and the main shop container failed to display its intended blue border and padding margin on smaller screens.
+- **Root Cause:** The CSS media queries for mobile viewports (`max-width: 768px` and `max-width: 480px`) lacked explicit padding constraints for the shop wrapper. Furthermore, the product grid was utilizing an `auto-fill` logic that failed to force a strict structural column layout on narrow screens, causing elements to stretch and overflow the container borders.
+- **The Fix:** Injected strict CSS `@media` rules for sub-768px screens to enforce a hard `grid-template-columns: repeat(2, 1fr)` or `1fr` constraint. Applied explicit padding variables to the outer shop container to ensure the blue border rendered correctly around the content rather than bleeding off-screen.
+- **The Prompt That Worked:** "Refine the mobile shopping experience for the DB Sneakers website. This includes fixing layout inconsistencies such as the product grid alignment and width, ensuring the shop container displays the correct blue border/margin."
+- **Future Prevention:** Always define explicitly rigid grid structures (`repeat(X, 1fr)`) inside mobile media queries rather than relying on `auto-fill`. Always test outer container borders and padding on sub-480px simulated viewports before deploying.
