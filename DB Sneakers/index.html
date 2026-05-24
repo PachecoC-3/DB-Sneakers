@@ -1207,63 +1207,62 @@ setTimeout(function(){ if(hv.readyState < 2) document.getElementById('heroFallba
         .card-micro .pc-add:hover { background: #222; transform: scale(1.05); }
 
 
-        
-        /* Option 23: Offset Shadow Stack */
-        .card-stack {
-            background: var(--pr); /* Cyan */
-            border: 2px solid #111;
+        /* Option 28: Micro-Interaction */
+        .card-micro {
+            background: var(--pr); /* Cyan background */
+            border-radius: 0; /* Removing border radius to fit the grid cleanly like the live site */
             padding: 20px;
+            color: #000;
             position: relative;
-            color: #111;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 2;
+            overflow: hidden;
             cursor: pointer;
-            border-radius: 0;
+            transition: transform 0.3s;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        .card-stack::before, .card-stack::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            border: 2px solid #111;
-            z-index: -1;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            background: #fff;
+        .card-micro:hover {
+            transform: translateY(-5px);
+            z-index: 10; /* Pop out over the grid lines */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 8px; /* Give it rounded corners when popping out */
         }
 
-        .card-stack::after { background: var(--ac); z-index: -2; } /* Yellow shadow */
-
-        .card-stack:hover { transform: translate(-8px, -8px); }
-        .card-stack:hover::before { transform: translate(8px, 8px); }
-        .card-stack:hover::after { transform: translate(16px, 16px); }
-
-        .card-stack .img-wrap { 
+        .card-micro .img-wrap { 
+            position: relative;
             margin-bottom: 20px; 
-            background: #fff; 
             padding: 20px; 
-            border: 2px solid #111; 
+            background: #fff; 
+            border-radius: 4px; 
+            transition: padding 0.3s; 
             height: 250px; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
         }
-        .card-stack .dummy-img { max-height: 100%; max-width: 100%; object-fit: contain; transition: transform 0.4s; }
-        .card-stack:hover .dummy-img { transform: scale(1.05); }
+        .card-micro:hover .img-wrap { padding: 10px; }
+        .card-micro .dummy-img { max-height: 100%; max-width: 100%; object-fit: contain; transition: transform 0.4s; }
+        .card-micro:hover .dummy-img { transform: scale(1.05); }
 
-        .card-stack .title { font-family: 'Archivo Black', sans-serif; font-size: 15px; margin-bottom: 5px; text-transform:uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-micro .info-container { position: relative; height: 60px; overflow: hidden; }
+
+        .card-micro .default-info { transition: transform 0.3s, opacity 0.3s; position: absolute; width: 100%; top: 0; left: 0; display: flex; flex-direction: column; justify-content: center; height: 100%; }
+        .card-micro:hover .default-info { transform: translateY(-60px); opacity: 0; }
+
+        .card-micro .title { font-family: 'Archivo Black', sans-serif; font-size: 14px; margin-bottom: 5px; text-transform:uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #000; }
+        .card-micro .price { color: #000; font-weight: bold; font-family: 'Archivo Black', sans-serif; font-size: 16px; }
+        .card-micro .pc-old { font-size:12px; color: rgba(0,0,0,0.6); text-decoration:line-through; margin-left:8px; font-weight: normal; font-family: -apple-system, sans-serif; }
+
+        .card-micro .hover-info { position: absolute; width: 100%; top: 60px; left: 0; opacity: 0; transition: transform 0.3s, opacity 0.3s; display: flex; justify-content: space-between; align-items: center; height: 100%; }
+        .card-micro:hover .hover-info { transform: translateY(-60px); opacity: 1; }
+
+        .card-micro .sizes { display: flex; gap: 5px; font-size: 12px; color: #000; font-family: -apple-system, sans-serif; align-items: center; }
+        .card-micro .pc-rating { margin-top: 0; font-size: 12px; color: #000; }
+        .card-micro .pc-rating .rc { color: rgba(0,0,0,0.7); }
         
-        .card-stack .sizes { font-size: 12px; color: #111; font-family: -apple-system, sans-serif; margin-bottom: 10px; display:flex; gap: 5px; align-items:center; }
-        .card-stack .sizes .rc { color: rgba(0,0,0,0.6); }
-        
-        .card-stack .bot-row { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-        .card-stack .price { font-weight: bold; font-family: 'Archivo Black', sans-serif; font-size: 18px; }
-        .card-stack .pc-old { font-size:12px; color: rgba(0,0,0,0.6); text-decoration:line-through; margin-left:8px; font-weight: normal; font-family: -apple-system, sans-serif; }
-        
-        .card-stack .pc-add { background: #111; color: var(--pr); border: none; padding: 10px 18px; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: bold; font-family: 'Archivo Black', sans-serif; text-transform: uppercase; transition: background 0.3s, transform 0.1s;}
-        .card-stack .pc-add:hover { background: #222; transform: scale(1.05); }
+        .card-micro .pc-add { background: #000; color: var(--pr); border: none; padding: 10px 18px; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: bold; font-family: 'Archivo Black', sans-serif; text-transform: uppercase; transition: background 0.3s, transform 0.1s;}
+        .card-micro .pc-add:hover { background: #222; transform: scale(1.05); }
 
 </style><div style="font-size:70px; animation: floatCart 3s ease-in-out infinite;">🛒</div><div style="font-family:'Archivo Black', sans-serif; font-size:20px; color:var(--text); letter-spacing:1px;">CART IS EMPTY</div><p style="color:var(--muted); font-size:14px; text-align:center; margin-bottom:10px;">Time to cop some heat.</p><button class="co-btn" style="width:auto; padding:12px 30px; animation: glowPulse 2s infinite;" onclick="toggleCart(); document.getElementById('shop-sec').scrollIntoView({behavior:'smooth'})">COP NOW</button></div></div>
 <div class="cart-ft" id="cartFoot" style="display:none"><div class="ct-row"><span>Total</span><span id="cartTotal">$0</span></div>
@@ -1763,21 +1762,22 @@ function renderProducts(){
       scarcityHtml = `<div style="position:absolute; bottom:10px; left:10px; background:#ff0033; color:#fff; font-size:10px; font-weight:bold; padding:4px 8px; border-radius:4px; z-index:3; box-shadow:0 0 10px rgba(255,0,0,0.5); animation:pulse 2s infinite;">${tagText}</div>`;
     }
 
-    let html = `<div class="card-stack" onclick="openProduct('${p.id}')">
+    let html = `<div class="card-micro" onclick="openProduct('${p.id}')">
         <div class="img-wrap" style="position:relative;">
             <img src="${p.img}" alt="${safeName}" class="dummy-img" loading="lazy">
             ${p.badge ? `<div class="pc-badge">${p.badge}</div>` : ''}
             ${scarcityHtml}
             <img class="wm-overlay" src="/assets/img/brand_logo.png" alt="watermark">
         </div>
-        <div class="title">${safeName}</div>
-        <div class="sizes">${ratingHtml}</div>
-        <div class="bot-row">
-            <div>
-                <span class="price">$${p.price.toFixed(2)}</span>
-                ${(p.oldPrice && p.oldPrice > p.price)?`<span class="pc-old">$${p.oldPrice.toFixed(2)}</span>`:''}
+        <div class="info-container">
+            <div class="default-info">
+                <div class="title">${safeName}</div>
+                <div class="price">$${p.price.toFixed(2)} ${(p.oldPrice && p.oldPrice > p.price)?`<span class="pc-old">$${p.oldPrice.toFixed(2)}</span>`:''}</div>
             </div>
-            ${addBtnHtml}
+            <div class="hover-info">
+                <div class="sizes">${ratingHtml}</div>
+                ${addBtnHtml}
+            </div>
         </div>
     </div>`;
     
@@ -1793,7 +1793,7 @@ function renderProducts(){
   }).join('');
 
   if (typeof gsap !== 'undefined') {
-    gsap.from("#productGrid .card-stack", {
+    gsap.from("#productGrid .card-micro", {
       duration: 0.6,
       y: 50,
       opacity: 0,
