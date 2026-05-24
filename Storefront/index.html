@@ -1865,7 +1865,7 @@ function goToPage(page) {
   triggerProductTransition(() => {
     currentPage = page;
     renderProducts();
-    document.getElementById('shop-sec').scrollIntoView({behavior: 'auto'});
+    window.scrollTo({ top: document.getElementById('shop-sec').offsetTop - 110, behavior: 'smooth' });
   });
 }
 
@@ -1873,13 +1873,13 @@ function changePage(delta) {
   triggerProductTransition(() => {
     currentPage += delta;
     renderProducts();
-    document.getElementById('shop-sec').scrollIntoView({behavior: 'auto'});
+    window.scrollTo({ top: document.getElementById('shop-sec').offsetTop - 110, behavior: 'smooth' });
   });
 }
 
 function filterProducts(cat,el){
   triggerProductTransition(() => {
-    document.getElementById('shop-sec').scrollIntoView({behavior: 'auto'});
+    window.scrollTo({ top: document.getElementById('shop-sec').offsetTop - 110, behavior: 'smooth' });
     currentFilter=cat;
     currentPage=1;
     document.querySelectorAll('[data-filter]').forEach(t=>t.classList.remove('active'));
@@ -1890,7 +1890,7 @@ function filterProducts(cat,el){
 
 function sortProducts(v){
   triggerProductTransition(() => {
-    document.getElementById('shop-sec').scrollIntoView({behavior: 'auto'});
+    window.scrollTo({ top: document.getElementById('shop-sec').offsetTop - 110, behavior: 'smooth' });
     currentSort=v;
     currentPage=1;
     renderProducts();

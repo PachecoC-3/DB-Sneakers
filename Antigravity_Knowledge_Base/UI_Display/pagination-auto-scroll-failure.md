@@ -1,0 +1,7 @@
+# Pagination Auto-Scroll Failure
+
+- **Symptom:** When a customer clicks a pagination button (e.g. Next Page, Page 2) at the bottom of the product grid, the new items load, but the browser leaves the customer stuck at the bottom of the page instead of scrolling them back to the top of the grid to view the new products.
+- **Root Cause:** The JavaScript pagination functions (`changePage()` and `goToPage()`) were utilizing a generic `scrollIntoView()` command on the `#shop-sec` container. When triggered inside an asynchronous timeout block (during the GSAP page wipe animation), this generic scroll command can fail to execute correctly. Furthermore, even when it did fire, it scrolled the shop section directly to the absolute top of the viewport, hiding it *underneath* the fixed navigation bar.
+- **The Fix:** Replaced `scrollIntoView` with an explicit coordinate scroll: `window.scrollTo({ top: document.getElementById('shop-sec').offsetTop - 110, behavior: 'smooth' });`. This forces the browser to scroll smoothly to the exact Y-coordinate of the shop section, minus a 110-pixel buffer so the top row of hats clears the fixed navigation header.
+- **The Prompt That Worked:** "after i click on a new page number, it needs to auto take me back to the top of the new page, right now it leaves me at the bottom"
+- **Future Prevention:** Never rely on default `scrollIntoView()` methods when a fixed top-navigation bar exists on the site. Always use `window.scrollTo` with calculated `offsetTop` mathematics to ensure proper viewport clearing.
