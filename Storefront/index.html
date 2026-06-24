@@ -2408,4 +2408,13 @@ gsap.to(".px-3", {y: -1000, rotation: 360, scrollTrigger: {trigger: ".shop", sta
 window.addEventListener('DOMContentLoaded', () => {
   initApp();
   initMagneticButtons();
+  
+  // Close mobile menu when a nav link is clicked
+  document.querySelectorAll('.nav-center a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 768) {
+        document.querySelector('.nav-center').style.display = 'none';
+      }
+    });
+  });
 });</script>
